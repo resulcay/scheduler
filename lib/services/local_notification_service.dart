@@ -51,11 +51,12 @@ class NotificationApi {
   Future<NotificationDetails> _notificationDetails() async {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
-      'channel_id',
+      'channel_id_0',
       'channel_name',
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('bell'),
       importance: Importance.max,
       priority: Priority.max,
-      playSound: true,
     );
     const DarwinNotificationDetails iosNotificationDetails =
         DarwinNotificationDetails();

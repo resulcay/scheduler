@@ -37,7 +37,7 @@ dependencies:
   provider: ^6.0.4
   auto_size_text: ^3.0.0
   f_datetimerangepicker: ^0.2.0
-  flutter_local_notifications: ^12.0.4
+  flutter_local_notifications: ^13.0.0
   timezone: ^0.9.0
   rxdart: ^0.27.7
   intl: ^0.17.0
