@@ -52,7 +52,7 @@ class NotificationApi {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
       'channel_id_0',
-      'channel_name',
+      'Reminder',
       playSound: true,
       sound: RawResourceAndroidNotificationSound('bell'),
       importance: Importance.max,

@@ -11,3 +11,11 @@ class TimeRangeProvider with ChangeNotifier {
     notifyListeners();
   }
 }
+
+/*  
+DateTime eventTime = DateTime.now().add(const Duration(hours: 1));
+  changeTimeRange(DateTime incomingEventTime) {
+    eventTime = incomingEventTime;
+    notifyListeners();
+  }
+*/

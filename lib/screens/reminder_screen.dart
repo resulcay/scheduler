@@ -126,7 +126,7 @@ class _ReminderScreenState extends State<ReminderScreen> {
                   );
                 },
                 customBorder: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Container(
                   height: 50,
