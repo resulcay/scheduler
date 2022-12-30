@@ -1,23 +1,30 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:scheduler/models/event_model.dart';
 import 'package:scheduler/screens/home_screen.dart';
 import 'package:scheduler/providers/onboarding_step_provider.dart';
-import 'package:scheduler/providers/time_range_provider.dart';
+import 'package:scheduler/providers/date_time_provider.dart';
 import 'package:scheduler/screens/onboarding_screen.dart';
 import 'package:scheduler/services/event_service.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 import 'constants/constant_texts.dart';
 
 void main() async {
-  await Hive.initFlutter();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Directory directory = await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(directory.path);
+  Hive.registerAdapter(EventModelAdapter());
+
   var onboardingBox = await Hive.openBox(ConstantText.onboardingBoxName);
   EventService().openBox();
   // onboardingBox.put(ConstantText.onboardingBoxKeyName, false);
   bool isOnboardingDone = onboardingBox.values.isNotEmpty;
-
-  WidgetsFlutterBinding.ensureInitialized();
 
   // Lock device to vertical orientation.
   SystemChrome.setPreferredOrientations(
@@ -37,7 +44,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) => MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => OnboardingStepProvider()),
-          ChangeNotifierProvider(create: (_) => TimeRangeProvider()),
+          ChangeNotifierProvider(create: (_) => DateTimeProvider()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

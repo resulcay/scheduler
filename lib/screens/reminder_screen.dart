@@ -1,12 +1,14 @@
 import 'package:f_datetimerangepicker/f_datetimerangepicker.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 import '../constants/constant_colors.dart';
 import '../constants/constant_texts.dart';
-import '../providers/time_range_provider.dart';
+import '../providers/date_time_provider.dart';
 import '../services/local_notification_service.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class ReminderScreen extends StatefulWidget {
   const ReminderScreen({super.key});
@@ -22,21 +24,18 @@ class _ReminderScreenState extends State<ReminderScreen> {
   void initState() {
     notificationApi = NotificationApi(context: context);
     notificationApi.initApi();
+    initializeDateFormatting();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    DateTime startTime =
-        Provider.of<TimeRangeProvider>(context, listen: true).startTime;
+    DateTime eventDate =
+        Provider.of<DateTimeProvider>(context, listen: true).eventDate;
 
-    String startTimeAsHourAndMinute = DateFormat.Hm().format(startTime);
-
-    DateTime endTime =
-        Provider.of<TimeRangeProvider>(context, listen: true).endTime;
-    String endTimeAsHourAndMinute = DateFormat.Hm().format(endTime);
-
-    int notificationCount = endTime.difference(startTime).inHours;
+    String eventTimeAsHourAndMinute = DateFormat.Hm().format(eventDate);
+    String eventTimeAsDayMonthYear =
+        DateFormat.yMMMEd('tr_TR').format(eventDate);
 
     return Scaffold(
       body: Center(
@@ -44,7 +43,8 @@ class _ReminderScreenState extends State<ReminderScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              'You will be notified $notificationCount times.',
+              textAlign: TextAlign.center,
+              'Selected Date and Time\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
               style: const TextStyle(
                 color: ConstantColor.pureBlack,
                 fontWeight: FontWeight.w400,
@@ -52,67 +52,47 @@ class _ReminderScreenState extends State<ReminderScreen> {
                 fontFamily: ConstantText.fontName,
               ),
             ),
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: 'From ',
-                style: const TextStyle(
-                  color: ConstantColor.pureBlack,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 23,
-                  fontFamily: ConstantText.fontName,
+            Material(
+              color: ConstantColor.darkBrown,
+              borderRadius: BorderRadius.circular(16),
+              child: InkWell(
+                onTap: () async {
+                  _selectDateTime(context);
+                },
+                customBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
                 ),
-                children: [
-                  TextSpan(
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        timePicker(context, startTime, endTime);
-                      },
-                    text:
-                        '$startTimeAsHourAndMinute  ${startTime.year}-${startTime.month}-${startTime.day}',
-                    style: const TextStyle(
-                      color: ConstantColor.normalYellow,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 23,
-                      fontFamily: ConstantText.fontName,
+                child: Container(
+                  height: 50,
+                  width: 140,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      "Pick",
+                      style: TextStyle(
+                        color: ConstantColor.pureWhite,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 36,
+                        fontFamily: ConstantText.fontName,
+                      ),
                     ),
                   ),
-                  const TextSpan(text: ' \nto '),
-                  TextSpan(
-                    text:
-                        '$endTimeAsHourAndMinute  ${endTime.year}-${endTime.month}-${endTime.day}',
-                    style: const TextStyle(
-                      color: ConstantColor.normalYellow,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 23,
-                      fontFamily: ConstantText.fontName,
-                    ),
-                  ),
-                  //const TextSpan(text: ' today'),
-                ],
+                ),
               ),
             ),
             Material(
               color: ConstantColor.darkBrown,
               borderRadius: BorderRadius.circular(16),
               child: InkWell(
-                onTap: () async {
-                  for (var i = 0; i < notificationCount; i++) {
-                    await notificationApi.showScheduledNotification(
-                      id: i,
-                      title: 'title $i',
-                      body: 'body $i',
-                      hours: i,
-                      payload: 'payload $i',
-                    );
-                  }
-
+                onTap: () {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
-                        title: const Text("Notification Setup"),
-                        content: const Text('Notifications adjusted!'),
+                        title: const Text("DateTime Setup"),
+                        content: const Text('Date and time are adjusted!'),
                         actions: [
                           TextButton(
                             child: const Text("OK"),
@@ -154,6 +134,27 @@ class _ReminderScreenState extends State<ReminderScreen> {
     );
   }
 
+  Future<dynamic> dateAdjusted(
+      BuildContext context, String title, String text) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(text),
+          actions: [
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   timePicker(BuildContext context, DateTime startTime, DateTime endTime) async {
     DateTimeRangePicker(
         startText: "From",
@@ -168,25 +169,6 @@ class _ReminderScreenState extends State<ReminderScreen> {
         maximumTime: DateTime.now().add(const Duration(days: 10)),
         use24hFormat: false,
         onConfirm: (start, end) {
-          if (!end.isAfter(start)) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text("Time Selection Error"),
-                  content: const Text('End time must be after Start Time!'),
-                  actions: [
-                    TextButton(
-                      child: const Text("OK"),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          }
           if (!start.isAfter(DateTime.now())) {
             showDialog(
               context: context,
@@ -207,9 +189,34 @@ class _ReminderScreenState extends State<ReminderScreen> {
             );
           }
           if (end.isAfter(start) && start.isAfter(DateTime.now())) {
-            Provider.of<TimeRangeProvider>(context, listen: false)
-                .changeTimeRange(start, end);
+            // Provider.of<TimeRangeProvider>(context, listen: false)
+            //     .changeTimeRange(start, end);
           }
         }).showPicker(context);
   }
+}
+
+Future<void> _selectDateTime(BuildContext context) async {
+  await DatePicker.showDateTimePicker(
+    locale: LocaleType.tr,
+    context,
+    onConfirm: (time) {
+      if (time.isBefore(DateTime.now())) {
+        QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            title: 'Error',
+            text: 'Date or time must be before now!');
+      } else {
+        Provider.of<DateTimeProvider>(context, listen: false)
+            .changeTimeRange(time);
+
+        QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            title: 'Success',
+            text: 'Date and time are adjusted!');
+      }
+    },
+  );
 }

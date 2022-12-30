@@ -6,8 +6,6 @@ import 'package:scheduler/extensions/media_query_extension.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/screens/reminder_screen.dart';
 
-import '../constants/constant_texts.dart';
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -29,7 +27,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           showModalBottomSheet(
             barrierColor: Colors.black12.withOpacity(.5),
             backgroundColor: ConstantColor.pureWhite,

@@ -6,7 +6,7 @@ import 'package:scheduler/screens/reminder_screen.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
-import '../providers/time_range_provider.dart';
+import '../providers/date_time_provider.dart';
 
 class NotificationApi {
   BuildContext context;
@@ -84,7 +84,7 @@ class NotificationApi {
     required String payload,
   }) async {
     DateTime scheduledTime =
-        Provider.of<TimeRangeProvider>(context, listen: false).startTime;
+        Provider.of<DateTimeProvider>(context, listen: false).eventDate;
     final details = await _notificationDetails();
     await _localNotificationApi.zonedSchedule(
       id,
