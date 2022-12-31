@@ -1,10 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:scheduler/constants/constant_colors.dart';
-import 'package:scheduler/extensions/media_query_extension.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
-import 'package:scheduler/screens/reminder_screen.dart';
+import 'package:scheduler/screens/create_event_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -28,19 +26,10 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          showModalBottomSheet(
-            barrierColor: Colors.black12.withOpacity(.5),
-            backgroundColor: ConstantColor.pureWhite,
-            constraints: BoxConstraints(
-              minHeight: 100,
-              maxHeight: context.height * .95,
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(60),
-            ),
-            context: context,
-            builder: (context) => const ReminderScreen(),
-          );
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const CreateEventScreen()));
         },
         child: const Icon(Icons.add),
       ),

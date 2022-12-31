@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
-import 'package:scheduler/screens/reminder_screen.dart';
+import 'package:scheduler/components/date_time_selection.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
@@ -135,7 +135,7 @@ class NotificationApi {
     }
     await Navigator.push(
       context,
-      MaterialPageRoute<void>(builder: (context) => const ReminderScreen()),
+      MaterialPageRoute<void>(builder: (context) => const DateTimeSelection()),
     );
   }
 }

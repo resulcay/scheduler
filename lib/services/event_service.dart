@@ -4,18 +4,22 @@ import '../constants/constant_texts.dart';
 import '../models/event_model.dart';
 
 class EventService {
-  var exModel = EventModel(eventTitle: "23eventTitle");
-
   Future<void> openBox() async {
-    var box = await Hive.openBox(ConstantText.eventBoxName);
-
-    // storeEvent(box);
+    await Hive.openBox(ConstantText.eventBoxName);
   }
 
-  storeEvent(var box) {
-    box.add(exModel);
-    EventModel items = box.get(1);
+  storeEvent(EventModel eventModel) async {
+    Box<dynamic> box = await Hive.openBox(ConstantText.eventBoxName);
+    box.add(eventModel);
+    getAllEvents();
   }
 
-  getAllEvents() {}
+  getAllEvents() async {
+    Box<dynamic> box = await Hive.openBox(ConstantText.eventBoxName);
+    EventModel item = box.get(1);
+    print(item.eventTitle);
+    print(item.eventDescription);
+    print(item.eventDate);
+    return box.values.toList();
+  }
 }
