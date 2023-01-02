@@ -1,96 +1,83 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
+import 'package:scheduler/models/event_model.dart';
+import 'package:scheduler/providers/color_provider.dart';
+import 'package:scheduler/providers/event_provider.dart';
 import 'package:scheduler/screens/create_event_screen.dart';
+import 'package:scheduler/services/event_service.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../components/event_card.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late EventService eventService;
+  @override
+  void initState() {
+    eventService = EventService();
+    eventService.getAllEvents();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    List<EventModel> items =
+        Provider.of<EventProvider>(context, listen: true).items;
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {},
-          splashRadius: 24,
-          icon: const Icon(Icons.sort, size: 30),
-        ),
-        actions: [
-          IconButton(
+        appBar: AppBar(
+          leading: IconButton(
             onPressed: () {},
             splashRadius: 24,
-            icon: const Icon(Icons.manage_search, size: 30),
-          )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const CreateEventScreen()));
-        },
-        child: const Icon(Icons.add),
-      ),
-      body: ListView.builder(
-        padding: context.paddingLow,
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          double value = Random().nextDouble();
-          if (value < .2) {
-            value += .7;
-          }
-          var generatedColor = Random().nextInt(Colors.primaries.length);
-          var finalColor = Colors.primaries[generatedColor].withOpacity(value);
-          return Container(
-            margin: const EdgeInsets.only(bottom: 6),
-            padding: context.paddingLow,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: finalColor,
-            ),
-            height: 200,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  "Event  Title",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(right: 35),
-                  child: Text(
-                    maxLines: 5,
-                    overflow: TextOverflow.ellipsis,
-                    "Some text here Some text  Some text here Some text here Some text here Some text here Some text here Some text here  Some text  Some text here Some text here Some text  Some text here Some text here Some text here here Some text here Some text here v",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w200,
-                      fontSize: 14,
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Text(
-                    "5 March 1998",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          );
-        },
-      ),
-    );
+            icon: const Icon(Icons.sort, size: 30),
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              splashRadius: 24,
+              icon: const Icon(Icons.manage_search, size: 30),
+            )
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            Provider.of<ColorProvider>(context, listen: false)
+                .changeColor(randomColor());
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const CreateEventScreen()));
+          },
+          child: const Icon(Icons.add),
+        ),
+        body: StreamBuilder(
+          stream: eventService.getAllEvents().asStream(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                padding: context.paddingLow,
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return EventCard(
+                    title: snapshot.data![index].eventTitle,
+                    description: snapshot.data![index].eventDescription ??
+                        "Null but assigned",
+                    date: snapshot.data![index].eventDate.toString(),
+                  );
+                },
+              );
+            }
+            return Container(
+              height: 100,
+              width: 100,
+              color: Colors.amber,
+            );
+          },
+        ));
   }
 }

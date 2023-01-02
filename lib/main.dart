@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:scheduler/models/event_model.dart';
+import 'package:scheduler/providers/color_provider.dart';
+import 'package:scheduler/providers/event_provider.dart';
 import 'package:scheduler/screens/home_screen.dart';
 import 'package:scheduler/providers/onboarding_step_provider.dart';
 import 'package:scheduler/providers/date_time_provider.dart';
@@ -45,6 +47,8 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(create: (_) => OnboardingStepProvider()),
           ChangeNotifierProvider(create: (_) => DateTimeProvider()),
+          ChangeNotifierProvider(create: (_) => ColorProvider()),
+          ChangeNotifierProvider(create: (_) => EventProvider()),
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

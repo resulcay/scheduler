@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
 import 'package:scheduler/extensions/media_query_extension.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/models/event_model.dart';
+import 'package:scheduler/providers/color_provider.dart';
 import 'package:scheduler/providers/date_time_provider.dart';
 import 'package:scheduler/services/event_service.dart';
 
@@ -26,6 +28,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     titleTextController = TextEditingController();
     descTextController = TextEditingController();
     eventService = EventService();
+
     super.initState();
   }
 
@@ -38,6 +41,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Color pickerColor = Provider.of<ColorProvider>(context, listen: true).color;
+
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -49,7 +54,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               padding: context.paddingLarge,
               child: CustomTextField(
                 controller: titleTextController,
-                hint: "Enter Title",
+                hint: "Enter Title *",
                 maxLines: 1,
                 textInputAction: TextInputAction.next,
               ),
@@ -82,6 +87,21 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   );
                 },
                 child: const Text('Select Date and Time')),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                    onPressed: () {
+                      pickColor(context, pickerColor);
+                    },
+                    child: const Text('Chose Color')),
+                const SizedBox(width: 10),
+                CircleAvatar(
+                  radius: 25,
+                  backgroundColor: pickerColor,
+                ),
+              ],
+            ),
             ElevatedButton(
                 onPressed: () {
                   EventModel model = EventModel(
@@ -90,13 +110,62 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                       eventDate:
                           Provider.of<DateTimeProvider>(context, listen: false)
                               .eventDate);
-
+                  //eventService.deleteAllEvents();
                   eventService.storeEvent(model);
                 },
-                child: const Text('Save Event'))
+                child: const Text('Save Event')),
           ],
         ),
       ),
+    );
+  }
+
+  Future<dynamic> pickColor(BuildContext context, Color pickerColor) {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        const List<Color> colors = [
+          Colors.red,
+          Colors.pink,
+          Colors.purple,
+          Colors.deepPurple,
+          Colors.indigo,
+          Colors.blue,
+          Colors.lightBlue,
+          Colors.cyan,
+          Colors.teal,
+          Colors.green,
+          Colors.lightGreen,
+          Colors.lime,
+          Colors.yellow,
+          Colors.amber,
+          Colors.orange,
+          Colors.deepOrange,
+          Colors.brown,
+          Colors.grey,
+          Colors.blueGrey,
+          Colors.black,
+        ];
+        return AlertDialog(
+          title: const Text('Colors'),
+          content: BlockPicker(
+            availableColors: colors,
+            pickerColor: pickerColor,
+            onColorChanged: (value) {
+              Provider.of<ColorProvider>(context, listen: false)
+                  .changeColor(value);
+            },
+          ),
+          actions: [
+            TextButton(
+              child: const Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

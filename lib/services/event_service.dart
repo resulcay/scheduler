@@ -1,25 +1,36 @@
 import 'package:hive/hive.dart';
+import 'package:scheduler/providers/event_provider.dart';
 
 import '../constants/constant_texts.dart';
 import '../models/event_model.dart';
 
-class EventService {
+class EventService extends EventProvider {
   Future<void> openBox() async {
     await Hive.openBox(ConstantText.eventBoxName);
+  }
+
+  deleteAllEvents() async {
+    Box<dynamic> box = await Hive.openBox(ConstantText.eventBoxName);
+    box.clear();
   }
 
   storeEvent(EventModel eventModel) async {
     Box<dynamic> box = await Hive.openBox(ConstantText.eventBoxName);
     box.add(eventModel);
-    getAllEvents();
+    print('successfully saved');
   }
 
-  getAllEvents() async {
-    Box<dynamic> box = await Hive.openBox(ConstantText.eventBoxName);
-    EventModel item = box.get(1);
-    print(item.eventTitle);
-    print(item.eventDescription);
-    print(item.eventDate);
-    return box.values.toList();
+  Future<List<EventModel>> getAllEvents() async {
+    await Hive.openBox(ConstantText.eventBoxName).then((value) {
+      List listOfValues = value.values.toList();
+
+      if (items.isEmpty) {
+        for (var element in listOfValues) {
+          changeEvent(element);
+        }
+      }
+    });
+
+    return items;
   }
 }
