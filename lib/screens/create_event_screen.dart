@@ -105,15 +105,21 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
             ElevatedButton(
                 onPressed: () {
                   EventModel model = EventModel(
-                      eventTitle: titleTextController.text,
-                      eventDescription: descTextController.text,
-                      eventDate:
-                          Provider.of<DateTimeProvider>(context, listen: false)
-                              .eventDate);
-                  //eventService.deleteAllEvents();
+                    eventTitle: titleTextController.text,
+                    eventDescription: descTextController.text,
+                    eventDate:
+                        Provider.of<DateTimeProvider>(context, listen: false)
+                            .eventDate,
+                    color: pickerColor.toString(),
+                  );
                   eventService.storeEvent(model);
                 },
                 child: const Text('Save Event')),
+            ElevatedButton(
+                onPressed: () {
+                  eventService.deleteAllEvents();
+                },
+                child: const Text('Delete All Events')),
           ],
         ),
       ),

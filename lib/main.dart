@@ -11,7 +11,6 @@ import 'package:scheduler/screens/home_screen.dart';
 import 'package:scheduler/providers/onboarding_step_provider.dart';
 import 'package:scheduler/providers/date_time_provider.dart';
 import 'package:scheduler/screens/onboarding_screen.dart';
-import 'package:scheduler/services/event_service.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 import 'constants/constant_texts.dart';
@@ -24,7 +23,7 @@ void main() async {
   Hive.registerAdapter(EventModelAdapter());
 
   var onboardingBox = await Hive.openBox(ConstantText.onboardingBoxName);
-  EventService().openBox();
+
   // onboardingBox.put(ConstantText.onboardingBoxKeyName, false);
   bool isOnboardingDone = onboardingBox.values.isNotEmpty;
 

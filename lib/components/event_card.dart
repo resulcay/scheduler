@@ -5,11 +5,13 @@ class EventCard extends StatelessWidget {
   final String title;
   final String description;
   final String date;
+  final Color color;
   const EventCard({
     Key? key,
     required this.title,
     required this.description,
     required this.date,
+    required this.color,
   }) : super(key: key);
 
   @override
@@ -19,7 +21,7 @@ class EventCard extends StatelessWidget {
       padding: context.paddingLow,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.red,
+        color: color,
       ),
       height: 200,
       child: Column(
