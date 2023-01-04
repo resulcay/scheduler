@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 import 'package:scheduler/models/event_model.dart';
 import 'package:scheduler/providers/color_provider.dart';
 import 'package:scheduler/providers/event_provider.dart';
@@ -23,19 +24,9 @@ void main() async {
   Hive.registerAdapter(EventModelAdapter());
 
   var onboardingBox = await Hive.openBox(ConstantText.onboardingBoxName);
-
-  // onboardingBox.put(ConstantText.onboardingBoxKeyName, false);
   bool isOnboardingDone = onboardingBox.values.isNotEmpty;
 
-  // Lock device to vertical orientation.
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(
-    (_) => runApp(
-      MyApp(
-        isOnboardingDone: isOnboardingDone,
-      ),
-    ),
-  );
+  _lockDeviceUpAndLaunch(isOnboardingDone);
 }
 
 class MyApp extends StatelessWidget {
@@ -43,12 +34,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key, required this.isOnboardingDone});
   @override
   Widget build(BuildContext context) => MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => OnboardingStepProvider()),
-          ChangeNotifierProvider(create: (_) => DateTimeProvider()),
-          ChangeNotifierProvider(create: (_) => ColorProvider()),
-          ChangeNotifierProvider(create: (_) => EventProvider()),
-        ],
+        providers: _providers,
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Scheduler',
@@ -64,3 +50,22 @@ class MyApp extends StatelessWidget {
         ),
       );
 }
+
+_lockDeviceUpAndLaunch(bool value) {
+  // Lock device to vertical orientation.
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(
+    (_) => runApp(
+      MyApp(
+        isOnboardingDone: value,
+      ),
+    ),
+  );
+}
+
+List<SingleChildWidget> _providers = [
+  ChangeNotifierProvider(create: (_) => OnboardingStepProvider()),
+  ChangeNotifierProvider(create: (_) => DateTimeProvider()),
+  ChangeNotifierProvider(create: (_) => ColorProvider()),
+  ChangeNotifierProvider(create: (_) => EventProvider()),
+];

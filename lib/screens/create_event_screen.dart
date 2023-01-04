@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:scheduler/extensions/media_query_extension.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/models/event_model.dart';
@@ -39,6 +40,8 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     super.dispose();
   }
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     Color pickerColor = Provider.of<ColorProvider>(context, listen: true).color;
@@ -46,81 +49,80 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Padding(
-              padding: context.paddingLarge,
-              child: CustomTextField(
-                controller: titleTextController,
-                hint: "Enter Title *",
-                maxLines: 1,
-                textInputAction: TextInputAction.next,
-              ),
-            ),
-            Padding(
-              padding: context.paddingLarge,
-              child: CustomTextField(
-                controller: descTextController,
-                hint: "Enter Description",
-                maxLines: 8,
-                textInputAction: TextInputAction.done,
-              ),
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  // dismiss keyboard after search in case of active.
-                  FocusManager.instance.primaryFocus?.unfocus();
-                  showModalBottomSheet(
-                    barrierColor: Colors.black12.withOpacity(.5),
-                    backgroundColor: ConstantColor.pureWhite,
-                    constraints: BoxConstraints(
-                      minHeight: 100,
-                      maxHeight: context.height * .95,
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(60),
-                    ),
-                    context: context,
-                    builder: (context) => const DateTimeSelection(),
-                  );
-                },
-                child: const Text('Select Date and Time')),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(
-                    onPressed: () {
-                      pickColor(context, pickerColor);
-                    },
-                    child: const Text('Chose Color')),
-                const SizedBox(width: 10),
-                CircleAvatar(
-                  radius: 25,
-                  backgroundColor: pickerColor,
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Padding(
+                padding: context.paddingNormalized,
+                child: CustomTextField(
+                  function: (text) {
+                    if (text == null || text.isEmpty) {
+                      return 'Can not be Empty';
+                    }
+                    return null;
+                  },
+                  controller: titleTextController,
+                  hint: "Enter Title *",
+                  maxLines: 1,
+                  textInputAction: TextInputAction.next,
                 ),
-              ],
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  EventModel model = EventModel(
-                    eventTitle: titleTextController.text,
-                    eventDescription: descTextController.text,
-                    eventDate:
-                        Provider.of<DateTimeProvider>(context, listen: false)
-                            .eventDate,
-                    color: pickerColor.toString(),
-                  );
-                  eventService.storeEvent(model);
-                },
-                child: const Text('Save Event')),
-            ElevatedButton(
-                onPressed: () {
-                  eventService.deleteAllEvents();
-                },
-                child: const Text('Delete All Events')),
-          ],
+              ),
+              Padding(
+                padding: context.paddingNormalized,
+                child: CustomTextField(
+                  controller: descTextController,
+                  hint: "Enter Description",
+                  maxLines: 6,
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      barrierColor: Colors.black12.withOpacity(.5),
+                      backgroundColor: ConstantColor.pureWhite,
+                      constraints: BoxConstraints(
+                        minHeight: 100,
+                        maxHeight: context.height * .95,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(60),
+                      ),
+                      context: context,
+                      builder: (context) => const DateTimeSelection(),
+                    );
+                  },
+                  child: const Text('Select Date and Time')),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        pickColor(context, pickerColor);
+                      },
+                      child: const Text('Chose Color')),
+                  const SizedBox(width: 10),
+                  CircleAvatar(
+                    radius: 25,
+                    backgroundColor: pickerColor,
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    eventService.deleteAllEvents();
+                  },
+                  child: const Text('Delete All Events')),
+              ElevatedButton(
+                  onPressed: () {
+                    _saveEvent(pickerColor);
+                  },
+                  child: const Text('Save Event')),
+            ],
+          ),
         ),
       ),
     );
@@ -173,5 +175,36 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         );
       },
     );
+  }
+
+  _saveEvent(dynamic pickerColor) {
+    try {
+      if (_formKey.currentState!.validate()) {
+        EventModel model = EventModel(
+          eventTitle: titleTextController.text,
+          eventDescription: descTextController.text,
+          eventDate:
+              Provider.of<DateTimeProvider>(context, listen: false).eventDate,
+          color: pickerColor.toString(),
+        );
+
+        eventService.storeEvent(model);
+
+        QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            title: 'Success',
+            text: 'Successfully Saved!');
+
+        titleTextController.clear();
+        descTextController.clear();
+      }
+    } catch (e) {
+      QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          title: 'Error',
+          text: 'Unexpected Error Occurred!');
+    }
   }
 }
