@@ -8,6 +8,7 @@ import 'package:provider/single_child_widget.dart';
 import 'package:scheduler/models/event_model.dart';
 import 'package:scheduler/providers/color_provider.dart';
 import 'package:scheduler/providers/event_provider.dart';
+import 'package:scheduler/providers/list_type_provider.dart';
 import 'package:scheduler/screens/home_screen.dart';
 import 'package:scheduler/providers/onboarding_step_provider.dart';
 import 'package:scheduler/providers/date_time_provider.dart';
@@ -68,4 +69,5 @@ List<SingleChildWidget> _providers = [
   ChangeNotifierProvider(create: (_) => DateTimeProvider()),
   ChangeNotifierProvider(create: (_) => ColorProvider()),
   ChangeNotifierProvider(create: (_) => EventProvider()),
+  ChangeNotifierProvider(create: (_) => ListTypeProvider()),
 ];

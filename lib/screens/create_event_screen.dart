@@ -113,7 +113,16 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               ),
               ElevatedButton(
                   onPressed: () {
-                    eventService.deleteAllEvents();
+                    QuickAlert.show(
+                        title: 'Are you sure?',
+                        text: 'All data will be deleted!',
+                        confirmBtnText: 'Yes',
+                        onConfirmBtnTap: () {
+                          eventService.deleteAllEvents();
+                          Navigator.pop(context);
+                        },
+                        context: context,
+                        type: QuickAlertType.warning);
                   },
                   child: const Text('Delete All Events')),
               ElevatedButton(
@@ -129,6 +138,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
   Future<dynamic> pickColor(BuildContext context, Color pickerColor) {
+    FocusManager.instance.primaryFocus?.unfocus();
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -179,6 +189,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
 
   _saveEvent(dynamic pickerColor) {
     try {
+      FocusManager.instance.primaryFocus?.unfocus();
       if (_formKey.currentState!.validate()) {
         EventModel model = EventModel(
           eventTitle: titleTextController.text,

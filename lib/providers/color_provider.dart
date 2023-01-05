@@ -12,12 +12,8 @@ class ColorProvider extends ChangeNotifier {
 }
 
 Color randomColor() {
-  double value = Random().nextDouble();
-  if (value < .2) {
-    value += .7;
-  }
   var generatedColor = Random().nextInt(Colors.primaries.length);
-  var finalColor = Colors.primaries[generatedColor].withOpacity(value);
+  var finalColor = Colors.primaries[generatedColor].withOpacity(.9);
 
   return finalColor;
 }
