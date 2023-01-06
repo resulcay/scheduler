@@ -10,4 +10,5 @@ class ConstantColor {
   static const darkBrown = Color(0xFF914C65);
   static const darkenYellow = Color(0xFF926825);
   static const normalYellow = Color(0xFFC89345);
+  static const normalBlue = Color(0xFF4284f5);
 }
