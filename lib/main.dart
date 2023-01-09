@@ -32,7 +32,7 @@ void main() async {
   ///
   /// Convert next line to isNotEmpty!!!!!!!!!!!!!!!!!!!!
   ///
-  bool isOnboardingDone = onboardingBox.values.isEmpty;
+  bool isOnboardingDone = onboardingBox.values.isNotEmpty;
 
   _lockDeviceUpAndLaunch(isOnboardingDone);
 }
@@ -80,4 +80,5 @@ List<SingleChildWidget> _providers = [
   ChangeNotifierProvider(create: (_) => EventProvider()),
   ChangeNotifierProvider(create: (_) => ListTypeProvider()),
   ChangeNotifierProvider(create: (_) => ThemeProvider()),
+  ChangeNotifierProvider(create: (_) => ThemeService()),
 ];

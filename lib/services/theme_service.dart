@@ -5,18 +5,15 @@ import '../constants/constant_texts.dart';
 
 class ThemeService extends ThemeProvider {
   storeTheme(bool inComingValue) async {
-    await Hive.openBox(ConstantText.themeBoxName).then((value) {
-      value.put(ConstantText.themeBoxKeyName, inComingValue);
-      notifyListeners();
-    });
+    var box = await Hive.openBox(ConstantText.themeBoxName);
+    box.put(ConstantText.themeBoxKeyName, inComingValue);
     notifyListeners();
   }
 
-  readTheme() async {
-    await Hive.openBox(ConstantText.themeBoxName).then((value) {
-      isDark = value.get(ConstantText.themeBoxKeyName) ?? getDefaultTheme();
-      notifyListeners();
-    });
+  Future<bool> readTheme() async {
+    var box = await Hive.openBox(ConstantText.themeBoxName);
+    isDark = box.get(ConstantText.themeBoxKeyName) ?? getDefaultTheme();
     notifyListeners();
+    return isDark;
   }
 }
