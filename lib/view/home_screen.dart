@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import 'package:scheduler/components/custom_drawer.dart';
+import 'package:scheduler/components/event_card.dart';
+import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/providers/color_provider.dart';
 import 'package:scheduler/providers/event_provider.dart';
 import 'package:scheduler/providers/list_type_provider.dart';
-import 'package:scheduler/screens/create_event_screen.dart';
+import 'package:scheduler/providers/theme_provider.dart';
+import 'package:scheduler/view/create_event_screen.dart';
+import 'package:scheduler/view_model/home_view_model.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
-
-import '../components/custom_drawer.dart';
-import '../components/event_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,61 +20,32 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
-  var scaffoldKey = GlobalKey<ScaffoldState>();
-  late AnimationController _animationController;
-
-  static const Duration toggleDuration = Duration(milliseconds: 250);
-  static const double maxSlide = 225;
-  static const double minDragStartEdge = 60;
-  static const double maxDragStartEdge = maxSlide - 16;
-
-  bool _canBeDragged = false;
-
-  @override
-  void initState() {
-    _animationController = AnimationController(
-      vsync: this,
-      duration: _HomeScreenState.toggleDuration,
-    );
-    super.initState();
-  }
-
-  void close() => _animationController.reverse();
-
-  void open() => _animationController.forward();
-
-  void toggleDrawer() => _animationController.isCompleted ? close() : open();
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
+class _HomeScreenState extends HomeViewModel {
   @override
   Widget build(BuildContext context) {
+    //
+    // Observes events constantly.
+    //
     context.watch<EventProvider>().getAllEvents();
 
     return WillPopScope(
       onWillPop: () async {
-        if (_animationController.isCompleted) {
+        if (animationController.isCompleted) {
           close();
           return false;
         }
         return true;
       },
       child: GestureDetector(
-        onHorizontalDragStart: _onDragStart,
-        onHorizontalDragUpdate: _onDragUpdate,
-        onHorizontalDragEnd: _onDragEnd,
+        onHorizontalDragStart: onDragStart,
+        onHorizontalDragUpdate: onDragUpdate,
+        onHorizontalDragEnd: onDragEnd,
         onTap: toggle,
         child: AnimatedBuilder(
-          animation: _animationController,
+          animation: animationController,
           builder: (context, child) {
-            double animValue = _animationController.value;
-            final slideAmount = maxSlide * animValue;
+            double animValue = animationController.value;
+            final slideAmount = HomeViewModel.maxSlide * animValue;
             final contentScale = 1.0 - (0.3 * animValue);
             return Stack(
               children: [
@@ -87,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen>
                     builder: (context, model, child) {
                       return Scaffold(
                         key: scaffoldKey,
-                        appBar: _customAppBar(),
+                        appBar: customAppBar(),
                         floatingActionButton: FloatingActionButton(
                           onPressed: () async {
                             Provider.of<ColorProvider>(context, listen: false)
@@ -101,8 +73,29 @@ class _HomeScreenState extends State<HomeScreen>
                           child: const Icon(Icons.add),
                         ),
                         body: model.items.isEmpty
-                            ? const Center(
-                                child: Text("There is no Event at the moment"))
+                            ? Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  const Center(
+                                      child: Text(
+                                          "There is no Event at the moment")),
+                                  Positioned(
+                                      bottom: 70,
+                                      right: 70,
+                                      child: Column(
+                                        children: [
+                                          const Text("Add from here",
+                                              style: TextStyle(
+                                                  color: ConstantColor
+                                                      .transparentGrey)),
+                                          Image.asset(
+                                            'assets/images/curly-arrow.png',
+                                            scale: 1.5,
+                                          )
+                                        ],
+                                      ))
+                                ],
+                              )
                             : Provider.of<ListTypeProvider>(context).switchValue
                                 ? Padding(
                                     padding: context.paddingLow,
@@ -112,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen>
                                         items: List.generate(model.items.length,
                                             (index) {
                                           List<String> values =
-                                              _cardConfiguration(model, index);
+                                              cardConfiguration(model, index);
                                           return GestureDetector(
                                             onTap: () {
                                               print(model
@@ -140,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen>
                                     itemCount: model.items.length,
                                     itemBuilder: (context, index) {
                                       List<String> values =
-                                          _cardConfiguration(model, index);
+                                          cardConfiguration(model, index);
                                       return GestureDetector(
                                         onTap: () {
                                           print(model.items[index].eventTitle);
@@ -169,88 +162,5 @@ class _HomeScreenState extends State<HomeScreen>
         ),
       ),
     );
-  }
-
-  AppBar _customAppBar() {
-    return AppBar(
-      elevation: 0,
-      leading: IconButton(
-        onPressed: () {
-          toggleDrawer();
-        },
-        splashRadius: 24,
-        icon: const Icon(Icons.sort, size: 30),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          splashRadius: 24,
-          icon: const Icon(Icons.manage_search, size: 30),
-        )
-      ],
-    );
-  }
-
-  List<String> _cardConfiguration(EventProvider model, int index) {
-    DateTime? eventDate = model.items[index].eventDate ?? DateTime.now();
-    initializeDateFormatting();
-    String eventTimeAsHourAndMinute = DateFormat.Hm().format(eventDate);
-    String eventTimeAsDayMonthYear =
-        DateFormat.yMMMEd('en_EN').format(eventDate);
-    String value = model.items[index].color;
-    value = _colorToString(value);
-
-    return [eventTimeAsHourAndMinute, eventTimeAsDayMonthYear, value];
-  }
-
-  String _colorToString(String value) {
-    if (value.length > 20) {
-      var local = value.split(" ");
-      value = local.last;
-      value = value.substring(0, value.length - 1);
-    }
-
-    value = value.split("(")[1];
-    value = value.split(")")[0];
-
-    return value;
-  }
-
-  void toggle() => _animationController.isDismissed
-      ? _animationController.forward()
-      : _animationController.reverse();
-
-  void _onDragStart(DragStartDetails details) {
-    bool isDragOpenFromLeft = _animationController.isDismissed &&
-        details.globalPosition.dx < minDragStartEdge;
-    bool isDragCloseFromRight = _animationController.isCompleted &&
-        details.globalPosition.dx > maxDragStartEdge;
-
-    _canBeDragged = isDragOpenFromLeft || isDragCloseFromRight;
-  }
-
-  void _onDragUpdate(DragUpdateDetails details) {
-    if (_canBeDragged) {
-      double delta = details.primaryDelta! / maxSlide;
-      _animationController.value += delta;
-    }
-  }
-
-  void _onDragEnd(DragEndDetails details) {
-    double kMinFlingVelocity = 365.0;
-
-    if (_animationController.isDismissed || _animationController.isCompleted) {
-      return;
-    }
-    if (details.velocity.pixelsPerSecond.dx.abs() >= kMinFlingVelocity) {
-      double visualVelocity = details.velocity.pixelsPerSecond.dx /
-          MediaQuery.of(context).size.width;
-
-      _animationController.fling(velocity: visualVelocity);
-    } else if (_animationController.value < 0.5) {
-      close();
-    } else {
-      open();
-    }
   }
 }

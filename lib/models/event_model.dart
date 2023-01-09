@@ -11,7 +11,7 @@ class EventModel extends HiveObject {
   String? eventDescription;
 
   @HiveField(2)
-  DateTime? eventDate;
+  DateTime eventDate;
 
   @HiveField(3)
   String color;
@@ -19,7 +19,7 @@ class EventModel extends HiveObject {
   EventModel({
     required this.eventTitle,
     this.eventDescription,
-    this.eventDate,
+    required this.eventDate,
     required this.color,
   });
 }

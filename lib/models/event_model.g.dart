@@ -19,7 +19,7 @@ class EventModelAdapter extends TypeAdapter<EventModel> {
     return EventModel(
       eventTitle: fields[0] as String,
       eventDescription: fields[1] as String?,
-      eventDate: fields[2] as DateTime?,
+      eventDate: fields[2] as DateTime,
       color: fields[3] as String,
     );
   }

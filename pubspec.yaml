@@ -43,6 +43,7 @@ dependencies:
   quickalert: ^1.0.1
   flutter_colorpicker: ^1.0.3
   stacked_card_carousel: ^0.0.4
+  flutter_svg: ^1.1.6
   
 
   # The following adds the Cupertino Icons font to your application.

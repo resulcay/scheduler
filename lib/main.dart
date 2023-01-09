@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -9,10 +10,12 @@ import 'package:scheduler/models/event_model.dart';
 import 'package:scheduler/providers/color_provider.dart';
 import 'package:scheduler/providers/event_provider.dart';
 import 'package:scheduler/providers/list_type_provider.dart';
-import 'package:scheduler/screens/home_screen.dart';
+import 'package:scheduler/providers/theme_provider.dart';
+import 'package:scheduler/services/theme_service.dart';
+import 'package:scheduler/view/home_screen.dart';
 import 'package:scheduler/providers/onboarding_step_provider.dart';
 import 'package:scheduler/providers/date_time_provider.dart';
-import 'package:scheduler/screens/onboarding_screen.dart';
+import 'package:scheduler/view/onboarding_screen.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 import 'constants/constant_texts.dart';
@@ -23,9 +26,13 @@ void main() async {
   Directory directory = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(EventModelAdapter());
-
+  ThemeService().readTheme();
   var onboardingBox = await Hive.openBox(ConstantText.onboardingBoxName);
-  bool isOnboardingDone = onboardingBox.values.isNotEmpty;
+
+  ///
+  /// Convert next line to isNotEmpty!!!!!!!!!!!!!!!!!!!!
+  ///
+  bool isOnboardingDone = onboardingBox.values.isEmpty;
 
   _lockDeviceUpAndLaunch(isOnboardingDone);
 }
@@ -33,6 +40,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   final bool isOnboardingDone;
   const MyApp({super.key, required this.isOnboardingDone});
+
+  @override
   @override
   Widget build(BuildContext context) => MultiProvider(
         providers: _providers,
@@ -70,4 +79,5 @@ List<SingleChildWidget> _providers = [
   ChangeNotifierProvider(create: (_) => ColorProvider()),
   ChangeNotifierProvider(create: (_) => EventProvider()),
   ChangeNotifierProvider(create: (_) => ListTypeProvider()),
+  ChangeNotifierProvider(create: (_) => ThemeProvider()),
 ];

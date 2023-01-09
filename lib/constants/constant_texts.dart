@@ -5,4 +5,6 @@ class ConstantText {
   static const onboardingBoxKeyName = 'localData';
   static const eventBoxName = 'eventBoxName';
   static const eventBoxKeyName = 'eventBoxKeyName';
+  static const themeBoxName = 'themeBoxName';
+  static const themeBoxKeyName = 'themeBoxKeyName';
 }
