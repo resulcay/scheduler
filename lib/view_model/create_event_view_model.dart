@@ -24,13 +24,12 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     titleTextController = TextEditingController();
     descTextController = TextEditingController();
     eventService = EventService();
-
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    pickerColor = Provider.of<ColorProvider>(context, listen: true).color;
+    pickerColor = Provider.of<ColorProvider>(context).color;
     super.didChangeDependencies();
   }
 
@@ -91,6 +90,22 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     );
   }
 
+  Future<dynamic> showCustomModalBottomSheet(BuildContext context) {
+    return showModalBottomSheet(
+      barrierColor: Colors.black12.withOpacity(.5),
+      backgroundColor: ConstantColor.pureWhite,
+      constraints: BoxConstraints(
+        minHeight: 100,
+        maxHeight: context.height * .95,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(60),
+      ),
+      context: context,
+      builder: (context) => const DateTimeSelection(),
+    );
+  }
+
   saveEvent(dynamic pickerColor) {
     try {
       FocusManager.instance.primaryFocus?.unfocus();
@@ -121,21 +136,5 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           title: 'Error',
           text: 'Unexpected Error Occurred!');
     }
-  }
-
-  Future<dynamic> pickDateTime(BuildContext context) {
-    return showModalBottomSheet(
-      barrierColor: Colors.black12.withOpacity(.5),
-      backgroundColor: ConstantColor.pureWhite,
-      constraints: BoxConstraints(
-        minHeight: 100,
-        maxHeight: context.height * .95,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(60),
-      ),
-      context: context,
-      builder: (context) => const DateTimeSelection(),
-    );
   }
 }

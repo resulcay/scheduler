@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:scheduler/components/decorated_text_field.dart';
-import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/view_model/create_event_view_model.dart';
 
@@ -50,8 +48,17 @@ class _CreateEventScreenState extends CreateEventViewModel {
                 ),
               ),
               ElevatedButton(
+                  // onPressed: () async {
+                  //   await Future.delayed(Duration.zero, () {
+                  //     Navigator.of(context).pushAndRemoveUntil(
+                  //         MaterialPageRoute(
+                  //           builder: (context) => const DateTimeSelection(),
+                  //         ),
+                  //         (route) => false);
+                  //   });
+                  // },
                   onPressed: () {
-                    pickDateTime(context);
+                    showCustomModalBottomSheet(context);
                   },
                   child: const Text('Select Date and Time')),
               Row(

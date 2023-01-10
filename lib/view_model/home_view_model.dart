@@ -1,28 +1,51 @@
+import 'dart:async';
+import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:rect_getter/rect_getter.dart';
+import 'package:scheduler/components/date_time_selection.dart';
 import 'package:scheduler/providers/event_provider.dart';
+import 'package:scheduler/view/create_event_screen.dart';
 import 'package:scheduler/view/home_screen.dart';
 
 abstract class HomeViewModel extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   late AnimationController animationController;
-
+  final Duration splashAnimationDuration = const Duration(milliseconds: 350);
+  final Duration splashDelay = const Duration(milliseconds: 50);
   static const Duration toggleDuration = Duration(milliseconds: 250);
   static const double maxSlide = 225;
   static const double minDragStartEdge = 60;
   static const double maxDragStartEdge = maxSlide - 16;
 
   bool _canBeDragged = false;
+  var rectGetterKey = RectGetter.createGlobalKey();
+  Rect? rect;
 
   @override
   void initState() {
+    super.initState();
     animationController = AnimationController(
       vsync: this,
       duration: HomeViewModel.toggleDuration,
     );
-    super.initState();
+  }
+
+  void onTapFloatingActionButton() {
+    setState(() => rect = RectGetter.getRectFromKey(rectGetterKey));
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      setState(() =>
+          rect = rect?.inflate(1.3 * MediaQuery.of(context).size.longestSide));
+      await Future.delayed(
+          splashAnimationDuration + splashDelay, _goToNextPage);
+    });
+  }
+
+  FutureOr _goToNextPage() {
+    Navigator.push(context, FadeRouteBuilder(page: const CreateEventScreen()))
+        .then((_) => setState(() => rect = null));
   }
 
   void close() => animationController.reverse();
@@ -49,7 +72,9 @@ abstract class HomeViewModel extends State<HomeScreen>
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            DatePicker.showDatePicker(context, dateFormat: 'yyyyMMMMyyyy');
+          },
           splashRadius: 24,
           icon: const Icon(Icons.manage_search, size: 30),
         )
@@ -119,4 +144,35 @@ abstract class HomeViewModel extends State<HomeScreen>
       open();
     }
   }
+
+  Widget ripple() {
+    if (rect == null) {
+      return Container();
+    }
+    return AnimatedPositioned(
+      duration: splashAnimationDuration,
+      left: rect?.left,
+      right: MediaQuery.of(context).size.width - rect!.right,
+      top: rect?.top,
+      bottom: MediaQuery.of(context).size.height - rect!.bottom,
+      child: Container(
+        decoration: const BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.blue,
+        ),
+      ),
+    );
+  }
+}
+
+class FadeRouteBuilder<T> extends PageRouteBuilder<T> {
+  final Widget page;
+
+  FadeRouteBuilder({required this.page})
+      : super(
+          pageBuilder: (context, animation1, animation2) => page,
+          transitionsBuilder: (context, animation1, animation2, child) {
+            return FadeTransition(opacity: animation1, child: child);
+          },
+        );
 }

@@ -31,62 +31,59 @@ class _DateTimeSelectionState extends State<DateTimeSelection> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime eventDate =
-        Provider.of<DateTimeProvider>(context, listen: true).eventDate;
+    DateTime eventDate = Provider.of<DateTimeProvider>(context).eventDate;
 
     String eventTimeAsHourAndMinute = DateFormat.Hm().format(eventDate);
     String eventTimeAsDayMonthYear =
         DateFormat.yMMMEd('en_EN').format(eventDate);
 
-    return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                textAlign: TextAlign.center,
-                'Selected Date and Time\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
-                style: const TextStyle(
-                  color: ConstantColor.pureBlack,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 24,
-                  fontFamily: ConstantText.fontName,
-                ),
+    return Center(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Text(
+              textAlign: TextAlign.center,
+              'Selected Date and Time\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
+              style: const TextStyle(
+                color: ConstantColor.pureBlack,
+                fontWeight: FontWeight.w400,
+                fontSize: 24,
+                fontFamily: ConstantText.fontName,
               ),
-              const SizedBox(height: 100),
-              Material(
-                color: ConstantColor.darkBrown,
-                borderRadius: BorderRadius.circular(16),
-                child: InkWell(
-                  onTap: () async {
-                    _selectDateTime(context);
-                  },
-                  customBorder: RoundedRectangleBorder(
+            ),
+            const SizedBox(height: 100),
+            Material(
+              color: ConstantColor.darkBrown,
+              borderRadius: BorderRadius.circular(16),
+              child: InkWell(
+                onTap: () async {
+                  selectDateTime(context);
+                },
+                customBorder: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Container(
+                  height: 50,
+                  width: 140,
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Container(
-                    height: 50,
-                    width: 140,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: const Center(
-                      child: Text(
-                        "Pick",
-                        style: TextStyle(
-                          color: ConstantColor.pureWhite,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 36,
-                          fontFamily: ConstantText.fontName,
-                        ),
+                  child: const Center(
+                    child: Text(
+                      "Pick",
+                      style: TextStyle(
+                        color: ConstantColor.pureWhite,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 36,
+                        fontFamily: ConstantText.fontName,
                       ),
                     ),
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -114,8 +111,8 @@ class _DateTimeSelectionState extends State<DateTimeSelection> {
   }
 }
 
-Future<void> _selectDateTime(BuildContext context) async {
-  await DatePicker.showDateTimePicker(
+selectDateTime(BuildContext context) {
+  DatePicker.showDateTimePicker(
     locale: LocaleType.en,
     context,
     onConfirm: (time) {
