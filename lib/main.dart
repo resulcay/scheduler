@@ -17,6 +17,7 @@ import 'package:scheduler/view/home_screen.dart';
 import 'package:scheduler/providers/onboarding_step_provider.dart';
 import 'package:scheduler/providers/date_time_provider.dart';
 import 'package:scheduler/view/onboarding_screen.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 void main() async {
@@ -46,6 +47,15 @@ class MyApp extends StatelessWidget {
         child: Consumer<ThemeService>(
           builder: (_, themeService, __) {
             return MaterialApp(
+              localizationsDelegates: const [
+                GlobalWidgetsLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: const [
+                Locale('en', 'US'),
+                Locale('tr', 'TR'),
+              ],
               debugShowCheckedModeBanner: false,
               title: 'Scheduler',
               theme: ThemeData(

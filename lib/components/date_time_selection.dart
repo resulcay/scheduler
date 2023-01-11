@@ -1,8 +1,9 @@
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
+
 import '../constants/constant_colors.dart';
 import '../constants/constant_texts.dart';
 import '../providers/date_time_provider.dart';
@@ -23,6 +24,7 @@ class _DateTimeSelectionState extends State<DateTimeSelection> {
   void initState() {
     // dismiss keyboard after search in case of active.
     FocusManager.instance.primaryFocus?.unfocus();
+    Intl.defaultLocale = 'en_US';
     notificationApi = NotificationApi(context: context);
     notificationApi.initApi();
     initializeDateFormatting();
@@ -112,26 +114,45 @@ class _DateTimeSelectionState extends State<DateTimeSelection> {
 }
 
 selectDateTime(BuildContext context) {
-  DatePicker.showDateTimePicker(
-    locale: LocaleType.en,
-    context,
-    onConfirm: (time) {
-      if (time.isBefore(DateTime.now())) {
-        QuickAlert.show(
-            context: context,
-            type: QuickAlertType.error,
-            title: 'Error',
-            text: 'Date or time must be before now!');
-      } else {
-        Provider.of<DateTimeProvider>(context, listen: false)
-            .changeTimeRange(time);
+  showModalBottomSheet(
+    context: context,
+    builder: (context) {
+      return DateTimePicker(
+        locale: const Locale('en', 'US'),
+        type: DateTimePickerType.dateTimeSeparate,
+        dateMask: 'd MMM, yyyy',
+        initialValue: DateTime.now().toString(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2100),
+        icon: const Icon(Icons.event),
+        dateLabelText: 'Date',
+        timeLabelText: 'Hour',
+        onChanged: (value) {
+          DateTime date = DateTime.parse(value);
+          if (date.isBefore(DateTime.now())) {
+            QuickAlert.show(
+                onConfirmBtnTap: () {
+                  Navigator.pop(context);
+                },
+                context: context,
+                type: QuickAlertType.error,
+                title: 'Invalid Date or Time',
+                text: 'Date or Time must be before current!');
+          } else {
+            Provider.of<DateTimeProvider>(context, listen: false)
+                .changeTimeRange(date);
 
-        QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-            title: 'Success',
-            text: 'Date and time are adjusted!');
-      }
+            QuickAlert.show(
+                onConfirmBtnTap: () {
+                  Navigator.pop(context);
+                },
+                context: context,
+                type: QuickAlertType.success,
+                title: 'Success',
+                text: 'Date and time are adjusted!');
+          }
+        },
+      );
     },
   );
 }

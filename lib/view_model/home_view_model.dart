@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:rect_getter/rect_getter.dart';
-import 'package:scheduler/components/date_time_selection.dart';
 import 'package:scheduler/providers/event_provider.dart';
 import 'package:scheduler/view/create_event_screen.dart';
 import 'package:scheduler/view/home_screen.dart';
@@ -72,12 +70,10 @@ abstract class HomeViewModel extends State<HomeScreen>
       ),
       actions: [
         IconButton(
-          onPressed: () {
-            DatePicker.showDatePicker(context, dateFormat: 'yyyyMMMMyyyy');
-          },
+          onPressed: () {},
           splashRadius: 24,
           icon: const Icon(Icons.manage_search, size: 30),
-        )
+        ),
       ],
     );
   }
