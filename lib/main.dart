@@ -2,23 +2,24 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+
 import 'package:scheduler/constants/constant_texts.dart';
 import 'package:scheduler/models/event_model.dart';
 import 'package:scheduler/providers/color_provider.dart';
+import 'package:scheduler/providers/date_time_provider.dart';
 import 'package:scheduler/providers/event_provider.dart';
 import 'package:scheduler/providers/list_type_provider.dart';
+import 'package:scheduler/providers/onboarding_step_provider.dart';
 import 'package:scheduler/providers/theme_provider.dart';
 import 'package:scheduler/services/list_type_service.dart';
 import 'package:scheduler/services/theme_service.dart';
 import 'package:scheduler/view/home_screen.dart';
-import 'package:scheduler/providers/onboarding_step_provider.dart';
-import 'package:scheduler/providers/date_time_provider.dart';
 import 'package:scheduler/view/onboarding_screen.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 brightness:
                     themeService.isDark ? Brightness.dark : Brightness.light,
-                primarySwatch: Colors.indigo,
+                primarySwatch: Colors.blueGrey,
                 fontFamily: ConstantText.fontName,
               ),
               home: isOnboardingDone

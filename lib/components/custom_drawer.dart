@@ -16,7 +16,7 @@ class CustomDrawer extends StatelessWidget {
     context.watch<ThemeService>().readTheme();
     context.watch<ListTypeService>().readListType();
     return Material(
-      color: Colors.grey.shade700,
+      color: Theme.of(context).backgroundColor,
       child: SafeArea(
         child: ListView(
           children: [
@@ -27,13 +27,14 @@ class CustomDrawer extends StatelessWidget {
                 const Spacer(),
                 Consumer<ThemeService>(
                   builder: (_, themeService, __) => CupertinoSwitch(
+                    trackColor: Theme.of(context).disabledColor,
                     activeColor: ConstantColor.normalBlue,
                     value: themeService.isDark,
                     onChanged: (value) {
                       themeService.storeTheme(value);
                     },
                   ),
-                )
+                ),
               ],
             ),
             Row(
@@ -59,6 +60,7 @@ class CustomDrawer extends StatelessWidget {
                 const Spacer(),
                 Consumer<ListTypeService>(
                   builder: (_, value, __) => CupertinoSwitch(
+                    trackColor: Theme.of(context).disabledColor,
                     activeColor: ConstantColor.normalBlue,
                     value: value.switchValue,
                     onChanged: (value) {

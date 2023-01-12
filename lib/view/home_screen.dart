@@ -103,7 +103,7 @@ class _HomeScreenState extends HomeViewModel {
                                           padding: context.paddingLow,
                                           child: StackedCardCarousel(
                                               initialOffset: 0,
-                                              spaceBetweenItems: 190,
+                                              spaceBetweenItems: 194,
                                               items: List.generate(
                                                   model.items.length, (index) {
                                                 List<String> values =
@@ -158,7 +158,7 @@ class _HomeScreenState extends HomeViewModel {
                                           },
                                         ),
                             ),
-                            ripple()
+                            splashWidget()
                           ],
                         ),
                       );

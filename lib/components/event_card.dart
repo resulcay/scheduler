@@ -17,12 +17,20 @@ class EventCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 6),
+      margin: const EdgeInsets.only(bottom: 15),
       padding: context.paddingLow,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        color: color,
-      ),
+          borderRadius: BorderRadius.circular(15),
+          color: color,
+          boxShadow: [
+            BoxShadow(
+              color: color.withOpacity(.4),
+              offset: Offset.zero,
+              blurStyle: BlurStyle.solid,
+              blurRadius: 10,
+              spreadRadius: 3,
+            ),
+          ]),
       height: 200,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:rect_getter/rect_getter.dart';
+import 'package:scheduler/components/fade_out_builder.dart';
 import 'package:scheduler/providers/event_provider.dart';
 import 'package:scheduler/view/create_event_screen.dart';
 import 'package:scheduler/view/home_screen.dart';
@@ -141,7 +142,7 @@ abstract class HomeViewModel extends State<HomeScreen>
     }
   }
 
-  Widget ripple() {
+  Widget splashWidget() {
     if (rect == null) {
       return Container();
     }
@@ -152,23 +153,11 @@ abstract class HomeViewModel extends State<HomeScreen>
       top: rect?.top,
       bottom: MediaQuery.of(context).size.height - rect!.bottom,
       child: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.blue,
+          color: Colors.blueAccent.shade400,
         ),
       ),
     );
   }
-}
-
-class FadeRouteBuilder<T> extends PageRouteBuilder<T> {
-  final Widget page;
-
-  FadeRouteBuilder({required this.page})
-      : super(
-          pageBuilder: (context, animation1, animation2) => page,
-          transitionsBuilder: (context, animation1, animation2, child) {
-            return FadeTransition(opacity: animation1, child: child);
-          },
-        );
 }
