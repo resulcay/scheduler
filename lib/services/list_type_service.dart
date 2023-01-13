@@ -1,16 +1,18 @@
 import 'package:hive/hive.dart';
+import 'package:scheduler/constants/constant_texts.dart';
 import 'package:scheduler/providers/list_type_provider.dart';
+import 'package:scheduler/services/i_hive_service.dart';
 
-import '../constants/constant_texts.dart';
-
-class ListTypeService extends ListTypeProvider {
-  storeListType(bool inComingValue) async {
+class ListTypeService extends ListTypeProvider implements IHiveService {
+  @override
+  Future<void> write(bool inComingValue) async {
     var box = await Hive.openBox(ConstantText.listTypeBoxName);
     box.put(ConstantText.listTypeBoxKeyName, inComingValue);
     notifyListeners();
   }
 
-  Future<bool> readListType() async {
+  @override
+  Future<bool> read() async {
     var box = await Hive.openBox(ConstantText.listTypeBoxName);
     switchValue = box.get(ConstantText.listTypeBoxKeyName) ?? true;
     notifyListeners();

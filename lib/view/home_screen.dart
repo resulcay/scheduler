@@ -25,7 +25,7 @@ class _HomeScreenState extends HomeViewModel {
     // Observes events constantly.
     //
     context.watch<EventProvider>().getAllEvents();
-    context.watch<ListTypeService>().readListType();
+    context.watch<ListTypeService>().read();
 
     return WillPopScope(
       onWillPop: () async {

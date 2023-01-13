@@ -27,7 +27,7 @@ void main() async {
   Directory directory = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(directory.path);
   Hive.registerAdapter(EventModelAdapter());
-  ThemeService().readTheme();
+  ThemeService().read();
   var onboardingBox = await Hive.openBox(ConstantText.onboardingBoxName);
   bool isOnboardingDone = onboardingBox.values.isNotEmpty;
   _lockDeviceUpAndLaunch(isOnboardingDone);

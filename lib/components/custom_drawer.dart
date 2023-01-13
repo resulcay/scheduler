@@ -13,8 +13,8 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<ThemeService>().readTheme();
-    context.watch<ListTypeService>().readListType();
+    context.watch<ThemeService>().read();
+    context.watch<ListTypeService>().read();
     return Material(
       color: Theme.of(context).backgroundColor,
       child: SafeArea(
@@ -31,7 +31,7 @@ class CustomDrawer extends StatelessWidget {
                     activeColor: ConstantColor.normalBlue,
                     value: themeService.isDark,
                     onChanged: (value) {
-                      themeService.storeTheme(value);
+                      themeService.write(value);
                     },
                   ),
                 ),
@@ -64,7 +64,7 @@ class CustomDrawer extends StatelessWidget {
                     activeColor: ConstantColor.normalBlue,
                     value: value.switchValue,
                     onChanged: (value) {
-                      ListTypeService().storeListType(value);
+                      ListTypeService().write(value);
                     },
                   ),
                 )
