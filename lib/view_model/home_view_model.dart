@@ -12,8 +12,8 @@ abstract class HomeViewModel extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   late AnimationController animationController;
-  final Duration splashAnimationDuration = const Duration(milliseconds: 350);
-  final Duration splashDelay = const Duration(milliseconds: 50);
+  static const Duration splashAnimationDuration = Duration(milliseconds: 350);
+  static const Duration splashDelay = Duration(milliseconds: 50);
   static const Duration toggleDuration = Duration(milliseconds: 250);
   static const double maxSlide = 225;
   static const double minDragStartEdge = 60;

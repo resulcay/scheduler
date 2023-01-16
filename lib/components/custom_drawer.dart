@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:scheduler/constants/constant_colors.dart';
+import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/services/list_type_service.dart';
 import 'package:scheduler/services/theme_service.dart';
 
@@ -18,6 +19,7 @@ class CustomDrawer extends StatelessWidget {
     return Material(
       color: Theme.of(context).backgroundColor,
       child: SafeArea(
+        minimum: context.paddingLow,
         child: ListView(
           children: [
             Row(
@@ -70,6 +72,7 @@ class CustomDrawer extends StatelessWidget {
                 )
               ],
             ),
+            const SizedBox(height: 1000),
           ],
         ),
       ),

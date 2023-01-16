@@ -1,5 +1,5 @@
 class ConstantText {
-  static const fontName = 'Merriweather';
+  static const fontName = 'Righteous';
   static const onboardingBoxName = 'isOnboardingCompleted';
   static const onboardingBoxKeyName = 'localData';
   static const eventBoxName = 'eventBoxName';

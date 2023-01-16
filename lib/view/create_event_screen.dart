@@ -19,13 +19,14 @@ class _CreateEventScreenState extends CreateEventViewModel {
       body: SingleChildScrollView(
         child: Form(
           key: formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Padding(
-                padding: context.paddingNormalized,
-                child: CustomTextField(
+          child: Padding(
+            padding: context.paddingNormalized,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                CustomTextField(
                   function: (text) {
                     if (text == null || text.isEmpty) {
                       return 'Can not be Empty';
@@ -37,65 +38,68 @@ class _CreateEventScreenState extends CreateEventViewModel {
                   maxLines: 1,
                   textInputAction: TextInputAction.next,
                 ),
-              ),
-              Padding(
-                padding: context.paddingNormalized,
-                child: CustomTextField(
+                const SizedBox(height: 10),
+                CustomTextField(
                   controller: descTextController,
                   hint: "Enter Description",
                   maxLines: 6,
                   textInputAction: TextInputAction.done,
                 ),
-              ),
-              ElevatedButton(
-                  // onPressed: () async {
-                  //   await Future.delayed(Duration.zero, () {
-                  //     Navigator.of(context).pushAndRemoveUntil(
-                  //         MaterialPageRoute(
-                  //           builder: (context) => const DateTimeSelection(),
-                  //         ),
-                  //         (route) => false);
-                  //   });
-                  // },
-                  onPressed: () {
-                    showCustomModalBottomSheet(context);
-                  },
-                  child: const Text('Select Date and Time')),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
+                Row(
+                  children: [
+                    const Text("Reminder Notifications"),
+                    IconButton(
+                      splashRadius: 18,
                       onPressed: () {
-                        pickColor(context, pickerColor);
+                        QuickAlert.show(
+                            title: 'Warning',
+                            text: 'You will be notified in one-hour periods',
+                            context: context,
+                            type: QuickAlertType.info);
                       },
-                      child: const Text('Chose Color')),
-                  const SizedBox(width: 10),
-                  CircleAvatar(
-                    radius: 25,
-                    backgroundColor: pickerColor,
-                  ),
-                ],
-              ),
-              ElevatedButton(
-                  onPressed: () {
-                    QuickAlert.show(
-                        title: 'Are you sure?',
-                        text: 'All data will be deleted!',
-                        confirmBtnText: 'Yes',
-                        onConfirmBtnTap: () {
-                          eventService.deleteAllEvents();
-                          Navigator.pop(context);
-                        },
-                        context: context,
-                        type: QuickAlertType.warning);
+                      icon: const Icon(Icons.info),
+                    ),
+                    customCheckBox(),
+                  ],
+                ),
+                AnimatedSwitcher(
+                  duration: const Duration(seconds: 1),
+                  child: isChecked ? approachingNotification() : Container(),
+                  transitionBuilder: (child, animation) {
+                    return FadeTransition(opacity: animation, child: child);
                   },
-                  child: const Text('Delete All Events')),
-              ElevatedButton(
-                  onPressed: () {
-                    saveEvent(pickerColor);
-                  },
-                  child: const Text('Save Event')),
-            ],
+                ),
+                Row(
+                  children: [
+                    gradientButton(),
+                    const SizedBox(width: 10),
+                    CircleAvatar(
+                      radius: 25,
+                      backgroundColor: pickerColor,
+                    ),
+                  ],
+                ),
+                ElevatedButton(
+                    onPressed: () {
+                      QuickAlert.show(
+                          title: 'Are you sure?',
+                          text: 'All data will be deleted!',
+                          confirmBtnText: 'Yes',
+                          onConfirmBtnTap: () {
+                            eventService.deleteAllEvents();
+                            Navigator.pop(context);
+                          },
+                          context: context,
+                          type: QuickAlertType.warning);
+                    },
+                    child: const Text('Delete All Events')),
+                ElevatedButton(
+                    onPressed: () {
+                      saveEvent();
+                    },
+                    child: const Text('Save Event')),
+              ],
+            ),
           ),
         ),
       ),

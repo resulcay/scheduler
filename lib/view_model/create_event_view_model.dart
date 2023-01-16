@@ -18,6 +18,34 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
   late EventService eventService;
   final formKey = GlobalKey<FormState>();
   late Color pickerColor;
+  late DateTime currentDate;
+  late DateTime eventDate;
+  late int differenceAsHour;
+
+  bool isChecked = false;
+
+  static const List<Color> colorList = [
+    Colors.red,
+    Colors.pink,
+    Colors.purple,
+    Colors.deepPurple,
+    Colors.indigo,
+    Colors.blue,
+    Colors.lightBlue,
+    Colors.cyan,
+    Colors.teal,
+    Colors.green,
+    Colors.lightGreen,
+    Colors.lime,
+    Colors.yellow,
+    Colors.amber,
+    Colors.orange,
+    Colors.deepOrange,
+    Colors.brown,
+    Colors.grey,
+    Colors.blueGrey,
+    Colors.indigoAccent,
+  ];
 
   @override
   void initState() {
@@ -30,6 +58,10 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
   @override
   void didChangeDependencies() {
     pickerColor = Provider.of<ColorProvider>(context).color;
+    eventDate = Provider.of<DateTimeProvider>(context).eventDate;
+    currentDate = DateTime.now();
+    differenceAsHour = eventDate.difference(currentDate).inHours;
+
     super.didChangeDependencies();
   }
 
@@ -44,69 +76,42 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     FocusManager.instance.primaryFocus?.unfocus();
     return showDialog(
       context: context,
-      builder: (BuildContext context) {
-        const List<Color> colors = [
-          Colors.red,
-          Colors.pink,
-          Colors.purple,
-          Colors.deepPurple,
-          Colors.indigo,
-          Colors.blue,
-          Colors.lightBlue,
-          Colors.cyan,
-          Colors.teal,
-          Colors.green,
-          Colors.lightGreen,
-          Colors.lime,
-          Colors.yellow,
-          Colors.amber,
-          Colors.orange,
-          Colors.deepOrange,
-          Colors.brown,
-          Colors.grey,
-          Colors.blueGrey,
-          Colors.indigoAccent,
-        ];
-        return AlertDialog(
-          title: const Text('Colors'),
-          content: BlockPicker(
-            availableColors: colors,
-            pickerColor: pickerColor,
-            onColorChanged: (value) {
-              Provider.of<ColorProvider>(context, listen: false)
-                  .changeColor(value);
+      builder: (BuildContext context) => AlertDialog(
+        title: const Text('Colors'),
+        content: BlockPicker(
+          availableColors: colorList,
+          pickerColor: pickerColor,
+          onColorChanged: (value) {
+            Provider.of<ColorProvider>(context, listen: false)
+                .changeColor(value);
+          },
+        ),
+        actions: [
+          TextButton(
+            child: const Text("OK"),
+            onPressed: () {
+              Navigator.of(context).pop();
             },
           ),
-          actions: [
-            TextButton(
-              child: const Text("OK"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
+        ],
+      ),
     );
   }
 
-  Future<dynamic> showCustomModalBottomSheet(BuildContext context) {
+  Future<dynamic> showCustomModalBottomSheet() {
     return showModalBottomSheet(
-      barrierColor: Colors.black12.withOpacity(.5),
-      backgroundColor: ConstantColor.pureWhite,
-      constraints: BoxConstraints(
-        minHeight: 100,
-        maxHeight: context.height * .95,
-      ),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(60),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(40),
+          topRight: Radius.circular(40),
+        ),
       ),
       context: context,
       builder: (context) => const DateTimeSelection(),
     );
   }
 
-  saveEvent(dynamic pickerColor) {
+  void saveEvent() {
     try {
       FocusManager.instance.primaryFocus?.unfocus();
       if (formKey.currentState!.validate()) {
@@ -136,5 +141,78 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           title: 'Error',
           text: 'Unexpected Error Occurred!');
     }
+  }
+
+  Widget customCheckBox() {
+    return Checkbox(
+      value: isChecked,
+      activeColor: Colors.indigo,
+      onChanged: (value) {
+        setState(() {
+          isChecked = value ?? false;
+        });
+      },
+    );
+  }
+
+  Widget gradientButton() {
+    return Container(
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: CreateEventViewModel.colorList,
+        ),
+        color: Colors.deepPurple.shade100,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: ElevatedButton(
+          style: ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            minimumSize: MaterialStateProperty.all(const Size(50, 50)),
+            backgroundColor: MaterialStateProperty.all(Colors.transparent),
+          ),
+          onPressed: () {
+            pickColor(context, pickerColor);
+          },
+          child: const Text('Chose Event Color')),
+    );
+  }
+
+  Widget approachingNotification() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 75,
+          child: Row(
+            children: [
+              Text(
+                textAlign: TextAlign.center,
+                'You will be notified time(s)\n$differenceAsHour',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                  fontSize: 16,
+                ),
+              ),
+              const Spacer(),
+              SizedBox(
+                height: 70,
+                child: ElevatedButton(
+                    onPressed: () => showCustomModalBottomSheet(),
+                    child: const Text('Select Date and Time')),
+              ),
+            ],
+          ),
+        ),
+        Divider(
+          color: Theme.of(context).backgroundColor,
+          thickness: .7,
+        )
+      ],
+    );
   }
 }

@@ -96,11 +96,10 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Merriweather
+    - family: Righteous
       fonts:
-        - asset: assets/fonts/Merriweather-Regular.ttf
-        - asset: assets/fonts/Merriweather-LightItalic.ttf
-          style: italic
+        - asset: assets/fonts/Righteous-Regular.ttf
+  #        style: italic
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
