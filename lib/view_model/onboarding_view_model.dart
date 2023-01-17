@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:scheduler/components/custom_text_button.dart';
 import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/constants/constant_texts.dart';
-import 'package:scheduler/providers/onboarding_step_provider.dart';
+import 'package:scheduler/providers/stand_alone_providers/onboarding_step_provider.dart';
 import 'package:scheduler/view/onboarding_screen.dart';
 
 abstract class OnboardingViewModel extends State<OnboardingScreen> {

@@ -5,47 +5,22 @@ import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:scheduler/components/date_time_selection.dart';
 import 'package:scheduler/constants/constant_colors.dart';
-import 'package:scheduler/extensions/media_query_extension.dart';
 import 'package:scheduler/models/event_model.dart';
-import 'package:scheduler/providers/color_provider.dart';
-import 'package:scheduler/providers/date_time_provider.dart';
+import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
+import 'package:scheduler/providers/stand_alone_providers/date_time_provider.dart';
 import 'package:scheduler/services/event_service.dart';
 import 'package:scheduler/view/create_event_screen.dart';
 
 abstract class CreateEventViewModel extends State<CreateEventScreen> {
+  final formKey = GlobalKey<FormState>();
   late TextEditingController titleTextController;
   late TextEditingController descTextController;
   late EventService eventService;
-  final formKey = GlobalKey<FormState>();
   late Color pickerColor;
   late DateTime currentDate;
   late DateTime eventDate;
   late int differenceAsHour;
-
   bool isChecked = false;
-
-  static const List<Color> colorList = [
-    Colors.red,
-    Colors.pink,
-    Colors.purple,
-    Colors.deepPurple,
-    Colors.indigo,
-    Colors.blue,
-    Colors.lightBlue,
-    Colors.cyan,
-    Colors.teal,
-    Colors.green,
-    Colors.lightGreen,
-    Colors.lime,
-    Colors.yellow,
-    Colors.amber,
-    Colors.orange,
-    Colors.deepOrange,
-    Colors.brown,
-    Colors.grey,
-    Colors.blueGrey,
-    Colors.indigoAccent,
-  ];
 
   @override
   void initState() {
@@ -72,14 +47,14 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     super.dispose();
   }
 
-  Future<dynamic> pickColor(BuildContext context, Color pickerColor) {
+  Future<dynamic> pickColor() {
     FocusManager.instance.primaryFocus?.unfocus();
     return showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
         title: const Text('Colors'),
         content: BlockPicker(
-          availableColors: colorList,
+          availableColors: ConstantColor.colorList,
           pickerColor: pickerColor,
           onColorChanged: (value) {
             Provider.of<ColorProvider>(context, listen: false)
@@ -161,7 +136,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: CreateEventViewModel.colorList,
+          colors: ConstantColor.colorList,
         ),
         color: Colors.deepPurple.shade100,
         borderRadius: BorderRadius.circular(10),
@@ -176,9 +151,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
             minimumSize: MaterialStateProperty.all(const Size(50, 50)),
             backgroundColor: MaterialStateProperty.all(Colors.transparent),
           ),
-          onPressed: () {
-            pickColor(context, pickerColor);
-          },
+          onPressed: () => pickColor(),
           child: const Text('Chose Event Color')),
     );
   }

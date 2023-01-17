@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:scheduler/constants/constant_texts.dart';
-import 'package:scheduler/providers/theme_provider.dart';
+import 'package:scheduler/providers/stand_alone_providers/theme_provider.dart';
 import 'package:scheduler/services/i_hive_service.dart';
 
 class ThemeService extends ThemeProvider implements IHiveService {

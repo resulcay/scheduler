@@ -4,7 +4,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:scheduler/components/fade_out_builder.dart';
-import 'package:scheduler/providers/event_provider.dart';
+import 'package:scheduler/providers/stand_alone_providers/event_provider.dart';
 import 'package:scheduler/view/create_event_screen.dart';
 import 'package:scheduler/view/home_screen.dart';
 
@@ -57,26 +57,6 @@ abstract class HomeViewModel extends State<HomeScreen>
   void dispose() {
     animationController.dispose();
     super.dispose();
-  }
-
-  AppBar customAppBar() {
-    return AppBar(
-      elevation: 0,
-      leading: IconButton(
-        onPressed: () {
-          toggleDrawer();
-        },
-        splashRadius: 24,
-        icon: const Icon(Icons.sort, size: 30),
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          splashRadius: 24,
-          icon: const Icon(Icons.manage_search, size: 30),
-        ),
-      ],
-    );
   }
 
   List<String> cardConfiguration(EventProvider model, int index) {

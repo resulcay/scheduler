@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:scheduler/constants/constant_texts.dart';
-import 'package:scheduler/providers/list_type_provider.dart';
+import 'package:scheduler/providers/stand_alone_providers/list_type_provider.dart';
 import 'package:scheduler/services/i_hive_service.dart';
 
 class ListTypeService extends ListTypeProvider implements IHiveService {

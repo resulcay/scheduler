@@ -6,7 +6,7 @@ import 'package:quickalert/quickalert.dart';
 
 import '../constants/constant_colors.dart';
 import '../constants/constant_texts.dart';
-import '../providers/date_time_provider.dart';
+import '../providers/stand_alone_providers/date_time_provider.dart';
 import '../services/local_notification_service.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -55,9 +55,7 @@ class _DateTimeSelectionState extends State<DateTimeSelection> {
           color: ConstantColor.darkBrown,
           borderRadius: BorderRadius.circular(16),
           child: InkWell(
-            onTap: () async {
-              selectDateTime(context, eventDate);
-            },
+            onTap: () async => selectDateTime(eventDate),
             customBorder: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
             ),
@@ -85,8 +83,7 @@ class _DateTimeSelectionState extends State<DateTimeSelection> {
     );
   }
 
-  Future<dynamic> dateAdjusted(
-      BuildContext context, String title, String text) {
+  Future<dynamic> dateAdjusted(String title, String text) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -105,48 +102,48 @@ class _DateTimeSelectionState extends State<DateTimeSelection> {
       },
     );
   }
-}
 
-selectDateTime(BuildContext context, DateTime eventDate) {
-  showModalBottomSheet(
-    context: context,
-    builder: (context) {
-      return DateTimePicker(
-        locale: const Locale('en', 'US'),
-        type: DateTimePickerType.dateTimeSeparate,
-        dateMask: 'd MMM, yyyy',
-        initialValue: eventDate.toString(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100),
-        icon: const Icon(Icons.event),
-        dateLabelText: 'Date',
-        timeLabelText: 'Hour',
-        onChanged: (value) {
-          DateTime date = DateTime.parse(value);
-          if (date.isBefore(DateTime.now())) {
-            QuickAlert.show(
-                onConfirmBtnTap: () {
-                  Navigator.pop(context);
-                },
-                context: context,
-                type: QuickAlertType.error,
-                title: 'Invalid Date or Time',
-                text: 'Date or Time must be before current!');
-          } else {
-            Provider.of<DateTimeProvider>(context, listen: false)
-                .changeTimeRange(date);
+  selectDateTime(DateTime eventDate) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return DateTimePicker(
+          locale: const Locale('en', 'US'),
+          type: DateTimePickerType.dateTimeSeparate,
+          dateMask: 'd MMM, yyyy',
+          initialValue: eventDate.toString(),
+          firstDate: DateTime(2000),
+          lastDate: DateTime(2100),
+          icon: const Icon(Icons.event),
+          dateLabelText: 'Date',
+          timeLabelText: 'Hour',
+          onChanged: (value) {
+            DateTime date = DateTime.parse(value);
+            if (date.isBefore(DateTime.now())) {
+              QuickAlert.show(
+                  onConfirmBtnTap: () {
+                    Navigator.pop(context);
+                  },
+                  context: context,
+                  type: QuickAlertType.error,
+                  title: 'Invalid Date or Time',
+                  text: 'Date or Time must be before current!');
+            } else {
+              Provider.of<DateTimeProvider>(context, listen: false)
+                  .changeTimeRange(date);
 
-            QuickAlert.show(
-                onConfirmBtnTap: () {
-                  Navigator.pop(context);
-                },
-                context: context,
-                type: QuickAlertType.success,
-                title: 'Success',
-                text: 'Date and time are adjusted!');
-          }
-        },
-      );
-    },
-  );
+              QuickAlert.show(
+                  onConfirmBtnTap: () {
+                    Navigator.pop(context);
+                  },
+                  context: context,
+                  type: QuickAlertType.success,
+                  title: 'Success',
+                  text: 'Date and time are adjusted!');
+            }
+          },
+        );
+      },
+    );
+  }
 }

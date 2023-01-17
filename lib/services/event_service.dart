@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:scheduler/providers/event_provider.dart';
+import 'package:scheduler/providers/stand_alone_providers/event_provider.dart';
 import '../constants/constant_texts.dart';
 import '../models/event_model.dart';
 

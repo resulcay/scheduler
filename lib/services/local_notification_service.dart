@@ -6,7 +6,7 @@ import 'package:scheduler/components/date_time_selection.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
-import '../providers/date_time_provider.dart';
+import '../providers/stand_alone_providers/date_time_provider.dart';
 
 class NotificationApi {
   BuildContext context;
