@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
 
 class EventCard extends StatelessWidget {
@@ -41,6 +42,7 @@ class EventCard extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             title,
             style: const TextStyle(
+              color: ConstantColor.pureWhite,
               fontWeight: FontWeight.bold,
               fontSize: 20,
             ),
@@ -52,6 +54,7 @@ class EventCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               description,
               style: const TextStyle(
+                color: ConstantColor.pureWhite,
                 fontWeight: FontWeight.w200,
                 fontSize: 14,
               ),
@@ -62,6 +65,7 @@ class EventCard extends StatelessWidget {
             child: Text(
               date,
               style: const TextStyle(
+                color: ConstantColor.pureWhite,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),

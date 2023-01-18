@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:quickalert/quickalert.dart';
+import 'package:scheduler/components/alarm_section.dart';
 import 'package:scheduler/components/decorated_text_field.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/view_model/create_event_view_model.dart';
@@ -47,7 +49,27 @@ class _CreateEventScreenState extends CreateEventViewModel {
                 ),
                 Row(
                   children: [
-                    const Text("Reminder Notifications"),
+                    const Text("Set Timer"),
+                    customCheckBox(),
+                  ],
+                ),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 450),
+                  child: isChecked
+                      ? AlarmSection(
+                          text:
+                              'Timer ends at\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
+                          iconData: Icons.alarm,
+                          function: () => showCustomModalBottomSheet(),
+                        )
+                      : Container(),
+                  transitionBuilder: (child, animation) {
+                    return FadeTransition(opacity: animation, child: child);
+                  },
+                ),
+                Row(
+                  children: [
+                    const Text("Periodic Notifications"),
                     IconButton(
                       splashRadius: 18,
                       onPressed: () {
@@ -63,8 +85,15 @@ class _CreateEventScreenState extends CreateEventViewModel {
                   ],
                 ),
                 AnimatedSwitcher(
-                  duration: const Duration(seconds: 1),
-                  child: isChecked ? approachingNotification() : Container(),
+                  duration: const Duration(milliseconds: 450),
+                  child: isChecked
+                      ? AlarmSection(
+                          text:
+                              'You will be notified time(s)\n$differenceAsHour',
+                          iconData: Icons.calendar_month,
+                          function: () => showCustomModalBottomSheet(),
+                        )
+                      : Container(),
                   transitionBuilder: (child, animation) {
                     return FadeTransition(opacity: animation, child: child);
                   },

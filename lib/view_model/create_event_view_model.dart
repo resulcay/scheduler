@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -15,11 +17,14 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
   final formKey = GlobalKey<FormState>();
   late TextEditingController titleTextController;
   late TextEditingController descTextController;
+  late String eventTimeAsHourAndMinute;
+  late String eventTimeAsDayMonthYear;
   late EventService eventService;
   late Color pickerColor;
   late DateTime currentDate;
   late DateTime eventDate;
   late int differenceAsHour;
+  late int differenceAsSecond;
   bool isChecked = false;
 
   @override
@@ -36,6 +41,9 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     eventDate = Provider.of<DateTimeProvider>(context).eventDate;
     currentDate = DateTime.now();
     differenceAsHour = eventDate.difference(currentDate).inHours;
+    differenceAsSecond = eventDate.difference(currentDate).inSeconds;
+    eventTimeAsHourAndMinute = DateFormat.Hm().format(eventDate);
+    eventTimeAsDayMonthYear = DateFormat.yMMMEd('en_EN').format(eventDate);
 
     super.didChangeDependencies();
   }
@@ -100,6 +108,13 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
 
         eventService.storeEvent(model);
 
+        if (isChecked) {
+          FlutterAlarmClock.createTimer(
+            differenceAsSecond,
+            title: titleTextController.text,
+          );
+        }
+
         QuickAlert.show(
             context: context,
             type: QuickAlertType.success,
@@ -153,39 +168,6 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           ),
           onPressed: () => pickColor(),
           child: const Text('Chose Event Color')),
-    );
-  }
-
-  Widget approachingNotification() {
-    return Column(
-      children: [
-        SizedBox(
-          height: 75,
-          child: Row(
-            children: [
-              Text(
-                textAlign: TextAlign.center,
-                'You will be notified time(s)\n$differenceAsHour',
-                style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                ),
-              ),
-              const Spacer(),
-              SizedBox(
-                height: 70,
-                child: ElevatedButton(
-                    onPressed: () => showCustomModalBottomSheet(),
-                    child: const Text('Select Date and Time')),
-              ),
-            ],
-          ),
-        ),
-        Divider(
-          color: Theme.of(context).backgroundColor,
-          thickness: .7,
-        )
-      ],
     );
   }
 }
