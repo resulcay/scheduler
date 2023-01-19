@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:scheduler/components/alarm_section.dart';
+import 'package:scheduler/components/period_drop_down_menu.dart';
+import 'package:scheduler/components/timer_and_period_section.dart';
 import 'package:scheduler/components/decorated_text_field.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/view_model/create_event_view_model.dart';
@@ -50,17 +50,35 @@ class _CreateEventScreenState extends CreateEventViewModel {
                 Row(
                   children: [
                     const Text("Set Timer"),
-                    customCheckBox(),
+                    IconButton(
+                      splashRadius: 18,
+                      onPressed: () {
+                        QuickAlert.show(
+                            title: 'Warning',
+                            text:
+                                'Timer will be ended up at the given date and gave you a bell warn.',
+                            context: context,
+                            type: QuickAlertType.info);
+                      },
+                      icon: const Icon(Icons.info),
+                    ),
+                    customTimerCheckBox(),
                   ],
                 ),
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 450),
-                  child: isChecked
+                  child: isTimerChecked
                       ? AlarmSection(
-                          text:
-                              'Timer ends at\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
                           iconData: Icons.alarm,
                           function: () => showCustomModalBottomSheet(),
+                          widget: Text(
+                            textAlign: TextAlign.center,
+                            'Timer ends up at\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16,
+                            ),
+                          ),
                         )
                       : Container(),
                   transitionBuilder: (child, animation) {
@@ -75,23 +93,27 @@ class _CreateEventScreenState extends CreateEventViewModel {
                       onPressed: () {
                         QuickAlert.show(
                             title: 'Warning',
-                            text: 'You will be notified in one-hour periods',
+                            text: 'You will be notified on given periods',
                             context: context,
                             type: QuickAlertType.info);
                       },
                       icon: const Icon(Icons.info),
                     ),
-                    customCheckBox(),
+                    customNotificationCheckBox(),
                   ],
                 ),
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 450),
-                  child: isChecked
+                  child: isNotificationChecked
                       ? AlarmSection(
-                          text:
-                              'You will be notified time(s)\n$differenceAsHour',
                           iconData: Icons.calendar_month,
                           function: () => showCustomModalBottomSheet(),
+                          widget: PeriodDropDownMenu(
+                            dateTime: eventDate,
+                            onPeriodSelected: (String period) {
+                              // TODO : add logic (switch case and string.length for continuously).
+                            },
+                          ),
                         )
                       : Container(),
                   transitionBuilder: (child, animation) {

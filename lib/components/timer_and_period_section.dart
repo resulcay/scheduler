@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class AlarmSection extends StatelessWidget {
-  final String text;
   final IconData iconData;
   final VoidCallback function;
+  final Widget widget;
   const AlarmSection({
     super.key,
-    required this.text,
     required this.iconData,
     required this.function,
+    required this.widget,
   });
 
   @override
@@ -20,14 +20,7 @@ class AlarmSection extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text(
-                textAlign: TextAlign.center,
-                text,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 16,
-                ),
-              ),
+              widget,
               SizedBox(
                 height: 50,
                 width: 100,

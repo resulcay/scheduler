@@ -25,7 +25,8 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
   late DateTime eventDate;
   late int differenceAsHour;
   late int differenceAsSecond;
-  bool isChecked = false;
+  bool isTimerChecked = false;
+  bool isNotificationChecked = false;
 
   @override
   void initState() {
@@ -108,7 +109,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
 
         eventService.storeEvent(model);
 
-        if (isChecked) {
+        if (isTimerChecked) {
           FlutterAlarmClock.createTimer(
             differenceAsSecond,
             title: titleTextController.text,
@@ -133,13 +134,25 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     }
   }
 
-  Widget customCheckBox() {
+  Widget customTimerCheckBox() {
     return Checkbox(
-      value: isChecked,
+      value: isTimerChecked,
       activeColor: Colors.indigo,
       onChanged: (value) {
         setState(() {
-          isChecked = value ?? false;
+          isTimerChecked = value ?? false;
+        });
+      },
+    );
+  }
+
+  Widget customNotificationCheckBox() {
+    return Checkbox(
+      value: isNotificationChecked,
+      activeColor: Colors.indigo,
+      onChanged: (value) {
+        setState(() {
+          isNotificationChecked = value ?? false;
         });
       },
     );
