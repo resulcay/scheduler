@@ -5,7 +5,11 @@
         "datetime",
         "datetimerangepicker",
         "fullscreen",
+        "hafta",
+        "kaldı",
         "Merriweather",
-        "quickalert"
+        "quickalert",
+        "saat",
+        "sürekli"
     ]
 }

@@ -30,6 +30,7 @@ class _CreateEventScreenState extends CreateEventViewModel {
               children: [
                 CustomTextField(
                   function: (text) {
+                    text = text?.trim();
                     if (text == null || text.isEmpty) {
                       return 'Can not be Empty';
                     }
@@ -70,7 +71,7 @@ class _CreateEventScreenState extends CreateEventViewModel {
                   child: isTimerChecked
                       ? AlarmSection(
                           iconData: Icons.alarm,
-                          function: () => showCustomModalBottomSheet(),
+                          function: () => selectDateTime(),
                           widget: Text(
                             textAlign: TextAlign.center,
                             'Timer ends up at\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
@@ -110,8 +111,8 @@ class _CreateEventScreenState extends CreateEventViewModel {
                           function: () => showCustomModalBottomSheet(),
                           widget: PeriodDropDownMenu(
                             dateTime: eventDate,
-                            onPeriodSelected: (String period) {
-                              // TODO : add logic (switch case and string.length for continuously).
+                            onPeriodSelected: (String value) {
+                              period = value;
                             },
                           ),
                         )

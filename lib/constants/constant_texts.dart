@@ -15,7 +15,7 @@ class ConstantText {
     'last 3 hour continuously',
     'last 6 hour',
     'last 6 hour continuously',
-    'last 12 hour',
+    'last 9 hour',
     'last 1 day',
     'last 2 day',
     'last 3 day',
@@ -24,5 +24,22 @@ class ConstantText {
     'last 3 month',
     'last 6 month',
     'last 1 year',
+  ];
+  static const List<String> notificationPeriodsInTurkish = [
+    'son 1 saat',
+    'son 2 saat',
+    'son 3 saat',
+    'son 3 saat sürekli',
+    'son 6 saat',
+    'son 6 saat sürekli',
+    'son 9 saat',
+    'son 1 gün',
+    'son 2 gün',
+    'son 3 gün',
+    'son 1 hafta',
+    'son 1 ay',
+    'son 3 ay',
+    'son 6 ay',
+    'son 1 yıl',
   ];
 }

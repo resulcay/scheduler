@@ -16,15 +16,89 @@ class PeriodDropDownMenu extends StatefulWidget {
 
 class _PeriodDropDownMenuState extends State<PeriodDropDownMenu> {
   String? notificationPeriod;
+  bool isEnglish = true;
 
   void _updatePeriod(String? period) {
-    if (period != null) {
+    ///
+    /// for English period initials. (last ...)
+    ///
+    if (period != null && period.startsWith('l')) {
       DateTime current = DateTime.now();
-      String range = period[7];
-      int rangeValue = int.parse(period[5]);
+      String periodInitial = period[7];
+      int periodInitialValue = int.parse(period[5]);
+
+      switch (periodInitial) {
+        // hour
+        case 'h':
+          var assumedDate =
+              widget.dateTime.subtract(Duration(hours: periodInitialValue));
+
+          if (current.isBefore(assumedDate)) {
+            setState(() {
+              notificationPeriod = period;
+            });
+          }
+
+          break;
+        // day
+        case 'd':
+          var assumedDate =
+              widget.dateTime.subtract(Duration(days: periodInitialValue));
+
+          if (current.isBefore(assumedDate)) {
+            setState(() {
+              notificationPeriod = period;
+            });
+          }
+          break;
+        // week
+        case 'w':
+          var assumedDate =
+              widget.dateTime.subtract(Duration(days: periodInitialValue * 7));
+
+          if (current.isBefore(assumedDate)) {
+            setState(() {
+              notificationPeriod = period;
+            });
+          }
+          break;
+        // month
+        case 'm':
+          var assumedDate =
+              widget.dateTime.subtract(Duration(days: periodInitialValue * 30));
+
+          if (current.isBefore(assumedDate)) {
+            setState(() {
+              notificationPeriod = period;
+            });
+          }
+          break;
+        // year
+        case 'y':
+          var assumedDate = widget.dateTime
+              .subtract(Duration(days: periodInitialValue * 365));
+
+          if (current.isBefore(assumedDate)) {
+            setState(() {
+              notificationPeriod = period;
+            });
+          }
+          break;
+        default:
+      }
+    }
+
+    ///
+    /// for Turkish period initials. (son ...)
+    ///
+    if (period != null && period.startsWith('s')) {
+      DateTime current = DateTime.now();
+      String range = period[6];
+      int rangeValue = int.parse(period[4]);
 
       switch (range) {
-        case 'h':
+        // saat
+        case 's':
           var assumedDate =
               widget.dateTime.subtract(Duration(hours: rangeValue));
 
@@ -35,7 +109,8 @@ class _PeriodDropDownMenuState extends State<PeriodDropDownMenu> {
           }
 
           break;
-        case 'd':
+        // gün
+        case 'g':
           var assumedDate =
               widget.dateTime.subtract(Duration(days: rangeValue));
 
@@ -45,7 +120,8 @@ class _PeriodDropDownMenuState extends State<PeriodDropDownMenu> {
             });
           }
           break;
-        case 'w':
+        // hafta
+        case 'h':
           var assumedDate =
               widget.dateTime.subtract(Duration(days: rangeValue * 7));
 
@@ -55,7 +131,8 @@ class _PeriodDropDownMenuState extends State<PeriodDropDownMenu> {
             });
           }
           break;
-        case 'm':
+        // ay
+        case 'a':
           var assumedDate =
               widget.dateTime.subtract(Duration(days: rangeValue * 30));
 
@@ -65,6 +142,7 @@ class _PeriodDropDownMenuState extends State<PeriodDropDownMenu> {
             });
           }
           break;
+        // yıl
         case 'y':
           var assumedDate =
               widget.dateTime.subtract(Duration(days: rangeValue * 365));
@@ -79,6 +157,9 @@ class _PeriodDropDownMenuState extends State<PeriodDropDownMenu> {
       }
     }
 
+    ///
+    /// Callback function to provide a proper period.
+    ///
     if (notificationPeriod != null) {
       widget.onPeriodSelected.call(notificationPeriod!);
     }
@@ -88,7 +169,10 @@ class _PeriodDropDownMenuState extends State<PeriodDropDownMenu> {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: notificationPeriod,
-      items: ConstantText.notificationPeriods.map((String period) {
+      items: (isEnglish
+              ? ConstantText.notificationPeriods
+              : ConstantText.notificationPeriodsInTurkish)
+          .map((String period) {
         return DropdownMenuItem(
           value: period,
           child: Text(period),

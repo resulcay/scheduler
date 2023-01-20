@@ -1,12 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:provider/provider.dart';
-import 'package:scheduler/components/date_time_selection.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
-
-import '../providers/stand_alone_providers/date_time_provider.dart';
 
 class NotificationApi {
   BuildContext context;
@@ -80,18 +76,16 @@ class NotificationApi {
     required int id,
     required String title,
     required String body,
-    required int hours,
+    required DateTime date,
     required String payload,
   }) async {
-    DateTime scheduledTime =
-        Provider.of<DateTimeProvider>(context, listen: false).eventDate;
     final details = await _notificationDetails();
     await _localNotificationApi.zonedSchedule(
       id,
       title,
       body,
       tz.TZDateTime.from(
-        scheduledTime.add(Duration(hours: hours)),
+        date,
         tz.local,
       ),
       details,
@@ -133,9 +127,9 @@ class NotificationApi {
         print('notification payload: $payload');
       }
     }
-    await Navigator.push(
-      context,
-      MaterialPageRoute<void>(builder: (context) => const DateTimeSelection()),
-    );
+    // await Navigator.push(
+    //   context,
+    //   MaterialPageRoute<void>(builder: (context) => const HomeScreen()),
+    // );
   }
 }
