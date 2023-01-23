@@ -50,7 +50,7 @@ class NotificationApi {
       'channel_id_0',
       'Reminder',
       playSound: true,
-      sound: RawResourceAndroidNotificationSound('bell'),
+      // sound: RawResourceAndroidNotificationSound('bell'),
       importance: Importance.max,
       priority: Priority.max,
     );

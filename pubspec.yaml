@@ -47,7 +47,7 @@ dependencies:
   date_time_picker: ^2.1.0
   flutter_localizations:
     sdk: flutter
-  flutter_alarm_clock: ^0.0.2  
+  alarm: ^0.0.6 
 
 
   

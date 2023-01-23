@@ -19,6 +19,7 @@ class _OnboardingScreenState extends OnboardingViewModel {
             Expanded(
               child: PageView(
                 controller: pageController,
+                physics: const BouncingScrollPhysics(),
                 onPageChanged: (value) {
                   callMethod.changeStep(value);
                 },

@@ -68,7 +68,7 @@ class _CreateEventScreenState extends CreateEventViewModel {
                 ),
                 AnimatedSwitcher(
                   duration: const Duration(milliseconds: 450),
-                  child: isTimerChecked
+                  child: isAlarmChecked
                       ? AlarmSection(
                           iconData: Icons.alarm,
                           function: () => selectDateTime(),
