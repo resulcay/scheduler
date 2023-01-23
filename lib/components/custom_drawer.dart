@@ -16,6 +16,7 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     context.watch<ThemeService>().read();
     context.watch<ListTypeService>().read();
+
     return Material(
       color: Theme.of(context).backgroundColor,
       child: SafeArea(
@@ -69,7 +70,7 @@ class CustomDrawer extends StatelessWidget {
                       ListTypeService().write(value);
                     },
                   ),
-                )
+                ),
               ],
             ),
             const SizedBox(height: 1000),

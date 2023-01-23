@@ -500,7 +500,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
             notifBody: 'Your alarm is ringing',
             loopAudio: true,
             onRing: () {
-              Provider.of<AlarmService>(context, listen: false).write(true);
+              AlarmService().write(true);
             },
           );
         }

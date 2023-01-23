@@ -6,7 +6,6 @@ import 'package:scheduler/components/custom_drawer.dart';
 import 'package:scheduler/components/event_card.dart';
 import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
-import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/event_provider.dart';
 import 'package:scheduler/services/list_type_service.dart';
 import 'package:scheduler/view_model/home_view_model.dart';
@@ -61,17 +60,12 @@ class _HomeScreenState extends HomeViewModel {
                             Scaffold(
                               key: scaffoldKey,
                               appBar: CustomAppBar(
-                                function: () => toggleDrawer(),
+                                function: toggleDrawer,
                               ),
                               floatingActionButton: RectGetter(
                                 key: rectGetterKey,
                                 child: FloatingActionButton(
-                                  onPressed: () async {
-                                    Provider.of<ColorProvider>(context,
-                                            listen: false)
-                                        .changeColor(randomColor());
-                                    onTapFloatingActionButton();
-                                  },
+                                  onPressed: onColor,
                                   child: const Icon(Icons.add),
                                 ),
                               ),
@@ -83,30 +77,32 @@ class _HomeScreenState extends HomeViewModel {
                                             child: Text(
                                                 "There is no Event at the moment")),
                                         Positioned(
-                                            bottom: 70,
-                                            right: 70,
-                                            child: Column(
-                                              children: [
-                                                const Text("Add from here",
-                                                    style: TextStyle(
-                                                        color: ConstantColor
-                                                            .transparentGrey)),
-                                                Image.asset(
-                                                  'assets/images/curly-arrow.png',
-                                                  scale: 1.5,
-                                                )
-                                              ],
-                                            ))
+                                          bottom: 70,
+                                          right: 70,
+                                          child: Column(
+                                            children: [
+                                              const Text("Add from here",
+                                                  style: TextStyle(
+                                                      color: ConstantColor
+                                                          .transparentGrey)),
+                                              Image.asset(
+                                                'assets/images/curly-arrow.png',
+                                                scale: 1.5,
+                                              )
+                                            ],
+                                          ),
+                                        )
                                       ],
                                     )
                                   : listTypeService.switchValue
                                       ? Padding(
                                           padding: context.paddingLow,
                                           child: StackedCardCarousel(
-                                              initialOffset: 0,
-                                              spaceBetweenItems: 194,
-                                              items: List.generate(
-                                                  model.items.length, (index) {
+                                            initialOffset: 0,
+                                            spaceBetweenItems: 194,
+                                            items: List.generate(
+                                              model.items.length,
+                                              (index) {
                                                 List<String> values =
                                                     cardConfiguration(
                                                         model, index);
@@ -129,7 +125,9 @@ class _HomeScreenState extends HomeViewModel {
                                                         int.parse(values[2])),
                                                   ),
                                                 );
-                                              })),
+                                              },
+                                            ),
+                                          ),
                                         )
                                       : ListView.builder(
                                           padding: context.paddingLow,
@@ -159,7 +157,7 @@ class _HomeScreenState extends HomeViewModel {
                                           },
                                         ),
                             ),
-                            splashWidget()
+                            splashWidget(),
                           ],
                         ),
                       );

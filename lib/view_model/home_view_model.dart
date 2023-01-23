@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:scheduler/components/fade_out_builder.dart';
+import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/event_provider.dart';
 import 'package:scheduler/services/alarm_service.dart';
 import 'package:scheduler/view/create_event_screen.dart';
@@ -37,16 +38,19 @@ abstract class HomeViewModel extends State<HomeScreen>
 
   @override
   void didChangeDependencies() {
-    if (mounted) {
-      Provider.of<AlarmService>(context).read().then((value) {
-        if (value) {
-          print('WILL STOP');
-          Alarm.stop();
-        }
-      });
-    }
-
+    Provider.of<AlarmService>(context).read().then((value) {
+      if (value) {
+        Alarm.stop();
+        AlarmService().write(false);
+      }
+    });
     super.didChangeDependencies();
+  }
+
+  void onColor() {
+    Provider.of<ColorProvider>(context, listen: false)
+        .changeColor(randomColor());
+    onTapFloatingActionButton();
   }
 
   void onTapFloatingActionButton() {
