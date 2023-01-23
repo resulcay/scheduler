@@ -8,6 +8,8 @@ class ConstantText {
   static const themeBoxKeyName = 'themeBoxKeyName';
   static const listTypeBoxName = 'listTypeBoxName';
   static const listTypeBoxKeyName = 'listTypeBoxKeyName';
+  static const alarmBoxName = 'alarmBoxName';
+  static const alarmBoxKeyName = 'alarmBoxKeyName';
   static const List<String> notificationPeriods = [
     'last 1 hour',
     'last 2 hour',

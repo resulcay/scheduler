@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:scheduler/components/fade_out_builder.dart';
 import 'package:scheduler/providers/stand_alone_providers/event_provider.dart';
+import 'package:scheduler/services/alarm_service.dart';
 import 'package:scheduler/view/create_event_screen.dart';
 import 'package:scheduler/view/home_screen.dart';
 
@@ -30,6 +33,20 @@ abstract class HomeViewModel extends State<HomeScreen>
       vsync: this,
       duration: HomeViewModel.toggleDuration,
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (mounted) {
+      Provider.of<AlarmService>(context).read().then((value) {
+        if (value) {
+          print('WILL STOP');
+          Alarm.stop();
+        }
+      });
+    }
+
+    super.didChangeDependencies();
   }
 
   void onTapFloatingActionButton() {

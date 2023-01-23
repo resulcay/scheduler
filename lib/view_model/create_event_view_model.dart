@@ -1,3 +1,4 @@
+import 'package:alarm/alarm.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
@@ -10,6 +11,7 @@ import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/models/event_model.dart';
 import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/date_time_provider.dart';
+import 'package:scheduler/services/alarm_service.dart';
 import 'package:scheduler/services/event_service.dart';
 import 'package:scheduler/services/local_notification_service.dart';
 import 'package:scheduler/view/create_event_screen.dart';
@@ -490,7 +492,18 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           }
         }
 
-        if (isAlarmChecked) {}
+        if (isAlarmChecked) {
+          Alarm.set(
+            alarmDateTime: eventDate,
+            assetAudio: "assets/sounds/alert_in_hall.mp3",
+            notifTitle: 'Alarm notification',
+            notifBody: 'Your alarm is ringing',
+            loopAudio: true,
+            onRing: () {
+              Provider.of<AlarmService>(context, listen: false).write(true);
+            },
+          );
+        }
 
         QuickAlert.show(
             context: context,
