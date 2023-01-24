@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:scheduler/components/period_drop_down_menu.dart';
-import 'package:scheduler/components/timer_and_period_section.dart';
+import 'package:scheduler/components/alarm_section.dart';
 import 'package:scheduler/components/decorated_text_field.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/view_model/create_event_view_model.dart';
@@ -50,20 +50,20 @@ class _CreateEventScreenState extends CreateEventViewModel {
                 ),
                 Row(
                   children: [
-                    const Text("Set Timer"),
+                    const Text("Set Alarm"),
                     IconButton(
                       splashRadius: 18,
                       onPressed: () {
                         QuickAlert.show(
                             title: 'Warning',
                             text:
-                                'Timer will be ended up at the given date and gave you a bell warn.',
+                                'Alarm will be fired at the given date and gave you a bell warn.',
                             context: context,
                             type: QuickAlertType.info);
                       },
                       icon: const Icon(Icons.info),
                     ),
-                    customTimerCheckBox(),
+                    customAlarmCheckBox(),
                   ],
                 ),
                 AnimatedSwitcher(

@@ -1,9 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.scheduler">
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
    <application
         android:label="Scheduler"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+          <service android:name="com.example.app.BackgroundService">
+            </service>
         <activity
             android:showWhenLocked="true"
             android:turnScreenOn="true"

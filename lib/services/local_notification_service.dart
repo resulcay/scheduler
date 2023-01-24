@@ -1,16 +1,10 @@
 import 'package:alarm/alarm.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
 class NotificationApi {
-  BuildContext context;
-  NotificationApi({
-    required this.context,
-  });
-
   final _localNotificationApi = FlutterLocalNotificationsPlugin();
 
   Future<void> initApi() async {

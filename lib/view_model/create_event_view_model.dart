@@ -39,7 +39,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     descTextController = TextEditingController();
     eventService = EventService();
     Intl.defaultLocale = 'en_US';
-    notificationApi = NotificationApi(context: context);
+    notificationApi = NotificationApi();
     notificationApi.initApi();
     initializeDateFormatting();
     super.initState();
@@ -105,7 +105,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     );
   }
 
-  Widget customTimerCheckBox() {
+  Widget customAlarmCheckBox() {
     return Checkbox(
       value: isAlarmChecked,
       activeColor: Colors.indigo,
@@ -259,8 +259,6 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           eventDate: eventDate,
           color: pickerColor.toString(),
         );
-
-        eventService.storeEvent(model);
 
         if (isNotificationChecked) {
           ///
@@ -504,6 +502,8 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
             },
           );
         }
+
+        eventService.storeEvent(model);
 
         QuickAlert.show(
             context: context,

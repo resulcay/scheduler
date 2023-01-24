@@ -2,7 +2,6 @@ part of 'package:scheduler/main.dart';
 
 class _AppStartConfig {
   launchConfig() async {
-    WidgetsFlutterBinding.ensureInitialized();
     Alarm.init();
     Directory directory =
         await path_provider.getApplicationDocumentsDirectory();
