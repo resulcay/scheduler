@@ -20,12 +20,33 @@ import 'package:scheduler/providers/stand_alone_providers/onboarding_step_provid
 import 'package:scheduler/providers/stand_alone_providers/theme_provider.dart';
 import 'package:scheduler/services/alarm_service.dart';
 import 'package:scheduler/services/list_type_service.dart';
+import 'package:scheduler/services/local_notification_service.dart';
 import 'package:scheduler/services/theme_service.dart';
 import 'package:scheduler/view/home_screen.dart';
 import 'package:scheduler/view/onboarding_screen.dart';
-
+import 'package:workmanager/workmanager.dart';
 part 'package:scheduler/providers/list_of_app_providers.dart';
 part 'package:scheduler/app_start_config.dart';
+
+@pragma('vm:entry-point')
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    // print("Native called background task : ");
+    await Alarm.set(
+      alarmDateTime: DateTime.now().add(
+        const Duration(seconds: 10),
+      ),
+      assetAudio: "assets/sounds/alert_in_hall.mp3",
+      notifTitle: 'Alarm notification',
+      notifBody: 'Your alarm is ringing',
+      loopAudio: false,
+      onRing: () {
+        print('Alarm ringed');
+      },
+    );
+    return Future.value(true);
+  });
+}
 
 void main() async {
   _AppStartConfig().launchConfig();

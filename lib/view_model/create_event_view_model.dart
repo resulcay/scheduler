@@ -40,7 +40,6 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     eventService = EventService();
     Intl.defaultLocale = 'en_US';
     notificationApi = NotificationApi();
-    notificationApi.initApi();
     initializeDateFormatting();
     super.initState();
   }
