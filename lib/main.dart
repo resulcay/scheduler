@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_alarm_background_trigger/flutter_alarm_background_trigger.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
@@ -28,25 +29,25 @@ import 'package:workmanager/workmanager.dart';
 part 'package:scheduler/providers/list_of_app_providers.dart';
 part 'package:scheduler/app_start_config.dart';
 
-@pragma('vm:entry-point')
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    // print("Native called background task : ");
-    await Alarm.set(
-      alarmDateTime: DateTime.now().add(
-        const Duration(seconds: 10),
-      ),
-      assetAudio: "assets/sounds/alert_in_hall.mp3",
-      notifTitle: 'Alarm notification',
-      notifBody: 'Your alarm is ringing',
-      loopAudio: false,
-      onRing: () {
-        print('Alarm ringed');
-      },
-    );
-    return Future.value(true);
-  });
-}
+// @pragma('vm:entry-point')
+// void callbackDispatcher() {
+//   Workmanager().executeTask((task, inputData) async {
+//     // print("Native called background task : ");
+//     await Alarm.set(
+//       alarmDateTime: DateTime.now().add(
+//         const Duration(seconds: 10),
+//       ),
+//       assetAudio: "assets/sounds/alert_in_hall.mp3",
+//       notifTitle: 'Alarm notification',
+//       notifBody: 'Your alarm is ringing',
+//       loopAudio: false,
+//       onRing: () {
+//         print('Alarm ringed');
+//       },
+//     );
+//     return Future.value(true);
+//   });
+// }
 
 void main() async {
   _AppStartConfig().launchConfig();

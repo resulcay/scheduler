@@ -61,6 +61,20 @@ class _HomeScreenState extends HomeViewModel {
                               key: scaffoldKey,
                               appBar: CustomAppBar(
                                 function: toggleDrawer,
+                                function2: () {
+                                  alarmPlugin.addAlarm(
+                                      // Required
+                                      DateTime.now().add(Duration(seconds: 20)),
+
+                                      //Optional
+                                      uid: "YOUR_APP_ID_TO_IDENTIFY",
+                                      payload: {"YOUR_EXTRA_DATA": "FOR_ALARM"},
+
+                                      // screenWakeDuration: For how much time you want
+                                      // to make screen awake when alarm triggered
+                                      screenWakeDuration:
+                                          Duration(seconds: 10));
+                                },
                               ),
                               floatingActionButton: RectGetter(
                                 key: rectGetterKey,
