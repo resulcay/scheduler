@@ -48,8 +48,6 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   alarm: ^0.0.6
-  workmanager: ^0.5.1
-  flutter_alarm_background_trigger: ^1.0.1
 
 
   

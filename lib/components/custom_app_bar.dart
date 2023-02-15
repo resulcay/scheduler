@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final Function() function;
-  final Function() function2;
-  const CustomAppBar(
-      {super.key, required this.function, required this.function2});
+
+  const CustomAppBar({super.key, required this.function});
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -20,7 +19,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       ),
       actions: [
         IconButton(
-          onPressed: function2,
+          onPressed: function,
           splashRadius: 24,
           icon: const Icon(Icons.manage_search, size: 30),
         ),

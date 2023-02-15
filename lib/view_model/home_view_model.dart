@@ -1,7 +1,5 @@
 import 'dart:async';
-import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_alarm_background_trigger/flutter_alarm_background_trigger.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -23,7 +21,6 @@ abstract class HomeViewModel extends State<HomeScreen>
   static const double maxSlide = 225;
   static const double minDragStartEdge = 60;
   static const double maxDragStartEdge = maxSlide - 16;
-  var alarmPlugin = FlutterAlarmBackgroundTrigger();
 
   bool _canBeDragged = false;
   var rectGetterKey = RectGetter.createGlobalKey();
@@ -40,12 +37,7 @@ abstract class HomeViewModel extends State<HomeScreen>
 
   @override
   void didChangeDependencies() {
-    Provider.of<AlarmService>(context).read().then((value) {
-      if (value) {
-        Alarm.stop();
-        AlarmService().write(false);
-      }
-    });
+    Provider.of<AlarmService>(context).read().then((value) {});
     super.didChangeDependencies();
   }
 

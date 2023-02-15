@@ -248,7 +248,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     ScaffoldMessenger.of(context).showSnackBar(errorMessage);
   }
 
-  void saveEvent() {
+  void saveEvent() async {
     try {
       FocusManager.instance.primaryFocus?.unfocus();
       if (formKey.currentState!.validate()) {
@@ -490,14 +490,14 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
         }
 
         if (isAlarmChecked) {
-          Alarm.set(
+          await Alarm.set(
             alarmDateTime: eventDate,
             assetAudio: "assets/sounds/alert_in_hall.mp3",
             notifTitle: 'Alarm notification',
             notifBody: 'Your alarm is ringing',
-            loopAudio: true,
-            onRing: () {
-              AlarmService().write(true);
+            loopAudio: false,
+            onRing: () async {
+              await AlarmService().write(true);
             },
           );
         }
