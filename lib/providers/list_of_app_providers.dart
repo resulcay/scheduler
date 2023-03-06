@@ -10,7 +10,5 @@ class _AppProviders {
     ChangeNotifierProvider(create: (_) => ListTypeProvider()),
     ChangeNotifierProvider(create: (_) => ThemeProvider()),
     ChangeNotifierProvider(create: (_) => ThemeService()),
-    ChangeNotifierProvider(create: (_) => AlarmProvider()),
-    ChangeNotifierProvider(create: (_) => AlarmService()),
   ];
 }

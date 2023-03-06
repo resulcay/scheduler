@@ -1,8 +1,6 @@
 import 'dart:io';
-import 'dart:isolate';
 
 import 'package:alarm/alarm.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -13,14 +11,12 @@ import 'package:provider/single_child_widget.dart';
 
 import 'package:scheduler/constants/constant_texts.dart';
 import 'package:scheduler/models/event_model.dart';
-import 'package:scheduler/providers/stand_alone_providers/alarm_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/date_time_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/event_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/list_type_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/onboarding_step_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/theme_provider.dart';
-import 'package:scheduler/services/alarm_service.dart';
 import 'package:scheduler/services/list_type_service.dart';
 import 'package:scheduler/services/local_notification_service.dart';
 import 'package:scheduler/services/theme_service.dart';
