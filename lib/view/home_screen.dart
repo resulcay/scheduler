@@ -4,6 +4,7 @@ import 'package:rect_getter/rect_getter.dart';
 import 'package:scheduler/components/custom_app_bar.dart';
 import 'package:scheduler/components/custom_drawer.dart';
 import 'package:scheduler/components/event_card.dart';
+import 'package:scheduler/components/event_detail.dart';
 import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/providers/stand_alone_providers/event_provider.dart';
@@ -68,59 +69,54 @@ class _HomeScreenState extends HomeViewModel {
                                 ),
                               ),
                               body: model.items.isEmpty
-                                  ? Stack(
-                                      fit: StackFit.expand,
-                                      children: [
-                                        const Center(
-                                            child: Text(
-                                                "There is no Event at the moment")),
-                                        Positioned(
-                                          bottom: 70,
-                                          right: 70,
-                                          child: Column(
-                                            children: [
-                                              const Text("Add from here",
-                                                  style: TextStyle(
-                                                      color: ConstantColor
-                                                          .transparentGrey)),
-                                              Image.asset(
-                                                'assets/images/curly-arrow.png',
-                                                scale: 1.5,
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    )
+                                  ? const EmptyScreen()
                                   : listTypeService.switchValue
                                       ? Padding(
                                           padding: context.paddingLow,
                                           child: StackedCardCarousel(
                                             initialOffset: 0,
-                                            spaceBetweenItems: 194,
+                                            spaceBetweenItems: 190,
                                             items: List.generate(
                                               model.items.length,
                                               (index) {
                                                 List<String> values =
                                                     cardConfiguration(
                                                         model, index);
-                                                return GestureDetector(
-                                                  onTap: () {},
-                                                  child: EventCard(
-                                                    title: model.items[index]
-                                                        .eventTitle,
-                                                    description: model
-                                                            .items[index]
-                                                            .eventDescription!
-                                                            .isEmpty
-                                                        ? "No Description"
-                                                        : model.items[index]
-                                                            .eventDescription
-                                                            .toString(),
-                                                    date:
-                                                        '${values[0]} - ${values[1]}',
-                                                    color: Color(
-                                                        int.parse(values[2])),
+                                                return Hero(
+                                                  tag: index,
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder:
+                                                                (context) =>
+                                                                    EventDetail(
+                                                              values: values,
+                                                              eventModel: model
+                                                                  .items[index],
+                                                            ),
+                                                          ));
+                                                    },
+                                                    child: EventCard(
+                                                      eventDate: model
+                                                          .items[index]
+                                                          .eventDate,
+                                                      title: model.items[index]
+                                                          .eventTitle,
+                                                      description: model
+                                                              .items[index]
+                                                              .eventDescription!
+                                                              .isEmpty
+                                                          ? "No Description"
+                                                          : model.items[index]
+                                                              .eventDescription
+                                                              .toString(),
+                                                      date:
+                                                          '${values[0]} - ${values[1]}',
+                                                      color: Color(
+                                                          int.parse(values[2])),
+                                                    ),
                                                   ),
                                                 );
                                               },
@@ -133,23 +129,39 @@ class _HomeScreenState extends HomeViewModel {
                                           itemBuilder: (context, index) {
                                             List<String> values =
                                                 cardConfiguration(model, index);
-                                            return GestureDetector(
-                                              onTap: () {},
-                                              child: EventCard(
-                                                title: model
-                                                    .items[index].eventTitle,
-                                                description: model
-                                                        .items[index]
-                                                        .eventDescription!
-                                                        .isEmpty
-                                                    ? "No Description"
-                                                    : model.items[index]
-                                                        .eventDescription
-                                                        .toString(),
-                                                date:
-                                                    '${values[0]} - ${values[1]}',
-                                                color:
-                                                    Color(int.parse(values[2])),
+                                            return Hero(
+                                              tag: index,
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            EventDetail(
+                                                          values: values,
+                                                          eventModel: model
+                                                              .items[index],
+                                                        ),
+                                                      ));
+                                                },
+                                                child: EventCard(
+                                                  eventDate: model
+                                                      .items[index].eventDate,
+                                                  title: model
+                                                      .items[index].eventTitle,
+                                                  description: model
+                                                          .items[index]
+                                                          .eventDescription!
+                                                          .isEmpty
+                                                      ? "No Description"
+                                                      : model.items[index]
+                                                          .eventDescription
+                                                          .toString(),
+                                                  date:
+                                                      '${values[0]} - ${values[1]}',
+                                                  color: Color(
+                                                      int.parse(values[2])),
+                                                ),
                                               ),
                                             );
                                           },
@@ -167,6 +179,36 @@ class _HomeScreenState extends HomeViewModel {
           },
         ),
       ),
+    );
+  }
+}
+
+class EmptyScreen extends StatelessWidget {
+  const EmptyScreen({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        const Center(child: Text("There is no Event at the moment")),
+        Positioned(
+          bottom: 70,
+          right: 70,
+          child: Column(
+            children: [
+              const Text("Add from here",
+                  style: TextStyle(color: ConstantColor.transparentGrey)),
+              Image.asset(
+                'assets/images/curly-arrow.png',
+                scale: 1.5,
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 }

@@ -7,7 +7,7 @@ import '../../constants/constant_texts.dart';
 class EventProvider with ChangeNotifier {
   List<EventModel> items = [];
 
-  getAllEvents() async {
+  Future<List<EventModel>> getAllEvents() async {
     var box = await Hive.openBox<EventModel>(ConstantText.eventBoxName);
 
     items = box.values.toList();

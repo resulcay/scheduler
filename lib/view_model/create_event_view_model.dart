@@ -247,272 +247,275 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     ScaffoldMessenger.of(context).showSnackBar(errorMessage);
   }
 
-  void saveEvent() async {
+  void saveEvent() {
     try {
       FocusManager.instance.primaryFocus?.unfocus();
       if (formKey.currentState!.validate()) {
-        EventModel model = EventModel(
-          eventTitle: titleTextController.text.trim(),
-          eventDescription: descTextController.text,
-          eventDate: eventDate,
-          color: pickerColor.toString(),
-        );
-
-        if (isNotificationChecked) {
-          ///
-          /// for English period initials. (last ...)
-          ///
-          if (period.startsWith('l')) {
-            DateTime current = DateTime.now();
-            String periodInitial = period[7];
-            int periodInitialValue = int.parse(period[5]);
-
-            switch (periodInitial) {
-              // hour
-              case 'h':
-                var assumedDate =
-                    eventDate.subtract(Duration(hours: periodInitialValue));
-
-                if (current.isBefore(assumedDate) && period.length < 12) {
-                  notificationApi.showScheduledNotification(
-                    id: 0,
-                    title: model.eventTitle,
-                    body: '$periodInitialValue hour(s) left',
-                    date: assumedDate,
-                    payload: 'payload example',
-                  );
-                } else if (current.isBefore(assumedDate)) {
-                  for (int i = periodInitialValue; i > 0; --i) {
-                    notificationApi.showScheduledNotification(
-                      id: i,
-                      title: model.eventTitle,
-                      body: '$i hour(s) left',
-                      date: eventDate.subtract(Duration(hours: i)),
-                      payload: 'payload exx',
-                    );
-                  }
-                } else {
-                  _invalidPeriod();
-                  return;
-                }
-
-                break;
-              // day
-              case 'd':
-                var assumedDate =
-                    eventDate.subtract(Duration(days: periodInitialValue));
-
-                if (current.isBefore(assumedDate)) {
-                  notificationApi.showScheduledNotification(
-                    id: 0,
-                    title: model.eventTitle,
-                    body: '$periodInitialValue day(s) left',
-                    date: assumedDate,
-                    payload: 'payload exx',
-                  );
-                } else {
-                  _invalidPeriod();
-                  return;
-                }
-                break;
-              // week
-              case 'w':
-                var assumedDate =
-                    eventDate.subtract(Duration(days: periodInitialValue * 7));
-
-                if (current.isBefore(assumedDate)) {
-                  notificationApi.showScheduledNotification(
-                    id: 0,
-                    title: model.eventTitle,
-                    body: '$periodInitialValue week(s) left',
-                    date: assumedDate,
-                    payload: 'payload exx',
-                  );
-                } else {
-                  _invalidPeriod();
-                  return;
-                }
-                break;
-              // month
-              case 'm':
-                var assumedDate =
-                    eventDate.subtract(Duration(days: periodInitialValue * 30));
-
-                if (current.isBefore(assumedDate)) {
-                  notificationApi.showScheduledNotification(
-                    id: 0,
-                    title: model.eventTitle,
-                    body: '$periodInitialValue month(s) left',
-                    date: assumedDate,
-                    payload: 'payload exx',
-                  );
-                } else {
-                  _invalidPeriod();
-                  return;
-                }
-                break;
-              // year
-              case 'y':
-                var assumedDate = eventDate
-                    .subtract(Duration(days: periodInitialValue * 365));
-
-                if (current.isBefore(assumedDate)) {
-                  notificationApi.showScheduledNotification(
-                    id: 0,
-                    title: model.eventTitle,
-                    body: '$periodInitialValue year left',
-                    date: assumedDate,
-                    payload: 'payload exx',
-                  );
-                } else {
-                  _invalidPeriod();
-                  return;
-                }
-                break;
-              default:
-            }
-          }
-
-          ///
-          /// for Turkish period initials. (son ...)
-          ///
-          if (period.startsWith('s')) {
-            DateTime current = DateTime.now();
-            String periodInitial = period[6];
-            int periodInitialValue = int.parse(period[4]);
-
-            switch (periodInitial) {
-              // hour
-              case 's':
-                var assumedDate =
-                    eventDate.subtract(Duration(hours: periodInitialValue));
-
-                if (current.isBefore(assumedDate) && period.length < 12) {
-                  notificationApi.showScheduledNotification(
-                    id: 0,
-                    title: model.eventTitle,
-                    body: '$periodInitialValue saat kaldı',
-                    date: assumedDate,
-                    payload: 'payload example',
-                  );
-                } else if (current.isBefore(assumedDate)) {
-                  for (int i = periodInitialValue; i > 0; --i) {
-                    notificationApi.showScheduledNotification(
-                      id: i,
-                      title: model.eventTitle,
-                      body: '$i saat kaldı',
-                      date: eventDate.subtract(Duration(hours: i)),
-                      payload: 'payload exx',
-                    );
-                  }
-                } else {
-                  _invalidPeriod();
-                  return;
-                }
-
-                break;
-              // day
-              case 'g':
-                var assumedDate =
-                    eventDate.subtract(Duration(days: periodInitialValue));
-
-                if (current.isBefore(assumedDate)) {
-                  notificationApi.showScheduledNotification(
-                    id: 0,
-                    title: model.eventTitle,
-                    body: '$periodInitialValue gün kaldı',
-                    date: assumedDate,
-                    payload: 'payload exx',
-                  );
-                } else {
-                  _invalidPeriod();
-                  return;
-                }
-                break;
-              // week
-              case 'h':
-                var assumedDate =
-                    eventDate.subtract(Duration(days: periodInitialValue * 7));
-
-                if (current.isBefore(assumedDate)) {
-                  notificationApi.showScheduledNotification(
-                    id: 0,
-                    title: model.eventTitle,
-                    body: '$periodInitialValue hafta kaldı',
-                    date: assumedDate,
-                    payload: 'payload exx',
-                  );
-                } else {
-                  _invalidPeriod();
-                  return;
-                }
-                break;
-              // month
-              case 'a':
-                var assumedDate =
-                    eventDate.subtract(Duration(days: periodInitialValue * 30));
-
-                if (current.isBefore(assumedDate)) {
-                  notificationApi.showScheduledNotification(
-                    id: 0,
-                    title: model.eventTitle,
-                    body: '$periodInitialValue ay kaldı',
-                    date: assumedDate,
-                    payload: 'payload exx',
-                  );
-                } else {
-                  _invalidPeriod();
-                  return;
-                }
-                break;
-              // year
-              case 'y':
-                var assumedDate = eventDate
-                    .subtract(Duration(days: periodInitialValue * 365));
-
-                if (current.isBefore(assumedDate)) {
-                  notificationApi.showScheduledNotification(
-                    id: 0,
-                    title: model.eventTitle,
-                    body: '$periodInitialValue yıl kaldı',
-                    date: assumedDate,
-                    payload: 'payload exx',
-                  );
-                } else {
-                  _invalidPeriod();
-                  return;
-                }
-                break;
-              default:
-            }
-          }
-        }
-
-        if (isAlarmChecked) {
-          await Alarm.set(
-              settings: AlarmSettings(
-            dateTime: eventDate,
-            assetAudioPath: "assets/sounds/alert_in_hall.mp3",
-            notificationBody: 'Your alarm is ringing',
-            notificationTitle: 'Alarm notification',
-          ));
-
-          Alarm.setNotificationOnAppKillContent(
-            'Your alarm may not ring',
-            'You killed the app. Please reopen so your alarm can ring.',
+        eventService.getAllEvents().then((value) async {
+          EventModel model = EventModel(
+            id: value.length,
+            eventTitle: titleTextController.text.trim(),
+            eventDescription: descTextController.text,
+            eventDate: eventDate,
+            color: pickerColor.toString(),
           );
-        }
 
-        eventService.storeEvent(model);
+          if (isNotificationChecked) {
+            ///
+            /// for English period initials. (last ...)
+            ///
+            if (period.startsWith('l')) {
+              DateTime current = DateTime.now();
+              String periodInitial = period[7];
+              int periodInitialValue = int.parse(period[5]);
 
-        QuickAlert.show(
-            context: context,
-            type: QuickAlertType.success,
-            title: 'Success',
-            text: 'Successfully Saved!');
+              switch (periodInitial) {
+                // hour
+                case 'h':
+                  var assumedDate =
+                      eventDate.subtract(Duration(hours: periodInitialValue));
 
-        titleTextController.clear();
-        descTextController.clear();
+                  if (current.isBefore(assumedDate) && period.length < 12) {
+                    notificationApi.showScheduledNotification(
+                      id: 0,
+                      title: model.eventTitle,
+                      body: '$periodInitialValue hour(s) left',
+                      date: assumedDate,
+                      payload: 'payload example',
+                    );
+                  } else if (current.isBefore(assumedDate)) {
+                    for (int i = periodInitialValue; i > 0; --i) {
+                      notificationApi.showScheduledNotification(
+                        id: i,
+                        title: model.eventTitle,
+                        body: '$i hour(s) left',
+                        date: eventDate.subtract(Duration(hours: i)),
+                        payload: 'payload exx',
+                      );
+                    }
+                  } else {
+                    _invalidPeriod();
+                    return;
+                  }
+
+                  break;
+                // day
+                case 'd':
+                  var assumedDate =
+                      eventDate.subtract(Duration(days: periodInitialValue));
+
+                  if (current.isBefore(assumedDate)) {
+                    notificationApi.showScheduledNotification(
+                      id: 0,
+                      title: model.eventTitle,
+                      body: '$periodInitialValue day(s) left',
+                      date: assumedDate,
+                      payload: 'payload exx',
+                    );
+                  } else {
+                    _invalidPeriod();
+                    return;
+                  }
+                  break;
+                // week
+                case 'w':
+                  var assumedDate = eventDate
+                      .subtract(Duration(days: periodInitialValue * 7));
+
+                  if (current.isBefore(assumedDate)) {
+                    notificationApi.showScheduledNotification(
+                      id: 0,
+                      title: model.eventTitle,
+                      body: '$periodInitialValue week(s) left',
+                      date: assumedDate,
+                      payload: 'payload exx',
+                    );
+                  } else {
+                    _invalidPeriod();
+                    return;
+                  }
+                  break;
+                // month
+                case 'm':
+                  var assumedDate = eventDate
+                      .subtract(Duration(days: periodInitialValue * 30));
+
+                  if (current.isBefore(assumedDate)) {
+                    notificationApi.showScheduledNotification(
+                      id: 0,
+                      title: model.eventTitle,
+                      body: '$periodInitialValue month(s) left',
+                      date: assumedDate,
+                      payload: 'payload exx',
+                    );
+                  } else {
+                    _invalidPeriod();
+                    return;
+                  }
+                  break;
+                // year
+                case 'y':
+                  var assumedDate = eventDate
+                      .subtract(Duration(days: periodInitialValue * 365));
+
+                  if (current.isBefore(assumedDate)) {
+                    notificationApi.showScheduledNotification(
+                      id: 0,
+                      title: model.eventTitle,
+                      body: '$periodInitialValue year left',
+                      date: assumedDate,
+                      payload: 'payload exx',
+                    );
+                  } else {
+                    _invalidPeriod();
+                    return;
+                  }
+                  break;
+                default:
+              }
+            }
+
+            ///
+            /// for Turkish period initials. (son ...)
+            ///
+            if (period.startsWith('s')) {
+              DateTime current = DateTime.now();
+              String periodInitial = period[6];
+              int periodInitialValue = int.parse(period[4]);
+
+              switch (periodInitial) {
+                // hour
+                case 's':
+                  var assumedDate =
+                      eventDate.subtract(Duration(hours: periodInitialValue));
+
+                  if (current.isBefore(assumedDate) && period.length < 12) {
+                    notificationApi.showScheduledNotification(
+                      id: 0,
+                      title: model.eventTitle,
+                      body: '$periodInitialValue saat kaldı',
+                      date: assumedDate,
+                      payload: 'payload example',
+                    );
+                  } else if (current.isBefore(assumedDate)) {
+                    for (int i = periodInitialValue; i > 0; --i) {
+                      notificationApi.showScheduledNotification(
+                        id: i,
+                        title: model.eventTitle,
+                        body: '$i saat kaldı',
+                        date: eventDate.subtract(Duration(hours: i)),
+                        payload: 'payload exx',
+                      );
+                    }
+                  } else {
+                    _invalidPeriod();
+                    return;
+                  }
+
+                  break;
+                // day
+                case 'g':
+                  var assumedDate =
+                      eventDate.subtract(Duration(days: periodInitialValue));
+
+                  if (current.isBefore(assumedDate)) {
+                    notificationApi.showScheduledNotification(
+                      id: 0,
+                      title: model.eventTitle,
+                      body: '$periodInitialValue gün kaldı',
+                      date: assumedDate,
+                      payload: 'payload exx',
+                    );
+                  } else {
+                    _invalidPeriod();
+                    return;
+                  }
+                  break;
+                // week
+                case 'h':
+                  var assumedDate = eventDate
+                      .subtract(Duration(days: periodInitialValue * 7));
+
+                  if (current.isBefore(assumedDate)) {
+                    notificationApi.showScheduledNotification(
+                      id: 0,
+                      title: model.eventTitle,
+                      body: '$periodInitialValue hafta kaldı',
+                      date: assumedDate,
+                      payload: 'payload exx',
+                    );
+                  } else {
+                    _invalidPeriod();
+                    return;
+                  }
+                  break;
+                // month
+                case 'a':
+                  var assumedDate = eventDate
+                      .subtract(Duration(days: periodInitialValue * 30));
+
+                  if (current.isBefore(assumedDate)) {
+                    notificationApi.showScheduledNotification(
+                      id: 0,
+                      title: model.eventTitle,
+                      body: '$periodInitialValue ay kaldı',
+                      date: assumedDate,
+                      payload: 'payload exx',
+                    );
+                  } else {
+                    _invalidPeriod();
+                    return;
+                  }
+                  break;
+                // year
+                case 'y':
+                  var assumedDate = eventDate
+                      .subtract(Duration(days: periodInitialValue * 365));
+
+                  if (current.isBefore(assumedDate)) {
+                    notificationApi.showScheduledNotification(
+                      id: 0,
+                      title: model.eventTitle,
+                      body: '$periodInitialValue yıl kaldı',
+                      date: assumedDate,
+                      payload: 'payload exx',
+                    );
+                  } else {
+                    _invalidPeriod();
+                    return;
+                  }
+                  break;
+                default:
+              }
+            }
+          }
+
+          if (isAlarmChecked) {
+            await Alarm.set(
+                settings: AlarmSettings(
+              dateTime: eventDate,
+              assetAudioPath: "assets/sounds/alert_in_hall.mp3",
+              notificationBody: 'Your alarm is ringing',
+              notificationTitle: 'Alarm notification',
+            ));
+
+            Alarm.setNotificationOnAppKillContent(
+              'Your alarm may not ring',
+              'You killed the app. Please reopen so your alarm can ring.',
+            );
+          }
+
+          eventService.storeEvent(model);
+
+          QuickAlert.show(
+              context: context,
+              type: QuickAlertType.success,
+              title: 'Success',
+              text: 'Successfully Saved!');
+
+          titleTextController.clear();
+          descTextController.clear();
+        });
       }
     } catch (e) {
       QuickAlert.show(

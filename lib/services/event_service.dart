@@ -9,9 +9,26 @@ class EventService extends EventProvider {
     box.clear();
   }
 
+  deleteEventById(int id) async {
+    var box = await Hive.openBox<EventModel>(ConstantText.eventBoxName);
+
+    final Map<dynamic, EventModel> deliveriesMap = box.toMap();
+    dynamic desiredKey;
+    deliveriesMap.forEach((key, value) {
+      if (value.id == id) desiredKey = key;
+    });
+    box.delete(desiredKey);
+    notifyListeners();
+  }
+
   storeEvent(EventModel eventModel) async {
     var box = await Hive.openBox<EventModel>(ConstantText.eventBoxName);
     box.add(eventModel);
     notifyListeners();
+  }
+
+  Future<int> generateEventId() async {
+    var box = await Hive.openBox<EventModel>(ConstantText.eventBoxName);
+    return box.values.length;
   }
 }

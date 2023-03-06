@@ -7,34 +7,32 @@ class EventCard extends StatelessWidget {
   final String description;
   final String date;
   final Color color;
-  const EventCard({
-    Key? key,
-    required this.title,
-    required this.description,
-    required this.date,
-    required this.color,
-  }) : super(key: key);
+  final DateTime eventDate;
+  const EventCard(
+      {Key? key,
+      required this.title,
+      required this.description,
+      required this.date,
+      required this.color,
+      required this.eventDate})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool isOutOfDate = eventDate.isAfter(DateTime.now());
     return Container(
-      margin: const EdgeInsets.only(bottom: 15),
+      margin: const EdgeInsets.only(bottom: 10),
       padding: context.paddingLow,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          color: color,
-          boxShadow: [
-            BoxShadow(
-              color: color.withOpacity(.4),
-              offset: Offset.zero,
-              blurStyle: BlurStyle.solid,
-              blurRadius: 10,
-              spreadRadius: 3,
-            ),
-          ]),
+          color: isOutOfDate ? Colors.grey : color,
+          border: Border.all(
+            color: Theme.of(context).disabledColor,
+            width: 2,
+          )),
       height: 200,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
