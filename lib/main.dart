@@ -8,6 +8,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/single_child_widget.dart';
+import 'package:scheduler/constants/constant_colors.dart';
 
 import 'package:scheduler/constants/constant_texts.dart';
 import 'package:scheduler/models/event_model.dart';
@@ -56,11 +57,50 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Scheduler',
             theme: ThemeData(
-              brightness:
-                  themeService.isDark ? Brightness.dark : Brightness.light,
-              primarySwatch: Colors.blueGrey,
+              useMaterial3: true,
+              colorSchemeSeed: ConstantColor.normalOrange,
+              brightness: Brightness.light,
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    ConstantColor.normalOrange.withOpacity(.6),
+                  ),
+                  foregroundColor: MaterialStateProperty.all<Color>(
+                    ConstantColor.pureWhite,
+                  ),
+                  textStyle: MaterialStateProperty.all<TextStyle>(
+                    const TextStyle(
+                      fontSize: 15,
+                      fontFamily: ConstantText.fontName,
+                    ),
+                  ),
+                ),
+              ),
               fontFamily: ConstantText.fontName,
             ),
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              colorSchemeSeed: ConstantColor.normalOrange,
+              brightness: Brightness.dark,
+              elevatedButtonTheme: ElevatedButtonThemeData(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    ConstantColor.normalOrange.withOpacity(.3),
+                  ),
+                  foregroundColor: MaterialStateProperty.all<Color>(
+                    ConstantColor.pureWhite,
+                  ),
+                  textStyle: MaterialStateProperty.all<TextStyle>(
+                    const TextStyle(
+                      fontSize: 15,
+                      fontFamily: ConstantText.fontName,
+                    ),
+                  ),
+                ),
+              ),
+              fontFamily: ConstantText.fontName,
+            ),
+            themeMode: themeService.isDark ? ThemeMode.dark : ThemeMode.light,
             home: isOnboardingDone
                 ? const HomeScreen()
                 : const OnboardingScreen(),

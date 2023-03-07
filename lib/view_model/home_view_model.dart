@@ -8,12 +8,14 @@ import 'package:rect_getter/rect_getter.dart';
 import 'package:scheduler/components/fade_out_builder.dart';
 import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/event_provider.dart';
+import 'package:scheduler/services/event_service.dart';
 import 'package:scheduler/view/create_event_screen.dart';
 import 'package:scheduler/view/home_screen.dart';
 
 abstract class HomeViewModel extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  late EventService eventService;
   late AnimationController animationController;
   static const Duration splashAnimationDuration = Duration(milliseconds: 350);
   static const Duration splashDelay = Duration(milliseconds: 50);
@@ -30,6 +32,7 @@ abstract class HomeViewModel extends State<HomeScreen>
   void initState() {
     super.initState();
     Alarm.stop();
+    eventService = EventService();
     animationController = AnimationController(
       vsync: this,
       duration: HomeViewModel.toggleDuration,

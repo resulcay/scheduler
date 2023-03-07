@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants/constant_colors.dart';
-
 class CustomTextButton extends StatelessWidget {
   final String text;
   final VoidCallback function;
@@ -18,9 +16,8 @@ class CustomTextButton extends StatelessWidget {
       child: Text(
         text,
         style: const TextStyle(
-          color: ConstantColor.freshBlue,
           fontWeight: FontWeight.w400,
-          fontSize: 16,
+          fontSize: 18,
         ),
       ),
     );

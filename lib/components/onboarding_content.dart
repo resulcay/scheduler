@@ -53,7 +53,8 @@ class _OnboardingContentState extends State<OnboardingContent> {
             duration: const Duration(seconds: 1),
             child: Text(
               widget.hintText,
-              style: Theme.of(context).textTheme.headline6,
+              style:
+                  Theme.of(context).textTheme.headline6!.copyWith(fontSize: 21),
             ),
           ),
         ),

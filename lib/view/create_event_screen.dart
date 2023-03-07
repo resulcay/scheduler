@@ -18,142 +18,155 @@ class _CreateEventScreenState extends CreateEventViewModel {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Form(
-          key: formKey,
-          child: Padding(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          SingleChildScrollView(
             padding: context.paddingNormalized,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                CustomTextField(
-                  function: (text) {
-                    text = text?.trim();
-                    if (text == null || text.isEmpty) {
-                      return 'Can not be Empty';
-                    }
-                    return null;
-                  },
-                  controller: titleTextController,
-                  hint: "Enter Title *",
-                  maxLines: 1,
-                  textInputAction: TextInputAction.next,
-                ),
-                const SizedBox(height: 10),
-                CustomTextField(
-                  controller: descTextController,
-                  hint: "Enter Description",
-                  maxLines: 6,
-                  textInputAction: TextInputAction.done,
-                ),
-                Row(
-                  children: [
-                    const Text("Set Alarm"),
-                    IconButton(
-                      splashRadius: 18,
-                      onPressed: () {
-                        QuickAlert.show(
-                            title: 'Warning',
-                            text:
-                                'Alarm will be fired at the given date and gave you a bell warn.',
-                            context: context,
-                            type: QuickAlertType.info);
-                      },
-                      icon: const Icon(Icons.info),
-                    ),
-                    customAlarmCheckBox(),
-                  ],
-                ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 450),
-                  child: isAlarmChecked
-                      ? AlarmSection(
-                          iconData: Icons.alarm,
-                          function: () => selectDateTime(),
-                          widget: Text(
-                            textAlign: TextAlign.center,
-                            'Timer ends up at\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16,
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  CustomTextField(
+                    function: (text) {
+                      text = text?.trim();
+                      if (text == null || text.isEmpty) {
+                        return 'Can not be Empty';
+                      }
+                      return null;
+                    },
+                    controller: titleTextController,
+                    hint: "Enter Title *",
+                    maxLines: 1,
+                    textInputAction: TextInputAction.next,
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextField(
+                    controller: descTextController,
+                    hint: "Enter Description",
+                    maxLines: 6,
+                    textInputAction: TextInputAction.done,
+                  ),
+                  Row(
+                    children: [
+                      const Text("Set Alarm"),
+                      IconButton(
+                        splashRadius: 18,
+                        onPressed: () {
+                          QuickAlert.show(
+                              title: 'Warning',
+                              text:
+                                  'Alarm will be fired at the given date and gave you a bell warn.',
+                              context: context,
+                              type: QuickAlertType.info);
+                        },
+                        icon: const Icon(Icons.info),
+                      ),
+                      customAlarmCheckBox(),
+                    ],
+                  ),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 450),
+                    child: isAlarmChecked
+                        ? AlarmSection(
+                            iconData: Icons.alarm,
+                            function: () => selectDateTime(),
+                            widget: Text(
+                              textAlign: TextAlign.center,
+                              'Fires at\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 16,
+                              ),
                             ),
-                          ),
-                        )
-                      : Container(),
-                  transitionBuilder: (child, animation) {
-                    return FadeTransition(opacity: animation, child: child);
-                  },
-                ),
-                Row(
-                  children: [
-                    const Text("Periodic Notifications"),
-                    IconButton(
-                      splashRadius: 18,
+                          )
+                        : Container(),
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(opacity: animation, child: child);
+                    },
+                  ),
+                  Row(
+                    children: [
+                      const Text("Periodic Notifications"),
+                      IconButton(
+                        splashRadius: 18,
+                        onPressed: () {
+                          QuickAlert.show(
+                              title: 'Warning',
+                              text: 'You will be notified on given periods',
+                              context: context,
+                              type: QuickAlertType.info);
+                        },
+                        icon: const Icon(Icons.info),
+                      ),
+                      customNotificationCheckBox(),
+                    ],
+                  ),
+                  AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 450),
+                    child: isNotificationChecked
+                        ? AlarmSection(
+                            iconData: Icons.calendar_month,
+                            function: () => showCustomModalBottomSheet(),
+                            widget: PeriodDropDownMenu(
+                              dateTime: eventDate,
+                              onPeriodSelected: (String value) {
+                                period = value;
+                              },
+                            ),
+                          )
+                        : Container(),
+                    transitionBuilder: (child, animation) {
+                      return FadeTransition(opacity: animation, child: child);
+                    },
+                  ),
+                  Row(
+                    children: [
+                      gradientButton(),
+                      const SizedBox(width: 10),
+                      CircleAvatar(
+                        radius: 25,
+                        backgroundColor: pickerColor,
+                      ),
+                    ],
+                  ),
+                  ElevatedButton(
                       onPressed: () {
                         QuickAlert.show(
-                            title: 'Warning',
-                            text: 'You will be notified on given periods',
-                            context: context,
-                            type: QuickAlertType.info);
-                      },
-                      icon: const Icon(Icons.info),
-                    ),
-                    customNotificationCheckBox(),
-                  ],
-                ),
-                AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 450),
-                  child: isNotificationChecked
-                      ? AlarmSection(
-                          iconData: Icons.calendar_month,
-                          function: () => showCustomModalBottomSheet(),
-                          widget: PeriodDropDownMenu(
-                            dateTime: eventDate,
-                            onPeriodSelected: (String value) {
-                              period = value;
+                            title: 'Are you sure?',
+                            text: 'All data will be deleted!',
+                            confirmBtnText: 'Yes',
+                            onConfirmBtnTap: () {
+                              eventService.deleteAllEvents();
+                              Navigator.pop(context);
                             },
-                          ),
-                        )
-                      : Container(),
-                  transitionBuilder: (child, animation) {
-                    return FadeTransition(opacity: animation, child: child);
-                  },
-                ),
-                Row(
-                  children: [
-                    gradientButton(),
-                    const SizedBox(width: 10),
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundColor: pickerColor,
-                    ),
-                  ],
-                ),
-                ElevatedButton(
-                    onPressed: () {
-                      QuickAlert.show(
-                          title: 'Are you sure?',
-                          text: 'All data will be deleted!',
-                          confirmBtnText: 'Yes',
-                          onConfirmBtnTap: () {
-                            eventService.deleteAllEvents();
-                            Navigator.pop(context);
-                          },
-                          context: context,
-                          type: QuickAlertType.warning);
-                    },
-                    child: const Text('Delete All Events')),
-                ElevatedButton(
-                    onPressed: () {
-                      saveEvent();
-                    },
-                    child: const Text('Save Event')),
-              ],
+                            context: context,
+                            type: QuickAlertType.warning);
+                      },
+                      child: const Text('Delete All Events')),
+                  const SizedBox(height: 30),
+                ],
+              ),
             ),
           ),
-        ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Padding(
+              padding: context.paddingSymmetricNormalized,
+              child: ElevatedButton(
+                onPressed: () {
+                  saveEvent();
+                },
+                child: const Text('Save Event'),
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

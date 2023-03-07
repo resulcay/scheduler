@@ -8,18 +8,18 @@ import 'package:scheduler/models/event_model.dart';
 import 'package:scheduler/services/event_service.dart';
 
 class EventDetail extends StatelessWidget {
-  final EventModel eventModel;
+  final EventService eventService;
   final List<String> values;
 
   const EventDetail({
     super.key,
-    required this.eventModel,
+    required this.eventService,
     required this.values,
   });
 
   @override
   Widget build(BuildContext context) {
-    EventService eventService = EventService();
+    final eventModel = ModalRoute.of(context)!.settings.arguments as EventModel;
     Color backgroundColor = Color(int.parse(values[2]));
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -88,11 +88,9 @@ class EventDetail extends StatelessWidget {
                     text: 'Are you sure ?',
                     onConfirmBtnTap: () async {
                       Navigator.pop(context);
-                      await eventService
-                          .deleteEventById(eventModel.id)
-                          .then((_) {
-                        Navigator.pop(context);
-                      });
+                      await Future.delayed(const Duration(milliseconds: 200))
+                          .then((_) => Navigator.pop(context));
+                      await eventService.deleteEventById(eventModel.id);
                     },
                   );
                 },

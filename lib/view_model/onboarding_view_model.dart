@@ -41,7 +41,7 @@ abstract class OnboardingViewModel extends State<OnboardingScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: List.generate(
-                3,
+                5,
                 (index) => Padding(
                   padding: const EdgeInsets.all(4),
                   child: CircleAvatar(
@@ -57,7 +57,7 @@ abstract class OnboardingViewModel extends State<OnboardingScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 10),
             child: CustomTextButton(
-              text: selectedPage == 2 ? 'Done' : 'Next',
+              text: selectedPage == 4 ? 'Done' : 'Next',
               function: () {
                 onPageChanged(
                   selectedPage,
@@ -74,7 +74,7 @@ abstract class OnboardingViewModel extends State<OnboardingScreen> {
 
   onPageChanged(
       int selectedPage, BuildContext context, PageController pageController) {
-    if (selectedPage == 2) {
+    if (selectedPage == 4) {
       writeIsCompleteDataToLocal();
       Navigator.pop(context);
       Navigator.pushNamed(context, 'main');

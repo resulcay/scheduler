@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ConstantColor {
+  // Main palette
+  static const brightTeal = Color(0xFF85FFC7);
+  static const deepTeal = Color(0xFF297373);
+  static const normalOrange = Color(0xFFFF8552);
+  static const elegantGrey = Color(0xFFE6E6E6);
+  static const elegantBlack = Color(0xFF39393A);
+
+  //Others
   static const darkYellow = Color(0xFFCBB899);
   static const freshBlue = Color.fromARGB(255, 57, 166, 185);
   static const pureWhite = Color(0xFFFFFFFF);

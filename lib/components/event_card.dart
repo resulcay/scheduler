@@ -19,7 +19,8 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isOutOfDate = eventDate.isAfter(DateTime.now());
+    bool isOutOfDate = eventDate.isBefore(DateTime.now());
+
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: context.paddingLow,

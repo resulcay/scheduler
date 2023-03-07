@@ -81,42 +81,46 @@ class _HomeScreenState extends HomeViewModel {
                                               (index) {
                                                 List<String> values =
                                                     cardConfiguration(
-                                                        model, index);
-                                                return Hero(
-                                                  tag: index,
-                                                  child: GestureDetector(
-                                                    onTap: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
+                                                  model,
+                                                  index,
+                                                );
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            maintainState:
+                                                                false,
                                                             builder:
                                                                 (context) =>
                                                                     EventDetail(
-                                                              values: values,
-                                                              eventModel: model
-                                                                  .items[index],
-                                                            ),
-                                                          ));
-                                                    },
-                                                    child: EventCard(
-                                                      eventDate: model
-                                                          .items[index]
-                                                          .eventDate,
-                                                      title: model.items[index]
-                                                          .eventTitle,
-                                                      description: model
-                                                              .items[index]
-                                                              .eventDescription!
-                                                              .isEmpty
-                                                          ? "No Description"
-                                                          : model.items[index]
-                                                              .eventDescription
-                                                              .toString(),
-                                                      date:
-                                                          '${values[0]} - ${values[1]}',
-                                                      color: Color(
-                                                          int.parse(values[2])),
-                                                    ),
+                                                                      values:
+                                                                          values,
+                                                                      eventService:
+                                                                          eventService,
+                                                                    ),
+                                                            settings: RouteSettings(
+                                                                arguments: model
+                                                                        .items[
+                                                                    index])));
+                                                  },
+                                                  child: EventCard(
+                                                    eventDate: model
+                                                        .items[index].eventDate,
+                                                    title: model.items[index]
+                                                        .eventTitle,
+                                                    description: model
+                                                            .items[index]
+                                                            .eventDescription!
+                                                            .isEmpty
+                                                        ? "No Description"
+                                                        : model.items[index]
+                                                            .eventDescription
+                                                            .toString(),
+                                                    date:
+                                                        '${values[0]} - ${values[1]}',
+                                                    color: Color(
+                                                        int.parse(values[2])),
                                                   ),
                                                 );
                                               },
@@ -136,13 +140,16 @@ class _HomeScreenState extends HomeViewModel {
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            EventDetail(
-                                                          values: values,
-                                                          eventModel: model
-                                                              .items[index],
-                                                        ),
-                                                      ));
+                                                          builder: (context) =>
+                                                              EventDetail(
+                                                                values: values,
+                                                                eventService:
+                                                                    eventService,
+                                                              ),
+                                                          settings: RouteSettings(
+                                                              arguments:
+                                                                  model.items[
+                                                                      index])));
                                                 },
                                                 child: EventCard(
                                                   eventDate: model
