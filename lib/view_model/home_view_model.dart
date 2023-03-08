@@ -1,11 +1,11 @@
 import 'dart:async';
-import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:scheduler/components/fade_out_builder.dart';
+import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/event_provider.dart';
 import 'package:scheduler/services/event_service.dart';
@@ -31,7 +31,6 @@ abstract class HomeViewModel extends State<HomeScreen>
   @override
   void initState() {
     super.initState();
-    Alarm.stop();
     eventService = EventService();
     animationController = AnimationController(
       vsync: this,
@@ -146,9 +145,9 @@ abstract class HomeViewModel extends State<HomeScreen>
       top: rect?.top,
       bottom: MediaQuery.of(context).size.height - rect!.bottom,
       child: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.blueAccent.shade400,
+          color: ConstantColor.normalOrange,
         ),
       ),
     );

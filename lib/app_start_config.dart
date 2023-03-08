@@ -1,10 +1,11 @@
+// ignore_for_file: constant_identifier_names
+
 part of 'package:scheduler/main.dart';
 
 class _AppStartConfig {
   launchConfig() async {
     WidgetsFlutterBinding.ensureInitialized();
-    Alarm.init();
-    NotificationApi().initApi();
+    await EasyLocalization.ensureInitialized();
     Directory directory =
         await path_provider.getApplicationDocumentsDirectory();
     Hive.init(directory.path);
@@ -23,10 +24,76 @@ class _AppStartConfig {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then(
       (_) => runApp(
-        MyApp(
-          isOnboardingDone: value,
+        EasyLocalization(
+          supportedLocales: const [
+            _LocaleConstant.trLocale,
+            _LocaleConstant.engLocale
+          ],
+          path: _LocaleConstant.TRANSLATION_PATH,
+          fallbackLocale: _LocaleConstant.engLocale,
+          child: MyApp(
+            isOnboardingDone: value,
+          ),
         ),
       ),
+    );
+  }
+}
+
+class _LocaleConstant {
+  static const trLocale = Locale('tr', 'TR');
+  static const engLocale = Locale('en', 'US');
+  static const TRANSLATION_PATH = 'assets/translations';
+}
+
+class _ThemeConfiguration {
+  ThemeData lightTheme() {
+    return ThemeData(
+      useMaterial3: true,
+      colorSchemeSeed: ConstantColor.normalOrange,
+      brightness: Brightness.light,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            ConstantColor.normalOrange.withOpacity(.6),
+          ),
+          foregroundColor: MaterialStateProperty.all<Color>(
+            ConstantColor.pureWhite,
+          ),
+          textStyle: MaterialStateProperty.all<TextStyle>(
+            const TextStyle(
+              fontSize: 15,
+              fontFamily: ConstantText.fontName,
+            ),
+          ),
+        ),
+      ),
+      fontFamily: ConstantText.fontName,
+    );
+  }
+
+  ThemeData darkTheme() {
+    return ThemeData(
+      useMaterial3: true,
+      colorSchemeSeed: ConstantColor.normalOrange,
+      brightness: Brightness.dark,
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            ConstantColor.normalOrange.withOpacity(.3),
+          ),
+          foregroundColor: MaterialStateProperty.all<Color>(
+            ConstantColor.pureWhite,
+          ),
+          textStyle: MaterialStateProperty.all<TextStyle>(
+            const TextStyle(
+              fontSize: 15,
+              fontFamily: ConstantText.fontName,
+            ),
+          ),
+        ),
+      ),
+      fontFamily: ConstantText.fontName,
     );
   }
 }

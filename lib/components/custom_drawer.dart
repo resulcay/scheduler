@@ -18,7 +18,7 @@ class CustomDrawer extends StatelessWidget {
     context.watch<ListTypeService>().read();
 
     return Material(
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).splashColor,
       child: SafeArea(
         minimum: context.paddingLow,
         child: ListView(
@@ -26,7 +26,10 @@ class CustomDrawer extends StatelessWidget {
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text('Dark Mode'),
+                const Text(
+                  'Dark Mode',
+                  style: TextStyle(color: ConstantColor.pureWhite),
+                ),
                 const Spacer(),
                 Consumer<ThemeService>(
                   builder: (_, themeService, __) => CupertinoSwitch(
@@ -45,8 +48,12 @@ class CustomDrawer extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Text('Stacked Listview'),
+                    const Text(
+                      'Stacked Listview',
+                      style: TextStyle(color: ConstantColor.pureWhite),
+                    ),
                     IconButton(
+                      color: ConstantColor.pureWhite,
                       splashRadius: 18,
                       onPressed: () {
                         QuickAlert.show(

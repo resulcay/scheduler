@@ -1,6 +1,6 @@
-import 'package:alarm/alarm.dart';
 import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
@@ -39,6 +39,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     eventService = EventService();
     Intl.defaultLocale = 'en_US';
     notificationApi = NotificationApi();
+    notificationApi.initApi();
     initializeDateFormatting();
     super.initState();
   }
@@ -491,17 +492,10 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           }
 
           if (isAlarmChecked) {
-            await Alarm.set(
-                settings: AlarmSettings(
-              dateTime: eventDate,
-              assetAudioPath: "assets/sounds/alert_in_hall.mp3",
-              notificationBody: 'Your alarm is ringing',
-              notificationTitle: 'Alarm notification',
-            ));
-
-            Alarm.setNotificationOnAppKillContent(
-              'Your alarm may not ring',
-              'You killed the app. Please reopen so your alarm can ring.',
+            FlutterAlarmClock.createAlarm(
+              eventDate.hour,
+              eventDate.minute,
+              title: model.eventTitle,
             );
           }
 
