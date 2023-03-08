@@ -507,14 +507,16 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
 
           eventService.storeEvent(model);
 
+          isNotificationChecked = false;
+          isAlarmChecked = false;
+          titleTextController.clear();
+          descTextController.clear();
+
           QuickAlert.show(
               context: context,
               type: QuickAlertType.success,
               title: 'Success',
               text: 'Successfully Saved!');
-
-          titleTextController.clear();
-          descTextController.clear();
         });
       }
     } catch (e) {
