@@ -1,3 +1,6 @@
 {
-    "app_title": "Scheduler"
+    "scheduler": "Scheduler",
+    "events": "Events",
+    "darkMode": "Dark Mode",
+    "stackedListview": "Stacked Listview"
 }

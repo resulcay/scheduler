@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:scheduler/scripts/locale_keys.g.dart';
+import 'package:scheduler/localization/locale_keys.g.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
   final Function() function;
@@ -15,7 +15,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       centerTitle: true,
-      title: const Text(LocaleKeys.app_title).tr(),
+      title: const Text(LocaleKeys.events).tr(),
       leading: IconButton(
         onPressed: function,
         splashRadius: 24,

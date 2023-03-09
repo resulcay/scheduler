@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 part of 'package:scheduler/main.dart';
 
 class _AppStartConfig {
@@ -26,11 +24,11 @@ class _AppStartConfig {
       (_) => runApp(
         EasyLocalization(
           supportedLocales: const [
-            _LocaleConstant.trLocale,
-            _LocaleConstant.engLocale
+            LocaleConstant.trLocale,
+            LocaleConstant.engLocale
           ],
-          path: _LocaleConstant.TRANSLATION_PATH,
-          fallbackLocale: _LocaleConstant.engLocale,
+          path: LocaleConstant.TRANSLATION_PATH,
+          fallbackLocale: LocaleConstant.engLocale,
           child: MyApp(
             isOnboardingDone: value,
           ),
@@ -38,12 +36,6 @@ class _AppStartConfig {
       ),
     );
   }
-}
-
-class _LocaleConstant {
-  static const trLocale = Locale('tr', 'TR');
-  static const engLocale = Locale('en', 'US');
-  static const TRANSLATION_PATH = 'assets/translations';
 }
 
 class _ThemeConfiguration {

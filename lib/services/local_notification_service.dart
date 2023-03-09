@@ -44,7 +44,6 @@ class NotificationApi {
       'channel_id_0',
       'Reminder',
       playSound: true,
-      // sound: RawResourceAndroidNotificationSound('bell'),
       importance: Importance.max,
       priority: Priority.max,
     );
@@ -109,9 +108,7 @@ class NotificationApi {
   }
 
   void onDidReceiveLocalNotification(
-      int id, String? title, String? body, String? payload) {
-    // print('id $id');
-  }
+      int id, String? title, String? body, String? payload) {}
 
   void onDidReceiveNotificationResponse(
       NotificationResponse notificationResponse) async {
@@ -121,9 +118,5 @@ class NotificationApi {
         print('notification payload: $payload');
       }
     }
-    // await Navigator.push(
-    //   context,
-    //   MaterialPageRoute<void>(builder: (context) => const HomeScreen()),
-    // );
   }
 }

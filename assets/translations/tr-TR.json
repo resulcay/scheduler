@@ -1,3 +1,6 @@
 {
-    "app_title": "Planlayıcı"
+    "scheduler": "Planlayıcı",
+    "events": "Etkinlikler",
+    "darkMode": "Karanlık Mod",
+    "stackedListview": "Yığın Liste Görünümü"
 }

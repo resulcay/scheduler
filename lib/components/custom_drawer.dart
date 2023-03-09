@@ -1,10 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:scheduler/constants/constant_colors.dart';
+import 'package:scheduler/extensions/media_query_extension.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
+import 'package:scheduler/localization/locale_keys.g.dart';
 import 'package:scheduler/services/list_type_service.dart';
+import 'package:scheduler/services/localization.dart';
 import 'package:scheduler/services/theme_service.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -27,9 +31,9 @@ class CustomDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const Text(
-                  'Dark Mode',
+                  LocaleKeys.darkMode,
                   style: TextStyle(color: ConstantColor.pureWhite),
-                ),
+                ).tr(),
                 const Spacer(),
                 Consumer<ThemeService>(
                   builder: (_, themeService, __) => CupertinoSwitch(
@@ -49,9 +53,9 @@ class CustomDrawer extends StatelessWidget {
                 Row(
                   children: [
                     const Text(
-                      'Stacked Listview',
+                      LocaleKeys.stackedListview,
                       style: TextStyle(color: ConstantColor.pureWhite),
-                    ),
+                    ).tr(),
                     IconButton(
                       color: ConstantColor.pureWhite,
                       splashRadius: 18,
@@ -80,7 +84,19 @@ class CustomDrawer extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 1000),
+            ElevatedButton(
+              onPressed: () {
+                context.setLocale(LocaleConstant.trLocale);
+              },
+              child: const Text("tr"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                context.setLocale(LocaleConstant.engLocale);
+              },
+              child: const Text("en"),
+            ),
+            SizedBox(height: context.height),
           ],
         ),
       ),
