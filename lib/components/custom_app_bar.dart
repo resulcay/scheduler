@@ -3,9 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:scheduler/localization/locale_keys.g.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-  final Function() function;
+  final Function() functionForLeft;
+  final Function() functionForRight;
 
-  const CustomAppBar({super.key, required this.function});
+  const CustomAppBar({
+    super.key,
+    required this.functionForLeft,
+    required this.functionForRight,
+  });
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -17,15 +22,15 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
       centerTitle: true,
       title: const Text(LocaleKeys.events).tr(),
       leading: IconButton(
-        onPressed: function,
+        onPressed: functionForLeft,
         splashRadius: 24,
         icon: const Icon(Icons.sort, size: 30),
       ),
       actions: [
         IconButton(
-          onPressed: function,
+          onPressed: functionForRight,
           splashRadius: 24,
-          icon: const Icon(Icons.manage_search, size: 30),
+          icon: const Icon(Icons.delete_forever_rounded, size: 30),
         ),
       ],
     );

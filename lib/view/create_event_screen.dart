@@ -134,20 +134,6 @@ class _CreateEventScreenState extends CreateEventViewModel {
                       ),
                     ],
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        QuickAlert.show(
-                            title: 'Are you sure?',
-                            text: 'All events will be deleted!',
-                            confirmBtnText: 'Yes',
-                            onConfirmBtnTap: () {
-                              eventService.deleteAllEvents();
-                              Navigator.pop(context);
-                            },
-                            context: context,
-                            type: QuickAlertType.warning);
-                      },
-                      child: const Text('Delete All Events')),
                   const SizedBox(height: 30),
                 ],
               ),

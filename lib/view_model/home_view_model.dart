@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:scheduler/components/fade_out_builder.dart';
 import 'package:scheduler/constants/constant_colors.dart';
@@ -150,6 +151,20 @@ abstract class HomeViewModel extends State<HomeScreen>
           color: ConstantColor.normalOrange,
         ),
       ),
+    );
+  }
+
+  deleteAll() {
+    QuickAlert.show(
+      title: 'Are you sure?',
+      text: 'All events will be deleted!',
+      confirmBtnText: 'Yes',
+      onConfirmBtnTap: () {
+        eventService.deleteAllEvents();
+        Navigator.pop(context);
+      },
+      context: context,
+      type: QuickAlertType.warning,
     );
   }
 }

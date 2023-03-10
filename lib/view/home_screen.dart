@@ -60,7 +60,11 @@ class _HomeScreenState extends HomeViewModel {
                           children: [
                             Scaffold(
                               key: scaffoldKey,
-                              appBar: CustomAppBar(function: toggleDrawer),
+                              appBar: CustomAppBar(
+                                functionForLeft: toggleDrawer,
+                                functionForRight:
+                                    model.items.isNotEmpty ? deleteAll : () {},
+                              ),
                               floatingActionButton: RectGetter(
                                 key: rectGetterKey,
                                 child: FloatingActionButton(
