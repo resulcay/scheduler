@@ -36,13 +36,12 @@ class CustomTextField extends StatelessWidget {
         ),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.grey,
+            color: ConstantColor.normalGrey,
             width: 1,
           ),
         ),
         focusedBorder: const UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Colors.purple,
             width: 2,
           ),
         ),

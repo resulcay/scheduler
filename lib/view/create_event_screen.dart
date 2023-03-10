@@ -57,11 +57,12 @@ class _CreateEventScreenState extends CreateEventViewModel {
                         splashRadius: 18,
                         onPressed: () {
                           QuickAlert.show(
-                              title: 'Warning',
-                              text:
-                                  'Alarm will be fired at the given date and gave you a bell warn.',
-                              context: context,
-                              type: QuickAlertType.info);
+                            title: 'Warning',
+                            text:
+                                "Activates system's alarm app. Deletions must be done manually.",
+                            context: context,
+                            type: QuickAlertType.info,
+                          );
                         },
                         icon: const Icon(Icons.info),
                       ),
@@ -90,13 +91,13 @@ class _CreateEventScreenState extends CreateEventViewModel {
                   ),
                   Row(
                     children: [
-                      const Text("Periodic Notifications"),
+                      const Text("Notify Me"),
                       IconButton(
                         splashRadius: 18,
                         onPressed: () {
                           QuickAlert.show(
                               title: 'Warning',
-                              text: 'You will be notified on given periods',
+                              text: 'You will be notified on given period(s)',
                               context: context,
                               type: QuickAlertType.info);
                         },
@@ -137,7 +138,7 @@ class _CreateEventScreenState extends CreateEventViewModel {
                       onPressed: () {
                         QuickAlert.show(
                             title: 'Are you sure?',
-                            text: 'All data will be deleted!',
+                            text: 'All events will be deleted!',
                             confirmBtnText: 'Yes',
                             onConfirmBtnTap: () {
                               eventService.deleteAllEvents();

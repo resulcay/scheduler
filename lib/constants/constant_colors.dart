@@ -20,6 +20,7 @@ class ConstantColor {
   static const normalYellow = Color(0xFFC89345);
   static const normalBlue = Color(0xFF4284f5);
   static const transparentGrey = Color(0xffcccccc);
+  static const normalGrey = Color(0xff9e9e9e);
   static const List<Color> colorList = [
     Colors.red,
     Colors.pink,

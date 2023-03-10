@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/constants/constant_texts.dart';
 
 class PeriodDropDownMenu extends StatefulWidget {
@@ -168,6 +169,16 @@ class _PeriodDropDownMenuState extends State<PeriodDropDownMenu> {
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
+      hint: const Text(
+        "Select",
+        style: TextStyle(color: ConstantColor.deepTeal),
+      ),
+      borderRadius: BorderRadius.circular(10),
+      icon: const Icon(
+        Icons.arrow_drop_down_circle_outlined,
+        color: ConstantColor.deepTeal,
+      ),
+      dropdownColor: ConstantColor.deepTeal,
       value: notificationPeriod,
       items: (isEnglish
               ? ConstantText.notificationPeriods
@@ -175,7 +186,9 @@ class _PeriodDropDownMenuState extends State<PeriodDropDownMenu> {
           .map((String period) {
         return DropdownMenuItem(
           value: period,
-          child: Text(period),
+          child: Text(
+            period,
+          ),
         );
       }).toList(),
       onChanged: _updatePeriod,

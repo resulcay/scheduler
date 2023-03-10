@@ -168,7 +168,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           ),
         ),
         Material(
-          color: ConstantColor.darkBrown,
+          color: ConstantColor.deepTeal,
           borderRadius: BorderRadius.circular(16),
           child: InkWell(
             onTap: () async => selectDateTime(),
