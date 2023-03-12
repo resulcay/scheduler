@@ -262,7 +262,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           EventModel model = EventModel(
             id: value.length,
             eventTitle: titleTextController.text.trim(),
-            eventDescription: descTextController.text,
+            eventDescription: descTextController.text.trim(),
             eventDate: eventDate,
             color: pickerColor.toString(),
           );
