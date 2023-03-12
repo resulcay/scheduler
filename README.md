@@ -1,7 +1,6 @@
 # scheduler
 
-A new Flutter project.
-    hgg
+A new Flutter project for now
 
 ## Getting Started
 
