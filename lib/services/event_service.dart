@@ -7,6 +7,8 @@ class EventService extends EventProvider {
   deleteAllEvents() async {
     var box = await Hive.openBox<EventModel>(ConstantText.eventBoxName);
     box.clear();
+
+    notifyListeners();
   }
 
   deleteEventById(int id) async {
@@ -18,12 +20,14 @@ class EventService extends EventProvider {
       if (value.id == id) desiredKey = key;
     });
     box.delete(desiredKey);
+    items = box.values.toList();
     notifyListeners();
   }
 
   storeEvent(EventModel eventModel) async {
     var box = await Hive.openBox<EventModel>(ConstantText.eventBoxName);
     box.add(eventModel);
+    items = box.values.toList();
     notifyListeners();
   }
 

@@ -7,7 +7,7 @@ import 'package:scheduler/components/event_card.dart';
 import 'package:scheduler/components/event_detail.dart';
 import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
-import 'package:scheduler/providers/stand_alone_providers/event_provider.dart';
+import 'package:scheduler/services/event_service.dart';
 import 'package:scheduler/services/list_type_service.dart';
 import 'package:scheduler/view_model/home_view_model.dart';
 import 'package:stacked_card_carousel/stacked_card_carousel.dart';
@@ -22,10 +22,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends HomeViewModel {
   @override
   Widget build(BuildContext context) {
-    //////
-    context.watch<EventProvider>().getAllEvents();
-    context.watch<ListTypeService>().read();
-    //////
     return WillPopScope(
       onWillPop: () async {
         if (animationController.isCompleted) {
@@ -53,7 +49,7 @@ class _HomeScreenState extends HomeViewModel {
                     ..translate(slideAmount)
                     ..scale(contentScale),
                   alignment: Alignment.bottomLeft,
-                  child: Consumer<EventProvider>(
+                  child: Consumer<EventService>(
                     builder: (context, model, child) {
                       return Consumer<ListTypeService>(
                         builder: (_, listTypeService, __) => Stack(

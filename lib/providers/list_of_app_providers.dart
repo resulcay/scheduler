@@ -6,6 +6,7 @@ class _AppProviders {
     ChangeNotifierProvider(create: (_) => DateTimeProvider()),
     ChangeNotifierProvider(create: (_) => ColorProvider()),
     ChangeNotifierProvider(create: (_) => EventProvider()),
+    ChangeNotifierProvider(create: (_) => EventService()),
     ChangeNotifierProvider(create: (_) => ListTypeService()),
     ChangeNotifierProvider(create: (_) => ListTypeProvider()),
     ChangeNotifierProvider(create: (_) => ThemeProvider()),

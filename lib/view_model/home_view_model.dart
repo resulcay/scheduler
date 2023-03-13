@@ -8,10 +8,11 @@ import 'package:rect_getter/rect_getter.dart';
 import 'package:scheduler/components/fade_out_builder.dart';
 import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
-import 'package:scheduler/providers/stand_alone_providers/event_provider.dart';
 import 'package:scheduler/services/event_service.dart';
 import 'package:scheduler/view/create_event_screen.dart';
 import 'package:scheduler/view/home_screen.dart';
+
+import '../services/list_type_service.dart';
 
 abstract class HomeViewModel extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
@@ -37,6 +38,13 @@ abstract class HomeViewModel extends State<HomeScreen>
       vsync: this,
       duration: HomeViewModel.toggleDuration,
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    context.watch<EventService>().getAllEvents();
+    context.watch<ListTypeService>().read();
+    super.didChangeDependencies();
   }
 
   void onColor() {
@@ -72,7 +80,7 @@ abstract class HomeViewModel extends State<HomeScreen>
     super.dispose();
   }
 
-  List<String> cardConfiguration(EventProvider model, int index) {
+  List<String> cardConfiguration(EventService model, int index) {
     DateTime eventDate = model.items[index].eventDate;
     initializeDateFormatting();
     String eventTimeAsHourAndMinute = DateFormat.Hm().format(eventDate);
