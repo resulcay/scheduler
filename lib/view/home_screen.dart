@@ -5,7 +5,6 @@ import 'package:scheduler/components/custom_app_bar.dart';
 import 'package:scheduler/components/custom_drawer.dart';
 import 'package:scheduler/components/event_card.dart';
 import 'package:scheduler/components/event_detail.dart';
-import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/services/event_service.dart';
 import 'package:scheduler/services/list_type_service.dart';
@@ -69,7 +68,7 @@ class _HomeScreenState extends HomeViewModel {
                                 ),
                               ),
                               body: model.items.isEmpty
-                                  ? const EmptyScreen()
+                                  ? emptyScreen()
                                   : listTypeService.switchValue
                                       ? Padding(
                                           padding: context.paddingLow,
@@ -186,36 +185,6 @@ class _HomeScreenState extends HomeViewModel {
           },
         ),
       ),
-    );
-  }
-}
-
-class EmptyScreen extends StatelessWidget {
-  const EmptyScreen({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        const Center(child: Text("There is no Event at the moment")),
-        Positioned(
-          bottom: 70,
-          right: 70,
-          child: Column(
-            children: [
-              const Text("Add from here",
-                  style: TextStyle(color: ConstantColor.transparentGrey)),
-              Image.asset(
-                'assets/images/curly-arrow.png',
-                scale: 1.5,
-              )
-            ],
-          ),
-        )
-      ],
     );
   }
 }

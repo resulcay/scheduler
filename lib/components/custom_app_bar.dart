@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/localization/locale_keys.g.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
@@ -27,11 +28,40 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
         icon: const Icon(Icons.sort, size: 30),
       ),
       actions: [
-        IconButton(
-          onPressed: functionForRight,
-          splashRadius: 24,
-          icon: const Icon(Icons.delete_forever_rounded, size: 30),
-        ),
+        PopupMenuButton(
+          onSelected: (value) {
+            switch (value) {
+              case 0:
+                functionForRight();
+                break;
+              default:
+            }
+          },
+          color: ConstantColor.deepTeal,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(20.0),
+            ),
+          ),
+          itemBuilder: (context) {
+            return [
+              const PopupMenuItem(
+                  value: 0,
+                  child: Text(
+                    "Delete All",
+                    style: TextStyle(color: ConstantColor.pureWhite),
+                  ))
+            ];
+          },
+        )
+        // IconButton(
+        //   onPressed: functionForRight,
+        //   splashRadius: 24,
+        //   icon: const Icon(
+        //     Icons.more_vert,
+        //     size: 30,
+        //   ),
+        // ),
       ],
     );
   }

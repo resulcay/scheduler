@@ -13,7 +13,6 @@ import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/date_time_provider.dart';
 import 'package:scheduler/services/event_service.dart';
 import 'package:scheduler/services/local_notification_service.dart';
-import 'package:scheduler/services/localization.dart';
 import 'package:scheduler/view/create_event_screen.dart';
 
 abstract class CreateEventViewModel extends State<CreateEventScreen> {
@@ -29,7 +28,6 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
   late DateTime eventDate;
   late int differenceAsHour;
   late int differenceAsSecond;
-  late bool isLocale;
   bool isAlarmChecked = false;
   bool isNotificationChecked = false;
   String period = '';
@@ -48,14 +46,13 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
 
   @override
   void didChangeDependencies() {
-    isLocale = context.locale == LocaleConstant.engLocale;
     pickerColor = Provider.of<ColorProvider>(context).color;
     eventDate = Provider.of<DateTimeProvider>(context).eventDate;
     currentDate = DateTime.now();
     differenceAsHour = eventDate.difference(currentDate).inHours;
     differenceAsSecond = eventDate.difference(currentDate).inSeconds;
     eventTimeAsHourAndMinute = DateFormat.Hm().format(eventDate);
-    eventTimeAsDayMonthYear = isLocale
+    eventTimeAsDayMonthYear = widget.isLocale
         ? DateFormat.yMMMEd('en_EN').format(eventDate)
         : DateFormat.yMMMEd('tr_TR').format(eventDate);
 

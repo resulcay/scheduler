@@ -7,7 +7,8 @@ import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/view_model/create_event_view_model.dart';
 
 class CreateEventScreen extends StatefulWidget {
-  const CreateEventScreen({super.key});
+  const CreateEventScreen({super.key, required this.isLocale});
+  final bool isLocale;
 
   @override
   State<CreateEventScreen> createState() => _CreateEventScreenState();

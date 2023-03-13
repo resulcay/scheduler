@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:rect_getter/rect_getter.dart';
@@ -9,6 +9,8 @@ import 'package:scheduler/components/fade_out_builder.dart';
 import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/services/event_service.dart';
+import 'package:scheduler/services/localization.dart';
+import 'package:scheduler/services/path_service.dart';
 import 'package:scheduler/view/create_event_screen.dart';
 import 'package:scheduler/view/home_screen.dart';
 
@@ -17,6 +19,7 @@ import '../services/list_type_service.dart';
 abstract class HomeViewModel extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  late bool isLocale;
   late EventService eventService;
   late AnimationController animationController;
   static const Duration splashAnimationDuration = Duration(milliseconds: 350);
@@ -42,9 +45,13 @@ abstract class HomeViewModel extends State<HomeScreen>
 
   @override
   void didChangeDependencies() {
+    isLocale = context.locale == LocaleConstant.engLocale;
+
+    // TODO : This Section causes high memory usage due to calling build method constantly.
     context.watch<EventService>().getAllEvents();
     context.watch<ListTypeService>().read();
     super.didChangeDependencies();
+    //
   }
 
   void onColor() {
@@ -64,8 +71,12 @@ abstract class HomeViewModel extends State<HomeScreen>
   }
 
   FutureOr _goToNextPage() {
-    Navigator.push(context, FadeRouteBuilder(page: const CreateEventScreen()))
-        .then((_) => setState(() => rect = null));
+    Navigator.push(
+        context,
+        FadeRouteBuilder(
+            page: CreateEventScreen(
+          isLocale: isLocale,
+        ))).then((_) => setState(() => rect = null));
   }
 
   void close() => animationController.reverse();
@@ -84,8 +95,9 @@ abstract class HomeViewModel extends State<HomeScreen>
     DateTime eventDate = model.items[index].eventDate;
     initializeDateFormatting();
     String eventTimeAsHourAndMinute = DateFormat.Hm().format(eventDate);
-    String eventTimeAsDayMonthYear =
-        DateFormat.yMMMEd('en_EN').format(eventDate);
+    String eventTimeAsDayMonthYear = isLocale
+        ? DateFormat.yMMMEd('en_EN').format(eventDate)
+        : DateFormat.yMMMEd('tr_TR').format(eventDate);
     String value = model.items[index].color;
     value = _colorToString(value);
 
@@ -159,6 +171,29 @@ abstract class HomeViewModel extends State<HomeScreen>
           color: ConstantColor.normalOrange,
         ),
       ),
+    );
+  }
+
+  Widget emptyScreen() {
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        const Center(child: Text("There is no Event at the moment")),
+        Positioned(
+          bottom: 50,
+          right: 80,
+          child: Column(
+            children: [
+              const Text("Add from here",
+                  style: TextStyle(color: ConstantColor.transparentGrey)),
+              Image.asset(
+                '${PathService.IMAGE_BASE_PATH}curly-arrow.png',
+                scale: 1.5,
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 

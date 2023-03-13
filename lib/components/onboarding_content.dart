@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
+import 'package:scheduler/services/path_service.dart';
 
 class OnboardingContent extends StatefulWidget {
   final String svgFileName;
@@ -41,8 +43,8 @@ class _OnboardingContentState extends State<OnboardingContent> {
             duration: const Duration(seconds: 1),
             child: Padding(
               padding: context.paddingLarge,
-              child:
-                  SvgPicture.asset('assets/images/${widget.svgFileName}.svg'),
+              child: SvgPicture.asset(
+                  '${PathService.IMAGE_BASE_PATH}${widget.svgFileName}.svg'),
             ),
           ),
         ),
@@ -53,8 +55,10 @@ class _OnboardingContentState extends State<OnboardingContent> {
             duration: const Duration(seconds: 1),
             child: Text(
               widget.hintText,
-              style:
-                  Theme.of(context).textTheme.headline6!.copyWith(fontSize: 21),
+              style: Theme.of(context)
+                  .textTheme
+                  .headline6!
+                  .copyWith(color: ConstantColor.pureBlack, fontSize: 21),
             ),
           ),
         ),
