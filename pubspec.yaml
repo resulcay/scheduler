@@ -47,6 +47,11 @@ dependencies:
   date_time_picker: ^2.1.0
   flutter_alarm_clock: ^0.0.2
   easy_localization: ^3.0.1
+  firebase_core: ^2.7.1
+  firebase_analytics: ^10.1.5
+  firebase_crashlytics: ^3.0.16
+  share_plus: ^6.3.1
+  rate_my_app: ^1.1.4
 
 
   

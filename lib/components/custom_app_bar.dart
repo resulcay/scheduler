@@ -43,6 +43,7 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
               Radius.circular(20.0),
             ),
           ),
+          iconSize: 30,
           itemBuilder: (context) {
             return [
               const PopupMenuItem(
