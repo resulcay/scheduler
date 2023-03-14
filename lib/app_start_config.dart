@@ -3,7 +3,12 @@ part of 'package:scheduler/main.dart';
 class _AppStartConfig {
   launchConfig() async {
     WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp().then((_) {
+      AnalyticsService.getUser();
+      AnalyticsService.getDeviceInfo();
+    });
     await EasyLocalization.ensureInitialized();
+
     Directory directory =
         await path_provider.getApplicationDocumentsDirectory();
     Hive.init(directory.path);

@@ -12,6 +12,7 @@ import 'package:scheduler/models/event_model.dart';
 import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/date_time_provider.dart';
 import 'package:scheduler/services/event_service.dart';
+import 'package:scheduler/services/firebase_analytics.dart';
 import 'package:scheduler/services/local_notification_service.dart';
 import 'package:scheduler/view/create_event_screen.dart';
 
@@ -503,6 +504,13 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           }
 
           eventService.storeEvent(model);
+
+          AnalyticsService.analytics.logEvent(name: "event_store", parameters: {
+            "event_id": model.id.toString(),
+            "event_date": model.eventDate.toString(),
+            "event_alarm": isAlarmChecked.toString(),
+            "event_notification": isNotificationChecked.toString(),
+          });
 
           isNotificationChecked = false;
           isAlarmChecked = false;

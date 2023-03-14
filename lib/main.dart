@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -19,6 +20,7 @@ import 'package:scheduler/providers/stand_alone_providers/list_type_provider.dar
 import 'package:scheduler/providers/stand_alone_providers/onboarding_step_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/theme_provider.dart';
 import 'package:scheduler/services/event_service.dart';
+import 'package:scheduler/services/firebase_analytics.dart';
 import 'package:scheduler/services/list_type_service.dart';
 import 'package:scheduler/services/localization.dart';
 import 'package:scheduler/services/theme_service.dart';
@@ -52,6 +54,7 @@ class MyApp extends StatelessWidget {
             locale: context.locale,
             onGenerateTitle: (context) => LocaleKeys.scheduler.tr(),
             debugShowCheckedModeBanner: false,
+            navigatorObservers: [AnalyticsService.observer],
             theme: _ThemeConfiguration().lightTheme(),
             darkTheme: _ThemeConfiguration().darkTheme(),
             themeMode: themeService.isDark ? ThemeMode.dark : ThemeMode.light,

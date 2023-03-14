@@ -98,37 +98,43 @@ class CustomDrawer extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   isSelected: const [false, false],
                   children: [
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            context.setLocale(LocaleConstant.trLocale);
-                          },
-                          child: SvgPicture.asset(
-                              height: 40,
-                              '${PathService.IMAGE_BASE_PATH}tr.svg'),
-                        ),
-                        const Text(
-                          'TR',
-                          style: TextStyle(color: ConstantColor.elegantGrey),
-                        )
-                      ],
+                    Padding(
+                      padding: context.paddingLow,
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              context.setLocale(LocaleConstant.trLocale);
+                            },
+                            child: SvgPicture.asset(
+                                height: 40,
+                                '${PathService.IMAGE_BASE_PATH}tr.svg'),
+                          ),
+                          const Text(
+                            'TR',
+                            style: TextStyle(color: ConstantColor.elegantGrey),
+                          )
+                        ],
+                      ),
                     ),
-                    Column(
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            context.setLocale(LocaleConstant.engLocale);
-                          },
-                          child: SvgPicture.asset(
-                              height: 40,
-                              '${PathService.IMAGE_BASE_PATH}us.svg'),
-                        ),
-                        const Text(
-                          'EN',
-                          style: TextStyle(color: ConstantColor.elegantGrey),
-                        )
-                      ],
+                    Padding(
+                      padding: context.paddingLow,
+                      child: Column(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              context.setLocale(LocaleConstant.engLocale);
+                            },
+                            child: SvgPicture.asset(
+                                height: 40,
+                                '${PathService.IMAGE_BASE_PATH}us.svg'),
+                          ),
+                          const Text(
+                            'EN',
+                            style: TextStyle(color: ConstantColor.elegantGrey),
+                          )
+                        ],
+                      ),
                     )
                   ],
                 ),
