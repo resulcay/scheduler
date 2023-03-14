@@ -54,7 +54,9 @@ class EventDetail extends StatelessWidget {
                     child: Text(
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
-                      eventModel.eventDescription ?? 'No Description',
+                      eventModel.eventDescription!.isEmpty
+                          ? 'No Description'
+                          : eventModel.eventDescription ?? "",
                       style: const TextStyle(
                         color: ConstantColor.pureWhite,
                         fontWeight: FontWeight.w200,
