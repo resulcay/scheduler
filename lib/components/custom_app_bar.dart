@@ -46,23 +46,16 @@ class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
           iconSize: 30,
           itemBuilder: (context) {
             return [
-              const PopupMenuItem(
-                  value: 0,
-                  child: Text(
-                    "Delete All",
-                    style: TextStyle(color: ConstantColor.pureWhite),
-                  ))
+              PopupMenuItem(
+                value: 0,
+                child: const Text(
+                  LocaleKeys.deleteAll,
+                  style: TextStyle(color: ConstantColor.pureWhite),
+                ).tr(),
+              )
             ];
           },
         )
-        // IconButton(
-        //   onPressed: functionForRight,
-        //   splashRadius: 24,
-        //   icon: const Icon(
-        //     Icons.more_vert,
-        //     size: 30,
-        //   ),
-        // ),
       ],
     );
   }

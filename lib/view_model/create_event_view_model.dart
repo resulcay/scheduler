@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:scheduler/constants/constant_colors.dart';
+import 'package:scheduler/localization/locale_keys.g.dart';
 import 'package:scheduler/models/event_model.dart';
 import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/date_time_provider.dart';
@@ -73,7 +74,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     return showDialog(
       context: context,
       builder: (BuildContext context) => AlertDialog(
-        title: const Text('Colors'),
+        title: const Text(LocaleKeys.colors).tr(),
         content: BlockPicker(
           availableColors: ConstantColor.colorList,
           pickerColor: pickerColor,
@@ -84,7 +85,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
         ),
         actions: [
           TextButton(
-            child: const Text("OK"),
+            child: const Text(LocaleKeys.ok).tr(),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -154,7 +155,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
             backgroundColor: MaterialStateProperty.all(Colors.transparent),
           ),
           onPressed: () => pickColor(),
-          child: const Text('Chose Event Color')),
+          child: const Text(LocaleKeys.choseEventColor).tr()),
     );
   }
 
@@ -164,7 +165,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
       children: [
         Text(
           textAlign: TextAlign.center,
-          'Selected Date and Time\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
+          '${LocaleKeys.selectedDateAndTime.tr()}\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
           style: const TextStyle(
             fontWeight: FontWeight.w400,
             fontSize: 24,
@@ -185,15 +186,15 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: const Center(
-                child: Text(
-                  "Pick",
+              child: Center(
+                child: const Text(
+                  LocaleKeys.pick,
                   style: TextStyle(
                     color: ConstantColor.pureWhite,
                     fontWeight: FontWeight.w400,
                     fontSize: 36,
                   ),
-                ),
+                ).tr(),
               ),
             ),
           ),
@@ -215,31 +216,33 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           firstDate: DateTime(2000),
           lastDate: DateTime(2100),
           icon: const Icon(Icons.event),
-          dateLabelText: 'Date',
-          timeLabelText: 'Hour',
+          dateLabelText: LocaleKeys.date.tr(),
+          timeLabelText: LocaleKeys.time.tr(),
           onChanged: (value) {
             DateTime date = DateTime.parse(value);
             if (date.isBefore(DateTime.now())) {
               QuickAlert.show(
-                  onConfirmBtnTap: () {
-                    Navigator.pop(context);
-                  },
-                  context: context,
-                  type: QuickAlertType.error,
-                  title: 'Invalid Date or Time',
-                  text: 'Date or Time must be before current!');
+                onConfirmBtnTap: () {
+                  Navigator.pop(context);
+                },
+                context: context,
+                type: QuickAlertType.error,
+                title: LocaleKeys.invalidDateOrTime.tr(),
+                text: LocaleKeys.dateOrTimeMustBe.tr(),
+              );
             } else {
               Provider.of<DateTimeProvider>(context, listen: false)
                   .changeTimeRange(date);
 
               QuickAlert.show(
-                  onConfirmBtnTap: () {
-                    Navigator.pop(context);
-                  },
-                  context: context,
-                  type: QuickAlertType.success,
-                  title: 'Success',
-                  text: 'Date and time are adjusted!');
+                onConfirmBtnTap: () {
+                  Navigator.pop(context);
+                },
+                context: context,
+                type: QuickAlertType.success,
+                title: LocaleKeys.success.tr(),
+                text: LocaleKeys.dateAndTimeAreAdjusted.tr(),
+              );
             }
           },
         );
@@ -248,7 +251,8 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
   }
 
   void _invalidPeriod() {
-    SnackBar errorMessage = const SnackBar(content: Text('Invalid period'));
+    SnackBar errorMessage =
+        SnackBar(content: const Text(LocaleKeys.invalidPeriod).tr());
     ScaffoldMessenger.of(context).showSnackBar(errorMessage);
   }
 
@@ -286,7 +290,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       title: model.eventTitle,
                       body: '$periodInitialValue hour(s) left',
                       date: assumedDate,
-                      payload: 'payload example',
+                      payload: 'payload',
                     );
                   } else if (current.isBefore(assumedDate)) {
                     for (int i = periodInitialValue; i > 0; --i) {
@@ -295,7 +299,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                         title: model.eventTitle,
                         body: '$i hour(s) left',
                         date: eventDate.subtract(Duration(hours: i)),
-                        payload: 'payload exx',
+                        payload: 'payload',
                       );
                     }
                   } else {
@@ -315,7 +319,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       title: model.eventTitle,
                       body: '$periodInitialValue day(s) left',
                       date: assumedDate,
-                      payload: 'payload exx',
+                      payload: 'payload',
                     );
                   } else {
                     _invalidPeriod();
@@ -333,7 +337,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       title: model.eventTitle,
                       body: '$periodInitialValue week(s) left',
                       date: assumedDate,
-                      payload: 'payload exx',
+                      payload: 'payload',
                     );
                   } else {
                     _invalidPeriod();
@@ -351,7 +355,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       title: model.eventTitle,
                       body: '$periodInitialValue month(s) left',
                       date: assumedDate,
-                      payload: 'payload exx',
+                      payload: 'payload',
                     );
                   } else {
                     _invalidPeriod();
@@ -369,7 +373,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       title: model.eventTitle,
                       body: '$periodInitialValue year left',
                       date: assumedDate,
-                      payload: 'payload exx',
+                      payload: 'payload',
                     );
                   } else {
                     _invalidPeriod();
@@ -400,7 +404,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       title: model.eventTitle,
                       body: '$periodInitialValue saat kaldı',
                       date: assumedDate,
-                      payload: 'payload example',
+                      payload: 'payload',
                     );
                   } else if (current.isBefore(assumedDate)) {
                     for (int i = periodInitialValue; i > 0; --i) {
@@ -409,7 +413,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                         title: model.eventTitle,
                         body: '$i saat kaldı',
                         date: eventDate.subtract(Duration(hours: i)),
-                        payload: 'payload exx',
+                        payload: 'payload',
                       );
                     }
                   } else {
@@ -429,7 +433,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       title: model.eventTitle,
                       body: '$periodInitialValue gün kaldı',
                       date: assumedDate,
-                      payload: 'payload exx',
+                      payload: 'payload',
                     );
                   } else {
                     _invalidPeriod();
@@ -447,7 +451,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       title: model.eventTitle,
                       body: '$periodInitialValue hafta kaldı',
                       date: assumedDate,
-                      payload: 'payload exx',
+                      payload: 'payload',
                     );
                   } else {
                     _invalidPeriod();
@@ -465,7 +469,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       title: model.eventTitle,
                       body: '$periodInitialValue ay kaldı',
                       date: assumedDate,
-                      payload: 'payload exx',
+                      payload: 'payload',
                     );
                   } else {
                     _invalidPeriod();
@@ -483,7 +487,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       title: model.eventTitle,
                       body: '$periodInitialValue yıl kaldı',
                       date: assumedDate,
-                      payload: 'payload exx',
+                      payload: 'payload',
                     );
                   } else {
                     _invalidPeriod();
@@ -512,24 +516,28 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
             "event_notification": isNotificationChecked.toString(),
           });
 
-          isNotificationChecked = false;
-          isAlarmChecked = false;
-          titleTextController.clear();
-          descTextController.clear();
+          setState(() {
+            isNotificationChecked = false;
+            isAlarmChecked = false;
+            titleTextController.clear();
+            descTextController.clear();
+          });
 
           QuickAlert.show(
-              context: context,
-              type: QuickAlertType.success,
-              title: 'Success',
-              text: 'Successfully Saved!');
+            context: context,
+            type: QuickAlertType.success,
+            title: LocaleKeys.success.tr(),
+            text: LocaleKeys.successfullySaved.tr(),
+          );
         });
       }
     } catch (e) {
       QuickAlert.show(
-          context: context,
-          type: QuickAlertType.error,
-          title: 'Error',
-          text: 'Unexpected Error Occurred!');
+        context: context,
+        type: QuickAlertType.error,
+        title: LocaleKeys.error.tr(),
+        text: LocaleKeys.unExpectedErrorOccurred.tr(),
+      );
     }
   }
 }

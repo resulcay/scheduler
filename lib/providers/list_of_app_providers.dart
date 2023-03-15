@@ -9,6 +9,8 @@ class _AppProviders {
     ChangeNotifierProvider(create: (_) => EventService()),
     ChangeNotifierProvider(create: (_) => ListTypeService()),
     ChangeNotifierProvider(create: (_) => ListTypeProvider()),
+    ChangeNotifierProvider(create: (_) => RateProvider()),
+    ChangeNotifierProvider(create: (_) => RateService()),
     ChangeNotifierProvider(create: (_) => ThemeProvider()),
     ChangeNotifierProvider(create: (_) => ThemeService()),
   ];

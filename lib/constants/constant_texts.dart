@@ -1,5 +1,7 @@
 class ConstantText {
   static const fontName = 'Righteous';
+  static const playStoreLink = 'https://resulcay.web.app/';
+  static const mainRoute = 'main';
   static const onboardingBoxName = 'isOnboardingCompleted';
   static const onboardingBoxKeyName = 'localData';
   static const eventBoxName = 'eventBoxName';
@@ -8,6 +10,8 @@ class ConstantText {
   static const themeBoxKeyName = 'themeBoxKeyName';
   static const listTypeBoxName = 'listTypeBoxName';
   static const listTypeBoxKeyName = 'listTypeBoxKeyName';
+  static const rateBoxName = 'rateBoxName';
+  static const rateBoxKeyName = 'rateBoxKeyName';
   static const alarmBoxName = 'alarmBoxName';
   static const alarmBoxKeyName = 'alarmBoxKeyName';
   static const List<String> notificationPeriods = [

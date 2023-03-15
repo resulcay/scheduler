@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rect_getter/rect_getter.dart';
@@ -6,6 +7,7 @@ import 'package:scheduler/components/custom_drawer.dart';
 import 'package:scheduler/components/event_card.dart';
 import 'package:scheduler/components/event_detail.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
+import 'package:scheduler/localization/locale_keys.g.dart';
 import 'package:scheduler/services/event_service.dart';
 import 'package:scheduler/services/list_type_service.dart';
 import 'package:scheduler/view_model/home_view_model.dart';
@@ -112,7 +114,9 @@ class _HomeScreenState extends HomeViewModel {
                                                             .items[index]
                                                             .eventDescription!
                                                             .isEmpty
-                                                        ? "No Description"
+                                                        ? LocaleKeys
+                                                            .noDescription
+                                                            .tr()
                                                         : model.items[index]
                                                             .eventDescription
                                                             .toString(),
@@ -159,7 +163,8 @@ class _HomeScreenState extends HomeViewModel {
                                                           .items[index]
                                                           .eventDescription!
                                                           .isEmpty
-                                                      ? "No Description"
+                                                      ? LocaleKeys.noDescription
+                                                          .tr()
                                                       : model.items[index]
                                                           .eventDescription
                                                           .toString(),

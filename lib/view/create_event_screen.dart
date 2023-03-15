@@ -1,9 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:scheduler/components/period_drop_down_menu.dart';
 import 'package:scheduler/components/alarm_section.dart';
 import 'package:scheduler/components/decorated_text_field.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
+import 'package:scheduler/localization/locale_keys.g.dart';
 import 'package:scheduler/view_model/create_event_view_model.dart';
 
 class CreateEventScreen extends StatefulWidget {
@@ -18,7 +20,16 @@ class _CreateEventScreenState extends CreateEventViewModel {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.chevron_left_outlined,
+            size: 40,
+          ),
+        ),
+        automaticallyImplyLeading: false,
+      ),
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -35,32 +46,31 @@ class _CreateEventScreenState extends CreateEventViewModel {
                     function: (text) {
                       text = text?.trim();
                       if (text == null || text.isEmpty) {
-                        return 'Can not be Empty';
+                        return LocaleKeys.canNotBeEmpty.tr();
                       }
                       return null;
                     },
                     controller: titleTextController,
-                    hint: "Enter Title *",
+                    hint: LocaleKeys.enterTitle.tr(),
                     maxLines: 1,
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(
                     controller: descTextController,
-                    hint: "Enter Description",
+                    hint: LocaleKeys.enterDescription.tr(),
                     maxLines: 6,
                     textInputAction: TextInputAction.done,
                   ),
                   Row(
                     children: [
-                      const Text("Set Alarm"),
+                      const Text(LocaleKeys.setAlarm).tr(),
                       IconButton(
                         splashRadius: 18,
                         onPressed: () {
                           QuickAlert.show(
-                            title: 'Warning',
-                            text:
-                                "Activates system's alarm app. Deletions must be done manually.",
+                            title: LocaleKeys.alarm.tr(),
+                            text: LocaleKeys.activatesSystemsAlarm.tr(),
                             context: context,
                             type: QuickAlertType.info,
                           );
@@ -78,7 +88,7 @@ class _CreateEventScreenState extends CreateEventViewModel {
                             function: () => selectDateTime(),
                             widget: Text(
                               textAlign: TextAlign.center,
-                              'Fires at\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
+                              '${LocaleKeys.firesAt.tr()}\n$eventTimeAsHourAndMinute\n$eventTimeAsDayMonthYear',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 16,
@@ -92,13 +102,13 @@ class _CreateEventScreenState extends CreateEventViewModel {
                   ),
                   Row(
                     children: [
-                      const Text("Notify Me"),
+                      const Text(LocaleKeys.notifyMe).tr(),
                       IconButton(
                         splashRadius: 18,
                         onPressed: () {
                           QuickAlert.show(
-                              title: 'Warning',
-                              text: 'You will be notified on given period(s)',
+                              title: LocaleKeys.notification.tr(),
+                              text: LocaleKeys.youWillBeNotified.tr(),
                               context: context,
                               type: QuickAlertType.info);
                         },
@@ -114,6 +124,7 @@ class _CreateEventScreenState extends CreateEventViewModel {
                             iconData: Icons.calendar_month,
                             function: () => showCustomModalBottomSheet(),
                             widget: PeriodDropDownMenu(
+                              isEnglish: widget.isLocale,
                               dateTime: eventDate,
                               onPeriodSelected: (String value) {
                                 period = value;
@@ -150,7 +161,7 @@ class _CreateEventScreenState extends CreateEventViewModel {
                 onPressed: () {
                   saveEvent();
                 },
-                child: const Text('Save Event'),
+                child: const Text(LocaleKeys.saveEvent).tr(),
               ),
             ),
           )

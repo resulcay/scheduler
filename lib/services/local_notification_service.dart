@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
@@ -111,12 +110,5 @@ class NotificationApi {
       int id, String? title, String? body, String? payload) {}
 
   void onDidReceiveNotificationResponse(
-      NotificationResponse notificationResponse) async {
-    final String? payload = notificationResponse.payload;
-    if (notificationResponse.payload != null) {
-      if (kDebugMode) {
-        print('notification payload: $payload');
-      }
-    }
-  }
+      NotificationResponse notificationResponse) async {}
 }

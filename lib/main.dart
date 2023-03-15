@@ -18,11 +18,13 @@ import 'package:scheduler/providers/stand_alone_providers/date_time_provider.dar
 import 'package:scheduler/providers/stand_alone_providers/event_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/list_type_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/onboarding_step_provider.dart';
+import 'package:scheduler/providers/stand_alone_providers/rate_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/theme_provider.dart';
 import 'package:scheduler/services/event_service.dart';
 import 'package:scheduler/services/firebase_analytics.dart';
 import 'package:scheduler/services/list_type_service.dart';
 import 'package:scheduler/services/localization.dart';
+import 'package:scheduler/services/rate_service.dart';
 import 'package:scheduler/services/theme_service.dart';
 import 'package:scheduler/view/home_screen.dart';
 import 'package:scheduler/view/onboarding_screen.dart';
@@ -62,7 +64,7 @@ class MyApp extends StatelessWidget {
                 ? const HomeScreen()
                 : const OnboardingScreen(),
             routes: {
-              'main': (context) => const HomeScreen(),
+              ConstantText.mainRoute: (context) => const HomeScreen(),
             },
           );
         },

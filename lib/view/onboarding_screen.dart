@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:scheduler/components/onboarding_content.dart';
 import 'package:scheduler/constants/constant_colors.dart';
+import 'package:scheduler/localization/locale_keys.g.dart';
 import 'package:scheduler/view_model/onboarding_view_model.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -25,26 +27,26 @@ class _OnboardingScreenState extends OnboardingViewModel {
                 onPageChanged: (value) {
                   callMethod.changeStep(value);
                 },
-                children: const [
+                children: [
                   OnboardingContent(
                     svgFileName: 'schedule',
-                    hintText: "Make every day a success!",
+                    hintText: LocaleKeys.makeEveryDaySuccess.tr(),
                   ),
                   OnboardingContent(
                     svgFileName: 'time',
-                    hintText: "Never waste a moment again",
+                    hintText: LocaleKeys.neverWasteAMoment.tr(),
                   ),
                   OnboardingContent(
                     svgFileName: 'time-line',
-                    hintText: "Visualize your timeline",
+                    hintText: LocaleKeys.visualizeYourTimeline.tr(),
                   ),
                   OnboardingContent(
                     svgFileName: 'date-picker',
-                    hintText: "Stop missing important deadlines",
+                    hintText: LocaleKeys.stopMissingImportant.tr(),
                   ),
                   OnboardingContent(
                     svgFileName: 'organize',
-                    hintText: "Keep everything in order",
+                    hintText: LocaleKeys.keepEverythingInOrder.tr(),
                   ),
                 ],
               ),

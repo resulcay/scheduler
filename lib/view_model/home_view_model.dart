@@ -7,20 +7,24 @@ import 'package:quickalert/quickalert.dart';
 import 'package:rect_getter/rect_getter.dart';
 import 'package:scheduler/components/fade_out_builder.dart';
 import 'package:scheduler/constants/constant_colors.dart';
+import 'package:scheduler/constants/constant_texts.dart';
+import 'package:scheduler/localization/locale_keys.g.dart';
 import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/services/event_service.dart';
+import 'package:scheduler/services/firebase_analytics.dart';
 import 'package:scheduler/services/localization.dart';
 import 'package:scheduler/services/path_service.dart';
+import 'package:scheduler/services/rate_service.dart';
 import 'package:scheduler/view/create_event_screen.dart';
 import 'package:scheduler/view/home_screen.dart';
-
-import '../services/list_type_service.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 abstract class HomeViewModel extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   late bool isLocale;
   late EventService eventService;
+  late RateService rateService;
   late AnimationController animationController;
   static const Duration splashAnimationDuration = Duration(milliseconds: 350);
   static const Duration splashDelay = Duration(milliseconds: 50);
@@ -37,27 +41,63 @@ abstract class HomeViewModel extends State<HomeScreen>
   void initState() {
     super.initState();
     eventService = EventService();
+    rateService = RateService();
     animationController = AnimationController(
       vsync: this,
       duration: HomeViewModel.toggleDuration,
     );
+    checkRatingStatus();
   }
 
   @override
   void didChangeDependencies() {
     isLocale = context.locale == LocaleConstant.engLocale;
-
     // TODO : This Section causes high memory usage due to calling build method constantly.
     context.watch<EventService>().getAllEvents();
-    context.watch<ListTypeService>().read();
+
     super.didChangeDependencies();
     //
+  }
+
+  checkRatingStatus() {
+    eventService.generateEventId().then((itemCount) {
+      rateService.read().then((isRated) {
+        if (itemCount > 1 && !isRated) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            setState(() {
+              QuickAlert.show(
+                context: context,
+                type: QuickAlertType.info,
+                title: LocaleKeys.rateMyApp.tr(),
+                text: LocaleKeys.wouldYouPleaseRate.tr(),
+                confirmBtnText: LocaleKeys.rateNow.tr(),
+                cancelBtnText: LocaleKeys.later.tr(),
+                showCancelBtn: true,
+                onConfirmBtnTap: () {
+                  rateService.write(true).then((_) {
+                    final Uri url = Uri.parse(ConstantText.playStoreLink);
+                    launchUrl(url, mode: LaunchMode.externalApplication)
+                        .then((_) => Navigator.pop(context));
+                  });
+                  AnalyticsService.analytics
+                      .logEvent(name: "rate", parameters: {"is_rated": "true"});
+                },
+              );
+            });
+          });
+        }
+      });
+    });
   }
 
   void onColor() {
     Provider.of<ColorProvider>(context, listen: false)
         .changeColor(randomColor());
     onTapFloatingActionButton();
+    AnalyticsService.analytics
+        .logEvent(name: "floating_action_button", parameters: {
+      "button_click": "true",
+    });
   }
 
   void onTapFloatingActionButton() {
@@ -178,14 +218,16 @@ abstract class HomeViewModel extends State<HomeScreen>
     return Stack(
       fit: StackFit.expand,
       children: [
-        const Center(child: Text("There is no Event at the moment")),
+        Center(child: const Text(LocaleKeys.thereIsNoEvent).tr()),
         Positioned(
           bottom: 50,
           right: 80,
           child: Column(
             children: [
-              const Text("Add from here",
-                  style: TextStyle(color: ConstantColor.transparentGrey)),
+              const Text(
+                LocaleKeys.addFromHere,
+                style: TextStyle(color: ConstantColor.transparentGrey),
+              ).tr(),
               Image.asset(
                 '${PathService.IMAGE_BASE_PATH}curly-arrow.png',
                 scale: 1.5,
@@ -199,9 +241,9 @@ abstract class HomeViewModel extends State<HomeScreen>
 
   deleteAll() {
     QuickAlert.show(
-      title: 'Are you sure?',
-      text: 'All events will be deleted!',
-      confirmBtnText: 'Yes',
+      title: LocaleKeys.areYouSure.tr(),
+      text: LocaleKeys.allEventsWillBeDeleted.tr(),
+      confirmBtnText: LocaleKeys.yes.tr(),
       onConfirmBtnTap: () {
         eventService.deleteAllEvents();
         Navigator.pop(context);

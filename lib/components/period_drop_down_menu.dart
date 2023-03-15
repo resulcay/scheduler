@@ -1,14 +1,18 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/constants/constant_texts.dart';
+import 'package:scheduler/localization/locale_keys.g.dart';
 
 class PeriodDropDownMenu extends StatefulWidget {
   final void Function(String period) onPeriodSelected;
   final DateTime dateTime;
+  final bool isEnglish;
   const PeriodDropDownMenu({
     super.key,
     required this.onPeriodSelected,
     required this.dateTime,
+    required this.isEnglish,
   });
 
   @override
@@ -17,7 +21,6 @@ class PeriodDropDownMenu extends StatefulWidget {
 
 class _PeriodDropDownMenuState extends State<PeriodDropDownMenu> {
   String? notificationPeriod;
-  bool isEnglish = true;
 
   void _updatePeriod(String? period) {
     ///
@@ -170,9 +173,9 @@ class _PeriodDropDownMenuState extends State<PeriodDropDownMenu> {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       hint: const Text(
-        "Select",
+        LocaleKeys.select,
         style: TextStyle(color: ConstantColor.deepTeal),
-      ),
+      ).tr(),
       borderRadius: BorderRadius.circular(10),
       icon: const Icon(
         Icons.arrow_drop_down_circle_outlined,
@@ -180,7 +183,7 @@ class _PeriodDropDownMenuState extends State<PeriodDropDownMenu> {
       ),
       dropdownColor: ConstantColor.deepTeal,
       value: notificationPeriod,
-      items: (isEnglish
+      items: (widget.isEnglish
               ? ConstantText.notificationPeriods
               : ConstantText.notificationPeriodsInTurkish)
           .map((String period) {

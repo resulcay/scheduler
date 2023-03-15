@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:scheduler/constants/constant_colors.dart';
+import 'package:scheduler/constants/constant_texts.dart';
 import 'package:scheduler/extensions/media_query_extension.dart';
 import 'package:scheduler/extensions/padding_extension.dart';
 import 'package:scheduler/localization/locale_keys.g.dart';
@@ -12,6 +13,8 @@ import 'package:scheduler/services/list_type_service.dart';
 import 'package:scheduler/services/localization.dart';
 import 'package:scheduler/services/path_service.dart';
 import 'package:scheduler/services/theme_service.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends StatelessWidget {
   const CustomDrawer({
@@ -22,6 +25,7 @@ class CustomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     context.watch<ThemeService>().read();
     context.watch<ListTypeService>().read();
+    final Uri url = Uri.parse(ConstantText.playStoreLink);
 
     return Material(
       color: Theme.of(context).splashColor,
@@ -63,9 +67,8 @@ class CustomDrawer extends StatelessWidget {
                       splashRadius: 18,
                       onPressed: () {
                         QuickAlert.show(
-                            title: 'Warning',
-                            text:
-                                'Enabling Stacked listview can cause performance issues. In case of facing any problem please disable it.',
+                            title: LocaleKeys.listType.tr(),
+                            text: LocaleKeys.enablingStackedList.tr(),
                             context: context,
                             type: QuickAlertType.info);
                       },
@@ -90,9 +93,25 @@ class CustomDrawer extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Language',
-                  style: TextStyle(color: ConstantColor.pureWhite),
+                Row(
+                  children: [
+                    const Text(
+                      LocaleKeys.language,
+                      style: TextStyle(color: ConstantColor.pureWhite),
+                    ).tr(),
+                    IconButton(
+                      color: ConstantColor.pureWhite,
+                      splashRadius: 18,
+                      onPressed: () {
+                        QuickAlert.show(
+                            title: LocaleKeys.language.tr(),
+                            text: LocaleKeys.ifChangesHaveNotApplied.tr(),
+                            context: context,
+                            type: QuickAlertType.info);
+                      },
+                      icon: const Icon(Icons.info),
+                    ),
+                  ],
                 ),
                 ToggleButtons(
                   borderRadius: BorderRadius.circular(10),
@@ -138,6 +157,41 @@ class CustomDrawer extends StatelessWidget {
                     )
                   ],
                 ),
+              ],
+            ),
+            Row(
+              children: [
+                const Text(
+                  LocaleKeys.rate,
+                  style: TextStyle(color: ConstantColor.pureWhite),
+                ).tr(),
+                const SizedBox(width: 5),
+                IconButton(
+                  onPressed: () =>
+                      launchUrl(url, mode: LaunchMode.externalApplication),
+                  icon: const Icon(
+                    Icons.rate_review,
+                    color: ConstantColor.pureWhite,
+                    size: 30,
+                  ),
+                )
+              ],
+            ),
+            Row(
+              children: [
+                const Text(
+                  LocaleKeys.share,
+                  style: TextStyle(color: ConstantColor.pureWhite),
+                ).tr(),
+                const SizedBox(width: 5),
+                IconButton(
+                  onPressed: () => Share.share(ConstantText.playStoreLink),
+                  icon: const Icon(
+                    Icons.share_outlined,
+                    color: ConstantColor.pureWhite,
+                    size: 30,
+                  ),
+                )
               ],
             ),
             SizedBox(height: context.height),
