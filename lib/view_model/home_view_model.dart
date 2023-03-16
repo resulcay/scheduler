@@ -70,7 +70,7 @@ abstract class HomeViewModel extends State<HomeScreen>
                 type: QuickAlertType.info,
                 title: LocaleKeys.rateMyApp.tr(),
                 text: LocaleKeys.wouldYouPleaseRate.tr(),
-                confirmBtnText: LocaleKeys.rateNow.tr(),
+                confirmBtnText: LocaleKeys.rate.tr(),
                 cancelBtnText: LocaleKeys.later.tr(),
                 showCancelBtn: true,
                 onConfirmBtnTap: () {

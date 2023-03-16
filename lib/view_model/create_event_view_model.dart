@@ -222,6 +222,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
             DateTime date = DateTime.parse(value);
             if (date.isBefore(DateTime.now())) {
               QuickAlert.show(
+                confirmBtnText: LocaleKeys.confirmOk.tr(),
                 onConfirmBtnTap: () {
                   Navigator.pop(context);
                 },
@@ -242,6 +243,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                 type: QuickAlertType.success,
                 title: LocaleKeys.success.tr(),
                 text: LocaleKeys.dateAndTimeAreAdjusted.tr(),
+                confirmBtnText: LocaleKeys.confirmOk.tr(),
               );
             }
           },
@@ -250,9 +252,8 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     );
   }
 
-  void _invalidPeriod() {
-    SnackBar errorMessage =
-        SnackBar(content: const Text(LocaleKeys.invalidPeriod).tr());
+  void _invalidConfigForCheckBox(String snackBarMessage) {
+    SnackBar errorMessage = SnackBar(content: Text(snackBarMessage));
     ScaffoldMessenger.of(context).showSnackBar(errorMessage);
   }
 
@@ -303,7 +304,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       );
                     }
                   } else {
-                    _invalidPeriod();
+                    _invalidConfigForCheckBox(LocaleKeys.invalidPeriod.tr());
                     return;
                   }
 
@@ -322,7 +323,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       payload: 'payload',
                     );
                   } else {
-                    _invalidPeriod();
+                    _invalidConfigForCheckBox(LocaleKeys.invalidPeriod.tr());
                     return;
                   }
                   break;
@@ -340,7 +341,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       payload: 'payload',
                     );
                   } else {
-                    _invalidPeriod();
+                    _invalidConfigForCheckBox(LocaleKeys.invalidPeriod.tr());
                     return;
                   }
                   break;
@@ -358,7 +359,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       payload: 'payload',
                     );
                   } else {
-                    _invalidPeriod();
+                    _invalidConfigForCheckBox(LocaleKeys.invalidPeriod.tr());
                     return;
                   }
                   break;
@@ -376,7 +377,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       payload: 'payload',
                     );
                   } else {
-                    _invalidPeriod();
+                    _invalidConfigForCheckBox(LocaleKeys.invalidPeriod.tr());
                     return;
                   }
                   break;
@@ -417,7 +418,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       );
                     }
                   } else {
-                    _invalidPeriod();
+                    _invalidConfigForCheckBox(LocaleKeys.invalidPeriod.tr());
                     return;
                   }
 
@@ -436,7 +437,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       payload: 'payload',
                     );
                   } else {
-                    _invalidPeriod();
+                    _invalidConfigForCheckBox(LocaleKeys.invalidPeriod.tr());
                     return;
                   }
                   break;
@@ -454,7 +455,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       payload: 'payload',
                     );
                   } else {
-                    _invalidPeriod();
+                    _invalidConfigForCheckBox(LocaleKeys.invalidPeriod.tr());
                     return;
                   }
                   break;
@@ -472,7 +473,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       payload: 'payload',
                     );
                   } else {
-                    _invalidPeriod();
+                    _invalidConfigForCheckBox(LocaleKeys.invalidPeriod.tr());
                     return;
                   }
                   break;
@@ -490,7 +491,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                       payload: 'payload',
                     );
                   } else {
-                    _invalidPeriod();
+                    _invalidConfigForCheckBox(LocaleKeys.invalidPeriod.tr());
                     return;
                   }
                   break;
@@ -500,11 +501,16 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           }
 
           if (isAlarmChecked) {
-            FlutterAlarmClock.createAlarm(
-              eventDate.hour,
-              eventDate.minute,
-              title: model.eventTitle,
-            );
+            if (DateTime.now().isBefore(eventDate)) {
+              FlutterAlarmClock.createAlarm(
+                eventDate.hour,
+                eventDate.minute,
+                title: model.eventTitle,
+              );
+            } else {
+              _invalidConfigForCheckBox(LocaleKeys.invalidAlarm.tr());
+              return;
+            }
           }
 
           eventService.storeEvent(model);
@@ -527,6 +533,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
             context: context,
             type: QuickAlertType.success,
             title: LocaleKeys.success.tr(),
+            confirmBtnText: LocaleKeys.confirmOk.tr(),
             text: LocaleKeys.successfullySaved.tr(),
           );
         });
@@ -536,6 +543,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
         context: context,
         type: QuickAlertType.error,
         title: LocaleKeys.error.tr(),
+        confirmBtnText: LocaleKeys.confirmOk.tr(),
         text: LocaleKeys.unExpectedErrorOccurred.tr(),
       );
     }

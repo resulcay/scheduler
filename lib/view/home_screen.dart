@@ -88,22 +88,21 @@ class _HomeScreenState extends HomeViewModel {
                                                 return GestureDetector(
                                                   onTap: () {
                                                     Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            maintainState:
-                                                                false,
-                                                            builder:
-                                                                (context) =>
-                                                                    EventDetail(
-                                                                      values:
-                                                                          values,
-                                                                      eventService:
-                                                                          eventService,
-                                                                    ),
-                                                            settings: RouteSettings(
-                                                                arguments: model
-                                                                        .items[
-                                                                    index])));
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        maintainState: false,
+                                                        builder: (context) =>
+                                                            EventDetail(
+                                                          values: values,
+                                                          eventService:
+                                                              eventService,
+                                                        ),
+                                                        settings: RouteSettings(
+                                                          arguments: model
+                                                              .items[index],
+                                                        ),
+                                                      ),
+                                                    );
                                                   },
                                                   child: EventCard(
                                                     eventDate: model
@@ -141,18 +140,20 @@ class _HomeScreenState extends HomeViewModel {
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              EventDetail(
-                                                                values: values,
-                                                                eventService:
-                                                                    eventService,
-                                                              ),
-                                                          settings: RouteSettings(
-                                                              arguments:
-                                                                  model.items[
-                                                                      index])));
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          EventDetail(
+                                                        values: values,
+                                                        eventService:
+                                                            eventService,
+                                                      ),
+                                                      settings: RouteSettings(
+                                                        arguments:
+                                                            model.items[index],
+                                                      ),
+                                                    ),
+                                                  );
                                                 },
                                                 child: EventCard(
                                                   eventDate: model

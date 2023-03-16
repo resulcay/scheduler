@@ -67,14 +67,13 @@ class _CreateEventScreenState extends CreateEventViewModel {
                       const Text(LocaleKeys.setAlarm).tr(),
                       IconButton(
                         splashRadius: 18,
-                        onPressed: () {
-                          QuickAlert.show(
-                            title: LocaleKeys.alarm.tr(),
-                            text: LocaleKeys.activatesSystemsAlarm.tr(),
-                            context: context,
-                            type: QuickAlertType.info,
-                          );
-                        },
+                        onPressed: () => QuickAlert.show(
+                          title: LocaleKeys.alarm.tr(),
+                          text: LocaleKeys.activatesSystemsAlarm.tr(),
+                          confirmBtnText: LocaleKeys.confirmOk.tr(),
+                          context: context,
+                          type: QuickAlertType.info,
+                        ),
                         icon: const Icon(Icons.info),
                       ),
                       customAlarmCheckBox(),
@@ -105,13 +104,12 @@ class _CreateEventScreenState extends CreateEventViewModel {
                       const Text(LocaleKeys.notifyMe).tr(),
                       IconButton(
                         splashRadius: 18,
-                        onPressed: () {
-                          QuickAlert.show(
-                              title: LocaleKeys.notification.tr(),
-                              text: LocaleKeys.youWillBeNotified.tr(),
-                              context: context,
-                              type: QuickAlertType.info);
-                        },
+                        onPressed: () => QuickAlert.show(
+                            title: LocaleKeys.notification.tr(),
+                            text: LocaleKeys.youWillBeNotified.tr(),
+                            confirmBtnText: LocaleKeys.confirmOk.tr(),
+                            context: context,
+                            type: QuickAlertType.info),
                         icon: const Icon(Icons.info),
                       ),
                       customNotificationCheckBox(),
@@ -146,7 +144,7 @@ class _CreateEventScreenState extends CreateEventViewModel {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),

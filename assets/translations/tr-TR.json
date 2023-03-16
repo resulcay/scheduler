@@ -16,7 +16,6 @@
     "yes": "Evet",
     "rateMyApp": "Uygulamamı oylayın",
     "wouldYouPleaseRate": "Uygulamamı oylayıp yorum yapar mısınız?",
-    "rateNow": "Şimdi Oyla",
     "later": "Sonra",
     "noDescription": "Açıklama Yok",
     "enterTitle": "Başlık Girin * (zorunlu)",
@@ -24,7 +23,7 @@
     "setAlarm": "Alarm Kur",
     "alarm": "Alarm",
     "activatesSystemsAlarm": "Sistem alarm uygulamasını devreye sokar. Silme işlemi elle yapılmalıdır",
-    "firesAt": "Çalınır",
+    "firesAt": "Çalar",
     "date": "Tarih",
     "time": "Saat",
     "selectedDateAndTime": "Seçili tarih ve saat",
@@ -35,6 +34,7 @@
     "successfullySaved": "Başarılı bir şekilde kaydedildi!",
     "dateAndTimeAreAdjusted": "Tarih ve saat ayarlandı!",
     "invalidPeriod": "Geçersiz sıklık",
+    "invalidAlarm": "Geçersiz alarm verisi",
     "error": "Hata",
     "unExpectedErrorOccurred": "Beklenmeyen hata meydana geldi!",
     "colors": "Renkler",
@@ -54,5 +54,6 @@
     "done": "Tamam",
     "next": "Sonraki",
     "canNotBeEmpty": "Boş olamaz",
-    "delete": "Sil"
+    "delete": "Sil",
+    "confirmOk": "Tamam"
 }

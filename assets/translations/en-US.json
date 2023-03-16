@@ -16,7 +16,6 @@
     "yes": "Yes",
     "rateMyApp": "Rate My App",
     "wouldYouPleaseRate": "Would you please rate and leave a comment to my app?",
-    "rateNow": "Rate Now",
     "later": "Later",
     "noDescription": "No Description",
     "enterTitle": "Enter Title * (mandatory)",
@@ -35,6 +34,7 @@
     "successfullySaved": "Successfully Saved!",
     "dateAndTimeAreAdjusted": "Date and time are adjusted!",
     "invalidPeriod": "Invalid period",
+    "invalidAlarm": "Invalid alarm configuration",
     "error": "Error",
     "unExpectedErrorOccurred": "Unexpected Error Occurred!",
     "colors": "Colors",
@@ -54,5 +54,6 @@
     "done": "Done",
     "next": "Next",
     "canNotBeEmpty": "Can not be empty",
-    "delete": "Delete"
+    "delete": "Delete",
+    "confirmOk": "Okay"
 }

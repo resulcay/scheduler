@@ -69,6 +69,7 @@ class CustomDrawer extends StatelessWidget {
                         QuickAlert.show(
                             title: LocaleKeys.listType.tr(),
                             text: LocaleKeys.enablingStackedList.tr(),
+                            confirmBtnText: LocaleKeys.confirmOk.tr(),
                             context: context,
                             type: QuickAlertType.info);
                       },
@@ -107,6 +108,7 @@ class CustomDrawer extends StatelessWidget {
                             title: LocaleKeys.language.tr(),
                             text: LocaleKeys.ifChangesHaveNotApplied.tr(),
                             context: context,
+                            confirmBtnText: LocaleKeys.confirmOk.tr(),
                             type: QuickAlertType.info);
                       },
                       icon: const Icon(Icons.info),

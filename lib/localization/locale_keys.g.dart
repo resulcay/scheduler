@@ -18,7 +18,6 @@ abstract class  LocaleKeys {
   static const yes = 'yes';
   static const rateMyApp = 'rateMyApp';
   static const wouldYouPleaseRate = 'wouldYouPleaseRate';
-  static const rateNow = 'rateNow';
   static const later = 'later';
   static const noDescription = 'noDescription';
   static const enterTitle = 'enterTitle';
@@ -37,6 +36,7 @@ abstract class  LocaleKeys {
   static const successfullySaved = 'successfullySaved';
   static const dateAndTimeAreAdjusted = 'dateAndTimeAreAdjusted';
   static const invalidPeriod = 'invalidPeriod';
+  static const invalidAlarm = 'invalidAlarm';
   static const error = 'error';
   static const unExpectedErrorOccurred = 'unExpectedErrorOccurred';
   static const colors = 'colors';
@@ -57,5 +57,6 @@ abstract class  LocaleKeys {
   static const next = 'next';
   static const canNotBeEmpty = 'canNotBeEmpty';
   static const delete = 'delete';
+  static const confirmOk = 'confirmOk';
 
 }

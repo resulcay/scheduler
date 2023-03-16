@@ -26,30 +26,12 @@ class EventDetail extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Padding(
-            padding: context.paddingExtraLow,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Container(
-                  padding: context.paddingLow,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: ConstantColor.deepTeal),
-                ),
-                Container(
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: ConstantColor.elegantBlack),
-                  child: const Icon(
-                    Icons.chevron_left_outlined,
-                    color: Colors.white,
-                    size: 40,
-                  ),
-                ),
-              ],
-            ),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(
+            Icons.chevron_left_outlined,
+            color: Colors.white,
+            size: 40,
           ),
         ),
         automaticallyImplyLeading: false,
@@ -85,14 +67,15 @@ class EventDetail extends StatelessWidget {
                       maxLines: 5,
                       overflow: TextOverflow.ellipsis,
                       eventModel.eventDescription!.isEmpty
-                          ? LocaleKeys.noDescription
-                          : eventModel.eventDescription ?? "",
+                          ? LocaleKeys.noDescription.tr()
+                          : eventModel.eventDescription ??
+                              LocaleKeys.noDescription.tr(),
                       style: const TextStyle(
                         color: ConstantColor.pureWhite,
                         fontWeight: FontWeight.w200,
                         fontSize: 15,
                       ),
-                    ).tr(),
+                    ),
                   ),
                   Align(
                     alignment: Alignment.bottomCenter,
