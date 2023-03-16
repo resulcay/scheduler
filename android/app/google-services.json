@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:31497803099:android:340bfa28c00163733cb67e",
         "android_client_info": {
-          "package_name": "com.example.scheduler"
+          "package_name": "com.resoftware.scheduler"
         }
       },
       "oauth_client": [
