@@ -1,6 +1,7 @@
 class ConstantText {
   static const fontName = 'Righteous';
-  static const playStoreLink = 'https://resulcay.web.app/';
+  static const playStoreLink =
+      'https://play.google.com/store/apps/details?id=com.resoftware.scheduler';
   static const mainRoute = 'main';
   static const onboardingBoxName = 'isOnboardingCompleted';
   static const onboardingBoxKeyName = 'localData';
