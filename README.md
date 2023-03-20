@@ -1,6 +1,6 @@
 # scheduler
 
-A new Flutter project for now
+An offline event-tracking mobile app.
 
 ## Getting Started
 
