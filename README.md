@@ -2,6 +2,15 @@
 
 An offline event-tracking mobile app.
 
+Architecture : MVVM
+State-Management : Provider, Default(setState)
+Localization : Easy Localization
+Routing : Default (Navigator)
+Caching : Hive
+Notification : flutter_local_notifications
+Firebase SDKs : Analytics
+Illustrations : Undraw
+
 ---ScreenShots & Media---
 
 <img src="assets/pr/1.png" width="350">  |  <img src="assets/pr/2.png" width="350">  |
