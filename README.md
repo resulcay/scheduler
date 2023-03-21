@@ -12,7 +12,7 @@
 ## Firebase SDKs : Analytics
 ## Illustrations : Undraw
 
----ScreenShots & Media---
+😎---ScreenShots & Media---😎
 
 <img src="assets/pr/1.png" width="350">  |  <img src="assets/pr/2.png" width="350">  |
 <img src="assets/pr/3.png" width="350">  |  <img src="assets/pr/4.png" width="350">  |
@@ -20,7 +20,7 @@
 <img src="assets/pr/7.png" width="350">  |  <img src="assets/pr/8.png" width="350">  |
 <img src="assets/pr/9.png" width="350">  |  <img src="assets/pr/10.png" width="350"> |
 
----Youtube Video---
+👇---Youtube Video---👇
 
 [![Scheduler app](http://img.youtube.com/vi/WpBWiJPj3cw/0.jpg)](http://www.youtube.com/watch?v=WpBWiJPj3cw)
 
