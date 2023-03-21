@@ -10,6 +10,8 @@ An offline event-tracking mobile app.
 <img src="assets/pr/7.png" width="350">  |  <img src="assets/pr/8.png" width="350">  |
 <img src="assets/pr/9.png" width="350">  |  <img src="assets/pr/10.png" width="350"> |
 
+---Youtube Video---
+
 [![Scheduler app](http://img.youtube.com/vi/WpBWiJPj3cw/0.jpg)](http://www.youtube.com/watch?v=WpBWiJPj3cw)
 
 ## Getting Started
