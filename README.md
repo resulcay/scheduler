@@ -5,6 +5,7 @@
 
 ## Architecture : MVVM
 ## State-Management : Provider, Default(setState)
+## Design : Material-3
 ## Localization : Easy Localization
 ## Routing : Default (Navigator)
 ## Caching : Hive
