@@ -1,7 +1,7 @@
 # scheduler
 
 An offline event-tracking mobile app.
-https://play.google.com/store/apps/details?id=com.resoftware.scheduler
+### https://play.google.com/store/apps/details?id=com.resoftware.scheduler
 
 ## Architecture : MVVM
 ## State-Management : Provider, Default(setState)
