@@ -3,7 +3,7 @@ description: An event-tracking app.
 
 publish_to: 'none' 
 
-version: 1.0.2+2
+version: 1.0.3+3
 
 environment:
   sdk: '>=2.18.2 <3.0.0'
