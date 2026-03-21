@@ -1,0 +1,5 @@
+Showing sdk gphone64 x86 64 logs:
+
+Terminate batch job (Y/N)? 
+^CTerminate batch job (Y/N)? 
+^C

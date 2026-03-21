@@ -22,7 +22,7 @@ class EventDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final eventModel = ModalRoute.of(context)!.settings.arguments as EventModel;
-    Color backgroundColor = Color(int.parse(values[2]));
+    Color backgroundColor = Color(int.parse('0x${values[2]}'));
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(

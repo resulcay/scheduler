@@ -3,21 +3,30 @@ part of 'package:scheduler/main.dart';
 class _AppStartConfig {
   launchConfig() async {
     WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp().then((_) {
-      AnalyticsService.getUser();
-      AnalyticsService.getDeviceInfo();
-    });
-    await EasyLocalization.ensureInitialized();
 
-    Directory directory =
-        await path_provider.getApplicationDocumentsDirectory();
-    Hive.init(directory.path);
-    Hive.registerAdapter(EventModelAdapter());
-    ThemeService().read();
-    var onboardingBox = await Hive.openBox(ConstantText.onboardingBoxName);
-    bool isOnboardingDone = onboardingBox.values.isNotEmpty;
+    try {
+      await EasyLocalization.ensureInitialized();
+    } catch (e) {
+      print('EasyLocalization initialization error: $e');
+      // Localization is optional, continue with fallback
+    }
 
-    lockDeviceUpAndLaunch(isOnboardingDone);
+    try {
+      Directory directory =
+          await path_provider.getApplicationDocumentsDirectory();
+      Hive.init(directory.path);
+      Hive.registerAdapter(EventModelAdapter());
+      await ThemeService().read();
+      var onboardingBox = await Hive.openBox(ConstantText.onboardingBoxName);
+      bool isOnboardingDone = onboardingBox.values.isNotEmpty;
+
+      lockDeviceUpAndLaunch(isOnboardingDone);
+    } catch (e, stackTrace) {
+      print('Critical initialization error: $e');
+      print('Stack trace: $stackTrace');
+      // Re-throw critical errors to help debug
+      rethrow;
+    }
   }
 
   static lockDeviceUpAndLaunch(bool value) {

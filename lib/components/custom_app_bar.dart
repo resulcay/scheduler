@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:scheduler/constants/constant_colors.dart';
 import 'package:scheduler/localization/locale_keys.g.dart';
 
-class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final Function() functionForLeft;
   final Function() functionForRight;
 

@@ -3,7 +3,7 @@ description: An event-tracking app.
 
 publish_to: 'none' 
 
-version: 1.0.4+4
+version: 1.0.5+5
 
 environment:
   sdk: '>=2.18.2 <3.0.0'
@@ -15,26 +15,23 @@ dependencies:
   hive_flutter: ^1.1.0
   path_provider: ^2.0.11
   provider: ^6.0.4
-  flutter_local_notifications: ^13.0.0
-  timezone: ^0.9.0
+  flutter_local_notifications: ^21.0.0
   rxdart: ^0.27.7
-  intl: ^0.17.0
+  intl: ^0.20.0
   quickalert: ^1.0.1
   flutter_colorpicker: ^1.0.3
   stacked_card_carousel: ^0.0.4
   flutter_svg: ^1.1.6
   rect_getter: ^1.1.0
-  date_time_picker: ^2.1.0
   flutter_alarm_clock: ^0.0.2
   easy_localization: ^3.0.1
-  firebase_core: ^2.7.1
-  firebase_analytics: ^10.1.5
-  share_plus: ^6.3.1
+  share_plus: ^12.0.1
   url_launcher: ^6.1.10
-  platform_device_id: ^1.0.1
+  timezone: ^0.11.0
 
   cupertino_icons: ^1.0.2
   flutter_gen: ^5.1.0+1
+  win32: ^5.11.0
 
 dev_dependencies:
   flutter_test:

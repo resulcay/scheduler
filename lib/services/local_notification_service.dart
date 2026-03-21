@@ -8,21 +8,26 @@ class NotificationApi {
   Future<void> initApi() async {
     tz.initializeTimeZones();
 
-    _localNotificationApi
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
+    // Request Android notification permission
+    final androidImplementation =
+        _localNotificationApi.resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+    await androidImplementation?.requestNotificationsPermission();
 
-    _localNotificationApi
-        .resolvePlatformSpecificImplementation<
-            IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions();
+    // Request iOS notification permissions
+    final iOSImplementation =
+        _localNotificationApi.resolvePlatformSpecificImplementation<
+            IOSFlutterLocalNotificationsPlugin>();
+    await iOSImplementation?.requestPermissions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
 
     const AndroidInitializationSettings androidInitializationSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
     DarwinInitializationSettings iosInitializationSettings =
-        DarwinInitializationSettings(
-      onDidReceiveLocalNotification: onDidReceiveLocalNotification,
+        const DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,
@@ -32,7 +37,7 @@ class NotificationApi {
       iOS: iosInitializationSettings,
     );
     await _localNotificationApi.initialize(
-      settings,
+      settings: settings,
       onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
     );
   }
@@ -61,7 +66,12 @@ class NotificationApi {
     required String body,
   }) async {
     final details = await _notificationDetails();
-    await _localNotificationApi.show(id, title, body, details);
+    await _localNotificationApi.show(
+      id: id,
+      title: title,
+      body: body,
+      notificationDetails: details,
+    );
   }
 
   Future<void> showScheduledNotification({
@@ -73,18 +83,16 @@ class NotificationApi {
   }) async {
     final details = await _notificationDetails();
     await _localNotificationApi.zonedSchedule(
-      id,
-      title,
-      body,
-      tz.TZDateTime.from(
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      id: id,
+      title: title,
+      body: body,
+      scheduledDate: tz.TZDateTime.from(
         date,
         tz.local,
       ),
-      details,
+      notificationDetails: details,
       payload: payload,
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
     );
   }
 
@@ -96,13 +104,13 @@ class NotificationApi {
   }) async {
     final details = await _notificationDetails();
     await _localNotificationApi.periodicallyShow(
-      id,
-      title,
-      body,
-      RepeatInterval.everyMinute,
-      details,
+      androidScheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
+      id: id,
+      title: title,
+      body: body,
+      repeatInterval: RepeatInterval.everyMinute,
+      notificationDetails: details,
       payload: payload,
-      androidAllowWhileIdle: true,
     );
   }
 

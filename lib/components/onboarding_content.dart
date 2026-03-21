@@ -57,7 +57,7 @@ class _OnboardingContentState extends State<OnboardingContent> {
               widget.hintText,
               style: Theme.of(context)
                   .textTheme
-                  .headline6!
+                  .titleLarge!
                   .copyWith(color: ConstantColor.pureBlack, fontSize: 21),
             ),
           ),

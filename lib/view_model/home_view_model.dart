@@ -11,7 +11,6 @@ import 'package:scheduler/constants/constant_texts.dart';
 import 'package:scheduler/localization/locale_keys.g.dart';
 import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/services/event_service.dart';
-import 'package:scheduler/services/firebase_analytics.dart';
 import 'package:scheduler/services/localization.dart';
 import 'package:scheduler/services/path_service.dart';
 import 'package:scheduler/services/rate_service.dart';
@@ -79,8 +78,6 @@ abstract class HomeViewModel extends State<HomeScreen>
                     launchUrl(url, mode: LaunchMode.externalApplication)
                         .then((_) => Navigator.pop(context));
                   });
-                  AnalyticsService.analytics
-                      .logEvent(name: "rate", parameters: {"is_rated": "true"});
                 },
               );
             });
@@ -94,10 +91,6 @@ abstract class HomeViewModel extends State<HomeScreen>
     Provider.of<ColorProvider>(context, listen: false)
         .changeColor(randomColor());
     onTapFloatingActionButton();
-    AnalyticsService.analytics
-        .logEvent(name: "floating_action_button", parameters: {
-      "button_click": "true",
-    });
   }
 
   void onTapFloatingActionButton() {
@@ -145,16 +138,38 @@ abstract class HomeViewModel extends State<HomeScreen>
   }
 
   String _colorToString(String value) {
-    if (value.length > 20) {
-      var local = value.split(" ");
-      value = local.last;
-      value = value.substring(0, value.length - 1);
+    try {
+      if (value.isEmpty) return 'ff2196f3';
+
+      value = value.trim();
+
+      // 1. Color(...) formatını yakala (hem eski hem yeni)
+      final match = RegExp(r'0x([0-9a-fA-F]{8})').firstMatch(value);
+      if (match != null) {
+        return match.group(1)!.toLowerCase();
+      }
+
+      // 2. Direkt hex gelmiş olabilir (ffff5500 veya 0xffff5500)
+      String cleaned = value.toLowerCase();
+
+      if (cleaned.startsWith('0x')) {
+        cleaned = cleaned.substring(2);
+      }
+
+      // 8 karakterli valid hex mi kontrol et
+      if (RegExp(r'^[0-9a-f]{8}$').hasMatch(cleaned)) {
+        return cleaned;
+      }
+
+      // 3. 6 karakter gelirse (RGB), başına ff ekle (alpha)
+      if (RegExp(r'^[0-9a-f]{6}$').hasMatch(cleaned)) {
+        return 'ff$cleaned';
+      }
+
+      return 'ff2196f3';
+    } catch (_) {
+      return 'ff2196f3';
     }
-
-    value = value.split("(")[1];
-    value = value.split(")")[0];
-
-    return value;
   }
 
   void toggle() => animationController.isDismissed

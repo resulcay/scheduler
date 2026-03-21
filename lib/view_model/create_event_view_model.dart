@@ -1,4 +1,3 @@
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_alarm_clock/flutter_alarm_clock.dart';
@@ -13,7 +12,6 @@ import 'package:scheduler/models/event_model.dart';
 import 'package:scheduler/providers/stand_alone_providers/color_provider.dart';
 import 'package:scheduler/providers/stand_alone_providers/date_time_provider.dart';
 import 'package:scheduler/services/event_service.dart';
-import 'package:scheduler/services/firebase_analytics.dart';
 import 'package:scheduler/services/local_notification_service.dart';
 import 'package:scheduler/view/create_event_screen.dart';
 
@@ -79,8 +77,10 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           availableColors: ConstantColor.colorList,
           pickerColor: pickerColor,
           onColorChanged: (value) {
-            Provider.of<ColorProvider>(context, listen: false)
-                .changeColor(value);
+            Provider.of<ColorProvider>(
+              context,
+              listen: false,
+            ).changeColor(value);
           },
         ),
         actions: [
@@ -145,17 +145,16 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
         borderRadius: BorderRadius.circular(10),
       ),
       child: ElevatedButton(
-          style: ButtonStyle(
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-            ),
-            minimumSize: MaterialStateProperty.all(const Size(50, 50)),
-            backgroundColor: MaterialStateProperty.all(Colors.transparent),
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
-          onPressed: () => pickColor(),
-          child: const Text(LocaleKeys.choseEventColor).tr()),
+          minimumSize: MaterialStateProperty.all(const Size(50, 50)),
+          backgroundColor: MaterialStateProperty.all(Colors.transparent),
+        ),
+        onPressed: () => pickColor(),
+        child: const Text(LocaleKeys.choseEventColor).tr(),
+      ),
     );
   }
 
@@ -203,53 +202,68 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
     );
   }
 
-  Future<void> selectDateTime() {
+  Future<void> selectDateTime() async {
     FocusManager.instance.primaryFocus?.unfocus();
-    return showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return DateTimePicker(
-          locale: context.locale,
-          type: DateTimePickerType.dateTimeSeparate,
-          dateMask: 'd MMM, yyyy',
-          initialValue: eventDate.toString(),
-          firstDate: DateTime(2000),
-          lastDate: DateTime(2100),
-          icon: const Icon(Icons.event),
-          dateLabelText: LocaleKeys.date.tr(),
-          timeLabelText: LocaleKeys.time.tr(),
-          onChanged: (value) {
-            DateTime date = DateTime.parse(value);
-            if (date.isBefore(DateTime.now())) {
-              QuickAlert.show(
-                confirmBtnText: LocaleKeys.confirmOk.tr(),
-                onConfirmBtnTap: () {
-                  Navigator.pop(context);
-                },
-                context: context,
-                type: QuickAlertType.error,
-                title: LocaleKeys.invalidDateOrTime.tr(),
-                text: LocaleKeys.dateOrTimeMustBe.tr(),
-              );
-            } else {
-              Provider.of<DateTimeProvider>(context, listen: false)
-                  .changeTimeRange(date);
 
-              QuickAlert.show(
-                onConfirmBtnTap: () {
-                  Navigator.pop(context);
-                },
-                context: context,
-                type: QuickAlertType.success,
-                title: LocaleKeys.success.tr(),
-                text: LocaleKeys.dateAndTimeAreAdjusted.tr(),
-                confirmBtnText: LocaleKeys.confirmOk.tr(),
-              );
-            }
-          },
-        );
-      },
+    // First, show date picker
+    final selectedDate = await showDatePicker(
+      context: context,
+      initialDate: eventDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
     );
+
+    if (selectedDate == null) return;
+
+    // Then show time picker
+    if (!context.mounted) return;
+    final selectedTime = await showTimePicker(
+      // ignore: use_build_context_synchronously
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(eventDate),
+    );
+
+    if (selectedTime == null) return;
+
+    // Combine date and time
+    final date = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      selectedTime.hour,
+      selectedTime.minute,
+    );
+
+    if (date.isBefore(DateTime.now())) {
+      if (!context.mounted) return;
+      QuickAlert.show(
+        confirmBtnText: LocaleKeys.confirmOk.tr(),
+        onConfirmBtnTap: () {
+          Navigator.pop(context);
+        },
+        context: context,
+        type: QuickAlertType.error,
+        title: LocaleKeys.invalidDateOrTime.tr(),
+        text: LocaleKeys.dateOrTimeMustBe.tr(),
+      );
+    } else {
+      Provider.of<DateTimeProvider>(
+        context,
+        listen: false,
+      ).changeTimeRange(date);
+
+      if (!context.mounted) return;
+      QuickAlert.show(
+        onConfirmBtnTap: () {
+          Navigator.pop(context);
+        },
+        context: context,
+        type: QuickAlertType.success,
+        title: LocaleKeys.success.tr(),
+        text: LocaleKeys.dateAndTimeAreAdjusted.tr(),
+        confirmBtnText: LocaleKeys.confirmOk.tr(),
+      );
+    }
   }
 
   void _invalidConfigForCheckBox(String snackBarMessage) {
@@ -267,7 +281,7 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
             eventTitle: titleTextController.text.trim(),
             eventDescription: descTextController.text.trim(),
             eventDate: eventDate,
-            color: pickerColor.toString(),
+            color: pickerColor.value.toRadixString(16),
           );
 
           if (isNotificationChecked) {
@@ -282,8 +296,9 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
               switch (periodInitial) {
                 // hour
                 case 'h':
-                  var assumedDate =
-                      eventDate.subtract(Duration(hours: periodInitialValue));
+                  var assumedDate = eventDate.subtract(
+                    Duration(hours: periodInitialValue),
+                  );
 
                   if (current.isBefore(assumedDate) && period.length < 12) {
                     notificationApi.showScheduledNotification(
@@ -311,8 +326,9 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                   break;
                 // day
                 case 'd':
-                  var assumedDate =
-                      eventDate.subtract(Duration(days: periodInitialValue));
+                  var assumedDate = eventDate.subtract(
+                    Duration(days: periodInitialValue),
+                  );
 
                   if (current.isBefore(assumedDate)) {
                     notificationApi.showScheduledNotification(
@@ -329,8 +345,9 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                   break;
                 // week
                 case 'w':
-                  var assumedDate = eventDate
-                      .subtract(Duration(days: periodInitialValue * 7));
+                  var assumedDate = eventDate.subtract(
+                    Duration(days: periodInitialValue * 7),
+                  );
 
                   if (current.isBefore(assumedDate)) {
                     notificationApi.showScheduledNotification(
@@ -347,8 +364,9 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                   break;
                 // month
                 case 'm':
-                  var assumedDate = eventDate
-                      .subtract(Duration(days: periodInitialValue * 30));
+                  var assumedDate = eventDate.subtract(
+                    Duration(days: periodInitialValue * 30),
+                  );
 
                   if (current.isBefore(assumedDate)) {
                     notificationApi.showScheduledNotification(
@@ -365,8 +383,9 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                   break;
                 // year
                 case 'y':
-                  var assumedDate = eventDate
-                      .subtract(Duration(days: periodInitialValue * 365));
+                  var assumedDate = eventDate.subtract(
+                    Duration(days: periodInitialValue * 365),
+                  );
 
                   if (current.isBefore(assumedDate)) {
                     notificationApi.showScheduledNotification(
@@ -396,8 +415,9 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
               switch (periodInitial) {
                 // hour
                 case 's':
-                  var assumedDate =
-                      eventDate.subtract(Duration(hours: periodInitialValue));
+                  var assumedDate = eventDate.subtract(
+                    Duration(hours: periodInitialValue),
+                  );
 
                   if (current.isBefore(assumedDate) && period.length < 12) {
                     notificationApi.showScheduledNotification(
@@ -425,8 +445,9 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                   break;
                 // day
                 case 'g':
-                  var assumedDate =
-                      eventDate.subtract(Duration(days: periodInitialValue));
+                  var assumedDate = eventDate.subtract(
+                    Duration(days: periodInitialValue),
+                  );
 
                   if (current.isBefore(assumedDate)) {
                     notificationApi.showScheduledNotification(
@@ -443,8 +464,9 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                   break;
                 // week
                 case 'h':
-                  var assumedDate = eventDate
-                      .subtract(Duration(days: periodInitialValue * 7));
+                  var assumedDate = eventDate.subtract(
+                    Duration(days: periodInitialValue * 7),
+                  );
 
                   if (current.isBefore(assumedDate)) {
                     notificationApi.showScheduledNotification(
@@ -461,8 +483,9 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                   break;
                 // month
                 case 'a':
-                  var assumedDate = eventDate
-                      .subtract(Duration(days: periodInitialValue * 30));
+                  var assumedDate = eventDate.subtract(
+                    Duration(days: periodInitialValue * 30),
+                  );
 
                   if (current.isBefore(assumedDate)) {
                     notificationApi.showScheduledNotification(
@@ -479,8 +502,9 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
                   break;
                 // year
                 case 'y':
-                  var assumedDate = eventDate
-                      .subtract(Duration(days: periodInitialValue * 365));
+                  var assumedDate = eventDate.subtract(
+                    Duration(days: periodInitialValue * 365),
+                  );
 
                   if (current.isBefore(assumedDate)) {
                     notificationApi.showScheduledNotification(
@@ -514,13 +538,6 @@ abstract class CreateEventViewModel extends State<CreateEventScreen> {
           }
 
           eventService.storeEvent(model);
-
-          AnalyticsService.analytics.logEvent(name: "event_store", parameters: {
-            "event_id": model.id.toString(),
-            "event_date": model.eventDate.toString(),
-            "event_alarm": isAlarmChecked.toString(),
-            "event_notification": isNotificationChecked.toString(),
-          });
 
           setState(() {
             isNotificationChecked = false;

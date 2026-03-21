@@ -36,7 +36,7 @@ class AlarmSection extends StatelessWidget {
           ),
         ),
         Divider(
-          color: Theme.of(context).backgroundColor,
+          color: Theme.of(context).colorScheme.surface,
           thickness: .7,
         )
       ],

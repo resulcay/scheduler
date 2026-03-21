@@ -121,8 +121,8 @@ class _HomeScreenState extends HomeViewModel {
                                                             .toString(),
                                                     date:
                                                         '${values[0]} - ${values[1]}',
-                                                    color: Color(
-                                                        int.parse(values[2])),
+                                                    color: Color(int.parse(
+                                                        '0x${values[2]}')),
                                                   ),
                                                 );
                                               },
@@ -171,8 +171,8 @@ class _HomeScreenState extends HomeViewModel {
                                                           .toString(),
                                                   date:
                                                       '${values[0]} - ${values[1]}',
-                                                  color: Color(
-                                                      int.parse(values[2])),
+                                                  color: Color(int.parse(
+                                                      '0x${values[2]}')),
                                                 ),
                                               ),
                                             );
