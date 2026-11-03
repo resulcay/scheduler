@@ -5,7 +5,7 @@ class ConstantText {
 
   /// Numeric Apple ID from App Store Connect (App Information page).
   /// Empty until the app is created there; iOS hides "Rate" while empty.
-  static const appStoreId = '';
+  static const appStoreId = '6829983109';
   static const appStoreLink = 'https://apps.apple.com/app/id$appStoreId';
   static const appStoreReviewLink = '$appStoreLink?action=write-review';
   static const onboardingBoxName = 'isOnboardingCompleted';

@@ -1,7 +1,10 @@
 # scheduler
 
-### An offline event-tracking mobile app.
-### https://play.google.com/store/apps/details?id=com.resoftware.scheduler
+### An offline event-tracking mobile app for Android and iOS.
+### Android: https://play.google.com/store/apps/details?id=com.resoftware.scheduler
+### iOS: https://apps.apple.com/app/id6829983109 (live once App Review approves 1.1.0)
+
+Runs on Android phones and tablets, and on iPhone and iPad (iOS 15.0+).
 
 ## Architecture : Stores (ChangeNotifier) + screens
 ## State-Management : Provider, Default(setState)
@@ -34,11 +37,27 @@ All pending reminders are rebuilt on every launch and language change.
 Android needs the scheduled-notification receivers in `AndroidManifest.xml`; their
 absence was why reminders never arrived in 1.0.5 and earlier.
 
+iOS keeps only the 64 soonest pending notifications, so the service schedules at most the
+60 nearest and refills on launch. `AppDelegate.swift` sets the
+`UNUserNotificationCenter` delegate so reminders also show while the app is open.
+
+## Running on iOS
+
+```bash
+flutter pub get
+(cd ios && pod install)              # LANG=en_US.UTF-8 if CocoaPods complains about encoding
+flutter run -d <simulator or device>
+```
+
+In Xcode keep *User Script Sandboxing* set to **No** (Runner › Build Settings);
+Flutter's build scripts fail with it on.
+
 ## Tests
 
 ```bash
 flutter test                         # unit + platform-config tests
-./scripts/test_notifications.sh      # on a booted emulator/device: a real reminder must be delivered
+./scripts/test_notifications.sh      # Android emulator/device: a real reminder must be delivered
+flutter test integration_test/notification_test.dart -d <ios simulator>   # same on iOS
 ```
 
 ## Privacy and support
@@ -47,4 +66,5 @@ flutter test                         # unit + platform-config tests
 
 ## Store assets
 
-See [showcase/README.md](showcase/README.md).
+Google Play and App Store screenshots, header and listing texts: see
+[showcase/README.md](showcase/README.md).

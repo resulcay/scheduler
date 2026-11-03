@@ -6,8 +6,8 @@ App Privacy: **Data Not Collected**.
 Privacy Policy URL: https://github.com/resulcay/scheduler/blob/master/PRIVACY.md
 Support URL: https://github.com/resulcay/scheduler/blob/master/SUPPORT.md
 
-After the app is created in App Store Connect, put its numeric Apple ID in
-`ConstantText.appStoreId` (`lib/constants/constant_texts.dart`) to enable "Rate" on iOS.
+Apple ID: `6829983109`, set in `ConstantText.appStoreId`
+(`lib/constants/constant_texts.dart`) so "Rate" and "Share" link to the App Store on iOS.
 
 ## en-US
 
