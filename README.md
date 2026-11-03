@@ -3,14 +3,13 @@
 ### An offline event-tracking mobile app.
 ### https://play.google.com/store/apps/details?id=com.resoftware.scheduler
 
-## Architecture : MVVM
+## Architecture : Stores (ChangeNotifier) + screens
 ## State-Management : Provider, Default(setState)
 ## Design : Material-3
 ## Localization : Easy Localization
 ## Routing : Default (Navigator)
 ## Caching : Hive
 ## Notification : flutter_local_notifications
-## Firebase SDKs : Analytics
 ## Illustrations : Undraw
 
 😎---ScreenShots & Media---😎
@@ -25,15 +24,23 @@
 
 [![Scheduler app](http://img.youtube.com/vi/WpBWiJPj3cw/0.jpg)](http://www.youtube.com/watch?v=WpBWiJPj3cw)
 
-## Getting Started
+## Notifications
 
-This project is a starting point for a Flutter application.
+Reminders are scheduled locally with `flutter_local_notifications`
+(`lib/services/notification_service.dart`). Each event gets a notification at its
+start time plus an optional advance reminder (`lib/models/reminder_period.dart`).
+All pending reminders are rebuilt on every launch and language change.
 
-A few resources to get you started if this is your first Flutter project:
+Android needs the scheduled-notification receivers in `AndroidManifest.xml`; their
+absence was why reminders never arrived in 1.0.5 and earlier.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Tests
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter test                         # unit + platform-config tests
+./scripts/test_notifications.sh      # on a booted emulator/device: a real reminder must be delivered
+```
+
+## Store assets
+
+See [showcase/README.md](showcase/README.md).

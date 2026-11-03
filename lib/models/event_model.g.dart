@@ -1,10 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// (hive_generator is incompatible with the current analyzer; kept in sync by hand.)
 
 part of 'event_model.dart';
-
-// **************************************************************************
-// TypeAdapterGenerator
-// **************************************************************************
 
 class EventModelAdapter extends TypeAdapter<EventModel> {
   @override
@@ -22,13 +19,15 @@ class EventModelAdapter extends TypeAdapter<EventModel> {
       eventDescription: fields[2] as String?,
       eventDate: fields[3] as DateTime,
       color: fields[4] as String,
+      notify: fields[5] as bool? ?? false,
+      reminder: fields[6] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, EventModel obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -38,7 +37,11 @@ class EventModelAdapter extends TypeAdapter<EventModel> {
       ..writeByte(3)
       ..write(obj.eventDate)
       ..writeByte(4)
-      ..write(obj.color);
+      ..write(obj.color)
+      ..writeByte(5)
+      ..write(obj.notify)
+      ..writeByte(6)
+      ..write(obj.reminder);
   }
 
   @override

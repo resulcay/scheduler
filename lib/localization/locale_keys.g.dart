@@ -1,6 +1,8 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-abstract class  LocaleKeys {
+// ignore_for_file: constant_identifier_names
+
+abstract class LocaleKeys {
   static const scheduler = 'scheduler';
   static const darkMode = 'darkMode';
   static const stackedListview = 'stackedListview';
@@ -58,5 +60,23 @@ abstract class  LocaleKeys {
   static const canNotBeEmpty = 'canNotBeEmpty';
   static const delete = 'delete';
   static const confirmOk = 'confirmOk';
-
+  static const atEventTime = 'atEventTime';
+  static const periodHour = 'periodHour';
+  static const periodDay = 'periodDay';
+  static const periodWeek = 'periodWeek';
+  static const periodMonth = 'periodMonth';
+  static const periodYear = 'periodYear';
+  static const periodHourly = 'periodHourly';
+  static const leftHour = 'leftHour';
+  static const leftDay = 'leftDay';
+  static const leftWeek = 'leftWeek';
+  static const leftMonth = 'leftMonth';
+  static const leftYear = 'leftYear';
+  static const eventStartsNow = 'eventStartsNow';
+  static const notificationsDenied = 'notificationsDenied';
+  static const exactAlarmTitle = 'exactAlarmTitle';
+  static const exactAlarmText = 'exactAlarmText';
+  static const allow = 'allow';
+  static const alarmOnlyWithin24h = 'alarmOnlyWithin24h';
+  static const reminderChannelName = 'reminderChannelName';
 }

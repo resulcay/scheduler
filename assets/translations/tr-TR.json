@@ -42,12 +42,12 @@
     "choseEventColor": "Etkinlik rengi seçiniz",
     "notifyMe": "Bana Bildir",
     "notification": "Bildirim",
-    "youWillBeNotified": "Verilen sıklıkta uyarılacaksınız. Bu özellik sistem kısıtlamaları yüzünden düzgün çalışamayabilir",
+    "youWillBeNotified": "Etkinlik başladığında ve isterseniz öncesinde bildirim alacaksınız.",
     "saveEvent": "Etkinliği Kaydet",
     "deleteAll": "Hepsini Sil",
     "select": "Seç",
     "makeEveryDaySuccess": "Her günü bir başarıya dönüştürün!",
-    "neverWasteAMoment": "Anı birdaha asla boşa harcama",
+    "neverWasteAMoment": "Bir anı bile boşa harcama",
     "visualizeYourTimeline": "Zaman çizelgenizi görselleştirin",
     "stopMissingImportant": "Önemli teslim tarihlerini kaçırma",
     "keepEverythingInOrder": "Her şeyi düzenli tut",
@@ -55,5 +55,54 @@
     "next": "Sonraki",
     "canNotBeEmpty": "Boş olamaz",
     "delete": "Sil",
-    "confirmOk": "Tamam"
+    "confirmOk": "Tamam",
+    "atEventTime": "Sadece etkinlik saatinde",
+    "periodHour": {
+        "one": "{} saat önce",
+        "other": "{} saat önce"
+    },
+    "periodDay": {
+        "one": "{} gün önce",
+        "other": "{} gün önce"
+    },
+    "periodWeek": {
+        "one": "{} hafta önce",
+        "other": "{} hafta önce"
+    },
+    "periodMonth": {
+        "one": "{} ay önce",
+        "other": "{} ay önce"
+    },
+    "periodYear": {
+        "one": "{} yıl önce",
+        "other": "{} yıl önce"
+    },
+    "periodHourly": "Son {} saat boyunca her saat",
+    "leftHour": {
+        "one": "{} saat kaldı",
+        "other": "{} saat kaldı"
+    },
+    "leftDay": {
+        "one": "{} gün kaldı",
+        "other": "{} gün kaldı"
+    },
+    "leftWeek": {
+        "one": "{} hafta kaldı",
+        "other": "{} hafta kaldı"
+    },
+    "leftMonth": {
+        "one": "{} ay kaldı",
+        "other": "{} ay kaldı"
+    },
+    "leftYear": {
+        "one": "{} yıl kaldı",
+        "other": "{} yıl kaldı"
+    },
+    "eventStartsNow": "Etkinliğiniz şimdi başlıyor",
+    "notificationsDenied": "Bildirimler kapalı. Lütfen Ayarlar'dan açın.",
+    "exactAlarmTitle": "Zamanında hatırlatmalar",
+    "exactAlarmText": "Hatırlatmaların tam zamanında gelmesi için \"Alarmlar ve hatırlatıcılar\" iznini verin.",
+    "allow": "İzin ver",
+    "alarmOnlyWithin24h": "Sistem alarmı yalnızca önümüzdeki 24 saat içindeki etkinlikler için kurulabilir.",
+    "reminderChannelName": "Etkinlik hatırlatmaları"
 }

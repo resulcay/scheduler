@@ -29,7 +29,7 @@
     "selectedDateAndTime": "Selected Date and Time",
     "pick": "Pick",
     "invalidDateOrTime": "Invalid Date or Time",
-    "dateOrTimeMustBe": "Date or Time must be before current!",
+    "dateOrTimeMustBe": "Date and time must be in the future!",
     "success": "Successful",
     "successfullySaved": "Successfully Saved!",
     "dateAndTimeAreAdjusted": "Date and time are adjusted!",
@@ -39,10 +39,10 @@
     "unExpectedErrorOccurred": "Unexpected Error Occurred!",
     "colors": "Colors",
     "ok": "OK",
-    "choseEventColor": "Chose Event Color",
+    "choseEventColor": "Choose Event Color",
     "notifyMe": "Notify Me",
     "notification": "Notification",
-    "youWillBeNotified": "You will be notified on given period(s). This feature may not work properly due to system restrictions",
+    "youWillBeNotified": "You will be notified when the event starts and, optionally, ahead of time.",
     "saveEvent": "Save Event",
     "deleteAll": "Delete All",
     "select": "Select",
@@ -55,5 +55,54 @@
     "next": "Next",
     "canNotBeEmpty": "Can not be empty",
     "delete": "Delete",
-    "confirmOk": "Okay"
+    "confirmOk": "Okay",
+    "atEventTime": "Only at event time",
+    "periodHour": {
+        "one": "1 hour before",
+        "other": "{} hours before"
+    },
+    "periodDay": {
+        "one": "1 day before",
+        "other": "{} days before"
+    },
+    "periodWeek": {
+        "one": "1 week before",
+        "other": "{} weeks before"
+    },
+    "periodMonth": {
+        "one": "1 month before",
+        "other": "{} months before"
+    },
+    "periodYear": {
+        "one": "1 year before",
+        "other": "{} years before"
+    },
+    "periodHourly": "Every hour, last {} hours",
+    "leftHour": {
+        "one": "1 hour left",
+        "other": "{} hours left"
+    },
+    "leftDay": {
+        "one": "1 day left",
+        "other": "{} days left"
+    },
+    "leftWeek": {
+        "one": "1 week left",
+        "other": "{} weeks left"
+    },
+    "leftMonth": {
+        "one": "1 month left",
+        "other": "{} months left"
+    },
+    "leftYear": {
+        "one": "1 year left",
+        "other": "{} years left"
+    },
+    "eventStartsNow": "Your event is starting now",
+    "notificationsDenied": "Notifications are turned off. Please enable them in Settings.",
+    "exactAlarmTitle": "On-time reminders",
+    "exactAlarmText": "Allow \"Alarms & reminders\" so your reminders arrive exactly on time.",
+    "allow": "Allow",
+    "alarmOnlyWithin24h": "The system alarm can only be set for events within the next 24 hours.",
+    "reminderChannelName": "Event reminders"
 }

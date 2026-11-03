@@ -11,13 +11,13 @@ class CustomTextField extends StatelessWidget {
   final String? Function(String?)? function;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.maxLines,
     required this.hint,
     required this.textInputAction,
     this.function,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +30,12 @@ class CustomTextField extends StatelessWidget {
       textInputAction: textInputAction,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.normal,
-        ),
+        hintStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.normal),
         enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: ConstantColor.normalGrey,
-            width: 1,
-          ),
+          borderSide: BorderSide(color: ConstantColor.normalGrey, width: 1),
         ),
         focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(
-            width: 2,
-          ),
+          borderSide: BorderSide(width: 2),
         ),
       ),
     );
