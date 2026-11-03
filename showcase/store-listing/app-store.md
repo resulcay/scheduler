@@ -2,8 +2,9 @@
 
 Bundle ID: `com.resoftware.scheduler` · Primary category: Productivity · Secondary: Lifestyle
 Age rating: 4+ · Price: Free · Export compliance: none (`ITSAppUsesNonExemptEncryption = NO` is set)
-App Privacy: **Data Not Collected**. Privacy Policy URL: host `privacy-policy.md` (required).
-Support URL: required, e.g. a GitHub page or website with a contact e-mail.
+App Privacy: **Data Not Collected**.
+Privacy Policy URL: https://github.com/resulcay/scheduler/blob/master/PRIVACY.md
+Support URL: https://github.com/resulcay/scheduler/blob/master/SUPPORT.md
 
 After the app is created in App Store Connect, put its numeric Apple ID in
 `ConstantText.appStoreId` (`lib/constants/constant_texts.dart`) to enable "Rate" on iOS.
@@ -54,12 +55,9 @@ Planlayıcı randevularınızı, toplantılarınızı, seyahatlerinizi ve teslim
 
 ## Assets (generate on the Mac into `showcase/ios/`)
 
-| Slot | Folder | Pixels |
-|---|---|---|
-| iPhone 6.9" (required) | `iphone-6.9/<lang>/` | 1320×2868 |
-| iPhone 6.5" | `iphone-6.5/<lang>/` | 1284×2778 |
-| iPad 13" (required, app runs on iPad) | `ipad-13/<lang>/` | 2064×2752 |
-| App icon | `icon/app-icon-1024.png` | 1024×1024, opaque |
+See the slot table in [showcase/README.md](../README.md). In short: header,
+search results, iPhone medium display (`iphone-6.3/`), iPad 13" (`ipad-13/`),
+optionally 6.9"/6.5" in Media Manager, and the 1024 icon.
 
 Order matters: 01–03 are what people see in **search results**; 04+05 are a
 **duo** (one panorama split across two screenshots, upload them next to each other).

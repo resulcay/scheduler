@@ -2,7 +2,8 @@
 // Run through the script, one process per device:
 //
 //   ./scripts/generate_showcase.sh android   # phone, 7" + 10" tablet, feature graphic
-//   ./scripts/generate_showcase.sh ios       # iPhone 6.9", 6.5", iPad 13", duo (on the Mac)
+//   ./scripts/generate_showcase.sh ios       # iPhone 6.9", 6.3", 6.5", iPad 13",
+//                                            # header, search results (on the Mac)
 //
 // Output goes to showcase/<platform>/... (see showcase/README.md).
 import 'dart:convert';
@@ -42,7 +43,8 @@ class Device {
 
 /// Raw captures come from these emulators/simulators (scripts/capture_screenshots.sh):
 /// phone Pixel 8 Pro, tablet-7 1200x1920, tablet-10 1600x2560,
-/// iPhone 16 Pro Max (6.9"), iPhone 11 Pro Max (6.5"), iPad Pro 13" (M4).
+/// iPhone 16/17 Pro Max (6.9"), iPhone 17 (6.3"), iPhone 11 Pro Max (6.5"),
+/// iPad Pro 13" (M4/M5).
 const androidDevices = [
   Device('phone', Size(1080, 1920), radius: .083),
   Device('tablet-7', Size(1080, 1920), radius: .037),
@@ -51,6 +53,8 @@ const androidDevices = [
 
 const iosDevices = [
   Device('iphone-6.9', Size(1320, 2868), radius: .125),
+  // App Store Connect's main iPhone slot ("medium display", 6.1"/6.3").
+  Device('iphone-6.3', Size(1206, 2622), radius: .13),
   Device('iphone-6.5', Size(1284, 2778), radius: .11),
   Device('ipad-13', Size(2064, 2752), radius: .017),
 ];
@@ -96,6 +100,23 @@ const captions = <String, Map<String, (String, String)>>{
   'feature': {
     'en-US': ('Scheduler', 'Events and reminders, right on time'),
     'tr-TR': ('Planlayıcı', 'Etkinlikler ve hatırlatmalar, tam zamanında'),
+  },
+  'header': {
+    'en-US': ('Never miss what matters', 'Events and reminders, right on time'),
+    'tr-TR': (
+      'Önemli hiçbir şeyi kaçırma',
+      'Etkinlikler ve hatırlatmalar, tam zamanında',
+    ),
+  },
+  'search': {
+    'en-US': (
+      'Plan it, never forget it',
+      'Timely reminders for all your events',
+    ),
+    'tr-TR': (
+      'Planla, unutma',
+      'Tüm etkinlikleriniz için zamanında hatırlatma',
+    ),
   },
 };
 
@@ -206,6 +227,34 @@ void main() {
             graphic,
             'showcase/android/feature-graphic/$lang.png',
           );
+        }
+
+        if (isIos && device.name == 'iphone-6.9') {
+          final (title, sub) = captions['header']![lang]!;
+          final header = await _render(
+            tester,
+            const Size(3840, 1646),
+            _Header(
+              title: title,
+              subtitle: sub,
+              left: shots['home']!,
+              right: shots['dark']!,
+              radius: device.radius,
+            ),
+          );
+          await _save(tester, header, 'showcase/ios/header/$lang.png');
+          final (searchTitle, searchSub) = captions['search']![lang]!;
+          final search = await _render(
+            tester,
+            const Size(3840, 2560),
+            _SearchResults(
+              title: searchTitle,
+              subtitle: searchSub,
+              screens: [shots['notify']!, shots['create']!, shots['dark']!],
+              radius: device.radius,
+            ),
+          );
+          await _save(tester, search, 'showcase/ios/search-results/$lang.png');
         }
       });
     }
@@ -501,6 +550,169 @@ class _FeatureGraphic extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+/// App Store product page header (3840x1646, 21:9). The text stays inside
+/// the centered 1646x661 safe area; the phones beside it may be cropped on
+/// narrow screens.
+class _Header extends StatelessWidget {
+  const _Header({
+    required this.title,
+    required this.subtitle,
+    required this.left,
+    required this.right,
+    required this.radius,
+  });
+
+  final String title;
+  final String subtitle;
+  final ui.Image left;
+  final ui.Image right;
+
+  /// Screen corner radius as a fraction of the screen width.
+  final double radius;
+
+  static const _safe = Rect.fromLTWH(1097, 493, 1646, 661);
+  static const _phoneW = 620.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final phoneH = _phoneW * left.height / left.width;
+    Widget phone(ui.Image screen, double angle) => Transform.rotate(
+      angle: angle,
+      child: _DeviceMockup(screen: screen, radius: radius * _phoneW),
+    );
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: backgrounds[0],
+        ),
+      ),
+      child: Stack(
+        clipBehavior: Clip.hardEdge,
+        children: [
+          Positioned(
+            left: 330,
+            top: 230,
+            width: _phoneW,
+            height: phoneH,
+            child: phone(left, -.1),
+          ),
+          Positioned(
+            right: 330,
+            top: 230,
+            width: _phoneW,
+            height: phoneH,
+            child: phone(right, .1),
+          ),
+          Positioned.fromRect(
+            rect: _safe,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    title,
+                    style: const TextStyle(color: Colors.white, fontSize: 132),
+                  ),
+                ),
+                const SizedBox(height: 28),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(
+                    subtitle,
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: .9),
+                      fontSize: 62,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// App Store search results artwork (3840x2560, 3:2): the app in use.
+class _SearchResults extends StatelessWidget {
+  const _SearchResults({
+    required this.title,
+    required this.subtitle,
+    required this.screens,
+    required this.radius,
+  });
+
+  final String title;
+  final String subtitle;
+  final List<ui.Image> screens;
+
+  /// Screen corner radius as a fraction of the screen width.
+  final double radius;
+
+  static const _phoneH = 1860.0;
+
+  @override
+  Widget build(BuildContext context) {
+    final phoneW = _phoneH * screens.first.width / screens.first.height;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: backgrounds[2],
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(240, 150, 240, 140),
+        child: Column(
+          children: [
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                title,
+                style: const TextStyle(color: Colors.white, fontSize: 150),
+              ),
+            ),
+            const SizedBox(height: 24),
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                subtitle,
+                style: TextStyle(
+                  color: Colors.white.withValues(alpha: .9),
+                  fontSize: 72,
+                ),
+              ),
+            ),
+            const Spacer(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (final (i, screen) in screens.indexed) ...[
+                  if (i > 0) const SizedBox(width: 170),
+                  SizedBox(
+                    width: phoneW,
+                    height: _phoneH,
+                    child: _DeviceMockup(
+                      screen: screen,
+                      radius: radius * phoneW,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

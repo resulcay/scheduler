@@ -41,6 +41,10 @@ flutter test                         # unit + platform-config tests
 ./scripts/test_notifications.sh      # on a booted emulator/device: a real reminder must be delivered
 ```
 
+## Privacy and support
+
+[Privacy policy](PRIVACY.md) · [Support](SUPPORT.md)
+
 ## Store assets
 
 See [showcase/README.md](showcase/README.md).

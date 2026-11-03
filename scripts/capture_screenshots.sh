@@ -35,8 +35,9 @@ if [ "$PLATFORM" = ios ]; then
     until xcrun simctl list devices | grep "$SERIAL" | grep -q Shutdown; do
       xcrun simctl shutdown "$SERIAL" 2>/dev/null || sleep 1
     done
-    xcrun simctl boot "$SERIAL"
-    xcrun simctl bootstatus "$SERIAL" >/dev/null
+    # -b boots unless Simulator.app already did; either way it reads the new
+    # language.
+    xcrun simctl bootstatus "$SERIAL" -b >/dev/null
     # Apple's marketing status bar: 9:41, full signal and battery (no bolt).
     xcrun simctl status_bar "$SERIAL" override --time 9:41 --dataNetwork wifi \
       --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 \

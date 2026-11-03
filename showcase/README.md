@@ -18,7 +18,7 @@ already on the emulator are kept.
 showcase/
 ├── raw/<platform>/<device>/<lang>/   home, notify, create, detail, dark, drawer (.png)
 ├── generator/                        composer + icon painter + RGB PNG encoder
-├── store-listing/                    copy-paste texts for both stores + privacy policy
+├── store-listing/                    copy-paste texts for both stores
 ├── android/
 │   ├── icon/                 app-icon-512.png
 │   ├── feature-graphic/      en-US.png, tr-TR.png            1024×500
@@ -27,10 +27,24 @@ showcase/
 │   └── tablet-10/<lang>/     01..06                          1440×2560
 └── ios/                      (generate on the Mac)
     ├── icon/                 app-icon-1024.png
+    ├── header/               en-US.png, tr-TR.png            3840×1646
+    ├── search-results/       en-US.png, tr-TR.png            3840×2560
+    ├── iphone-6.3/<lang>/    01..06                          1206×2622
     ├── iphone-6.9/<lang>/    01..06                          1320×2868
     ├── iphone-6.5/<lang>/    01..06                          1284×2778
     └── ipad-13/<lang>/       01..06                          2064×2752
 ```
+
+App Store Connect slots:
+
+| App Store Connect | Upload |
+|---|---|
+| Header and Search Results › Header | `header/<lang>.png` (21:9; text stays in the centered 1646×661 safe area) |
+| Header and Search Results › Search Results | `search-results/<lang>.png` (optional; screenshots are used if empty) |
+| iPhone with Dynamic Island (medium display) | `iphone-6.3/<lang>/` |
+| iPad 13" display | `ipad-13/<lang>/` |
+| Media Manager › iPhone 6.9" / 6.5" | `iphone-6.9/<lang>/`, `iphone-6.5/<lang>/` (optional) |
+| iPhone Duo | not generated: no Duo simulator in Xcode 26.6 yet (optional until April 2027) |
 
 ## Android (Windows / any OS)
 
@@ -56,13 +70,16 @@ launcher or third-party app icons get into a shot.
 
 ## iOS (on the Mac)
 
-Simulators: **iPhone 16 or 17 Pro Max** (6.9", 1320×2868), **iPhone 11 Pro Max**
-(6.5", 1242×2688, framed onto 1284×2778) and **iPad Pro 13-inch (M4 or M5)**
-(2064×2752). Any iOS runtime works. If the 6.5" device is missing, create it:
-`xcrun simctl create "iPhone 11 Pro Max" com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro-Max`.
+Simulators: **iPhone 17** (6.3", 1206×2622), **iPhone 16 or 17 Pro Max** (6.9",
+1320×2868), **iPhone 11 Pro Max** (6.5", 1242×2688, framed onto 1284×2778) and
+**iPad Pro 13-inch (M4 or M5)** (2064×2752). Any iOS runtime works. Create a
+missing one with e.g.
+`xcrun simctl create "iPhone 17" com.apple.CoreSimulator.SimDeviceType.iPhone-17`.
+The header and search-results artwork reuse the 6.9" captures.
 
 ```bash
-xcrun simctl boot "iPhone 17 Pro Max"   # then: xcrun simctl list devices booted
+xcrun simctl boot "iPhone 17"   # then: xcrun simctl list devices booted
+./scripts/capture_screenshots.sh ios iphone-6.3 <udid>
 ./scripts/capture_screenshots.sh ios iphone-6.9 <udid>
 ./scripts/capture_screenshots.sh ios iphone-6.5 <udid>
 ./scripts/capture_screenshots.sh ios ipad-13    <udid>
@@ -76,7 +93,8 @@ sets Apple's 9:41 marketing status bar.
 The script reboots the simulator once per language with that system language
 set. The notification banner ("now"/"şimdi") and the status bar clock come from
 iOS, not from the app. The simulator's previous language is restored at the end
-and takes effect on its next boot.
+and takes effect on its next boot. Don't shut down or boot the simulator
+yourself while a capture is running.
 
 ## Screens
 
