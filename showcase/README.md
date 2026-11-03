@@ -56,11 +56,13 @@ launcher or third-party app icons get into a shot.
 
 ## iOS (on the Mac)
 
-Simulators: **iPhone 16 Pro Max** (6.9", 1320×2868), **iPhone 11 Pro Max**
-(6.5", 1242×2688, framed onto 1284×2778) and **iPad Pro 13-inch (M4)** (2064×2752).
+Simulators: **iPhone 16 or 17 Pro Max** (6.9", 1320×2868), **iPhone 11 Pro Max**
+(6.5", 1242×2688, framed onto 1284×2778) and **iPad Pro 13-inch (M4 or M5)**
+(2064×2752). Any iOS runtime works. If the 6.5" device is missing, create it:
+`xcrun simctl create "iPhone 11 Pro Max" com.apple.CoreSimulator.SimDeviceType.iPhone-11-Pro-Max`.
 
 ```bash
-xcrun simctl boot "iPhone 16 Pro Max"   # then: xcrun simctl list devices booted
+xcrun simctl boot "iPhone 17 Pro Max"   # then: xcrun simctl list devices booted
 ./scripts/capture_screenshots.sh ios iphone-6.9 <udid>
 ./scripts/capture_screenshots.sh ios iphone-6.5 <udid>
 ./scripts/capture_screenshots.sh ios ipad-13    <udid>
@@ -70,6 +72,11 @@ xcrun simctl boot "iPhone 16 Pro Max"   # then: xcrun simctl list devices booted
 Before the first run, allow notifications for Scheduler once in the simulator
 (Settings › Notifications), or tap "Allow" when asked. `simctl status_bar`
 sets Apple's 9:41 marketing status bar.
+
+The script reboots the simulator once per language with that system language
+set. The notification banner ("now"/"şimdi") and the status bar clock come from
+iOS, not from the app. The simulator's previous language is restored at the end
+and takes effect on its next boot.
 
 ## Screens
 

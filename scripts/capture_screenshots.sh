@@ -16,12 +16,36 @@ TARGET=test_driver/screenshots.dart
 export SHOT_PLATFORM=$PLATFORM SHOT_DEVICE=$DEVICE SHOT_SERIAL=$SERIAL
 
 if [ "$PLATFORM" = ios ]; then
-  # Apple's marketing status bar: 9:41, full signal and battery.
-  xcrun simctl status_bar "$SERIAL" override --time 9:41 --dataNetwork wifi \
-    --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 \
-    --batteryState charged --batteryLevel 100
-  flutter drive -d "$SERIAL" -t $TARGET --driver=test_driver/screenshots_test.dart
-  xcrun simctl status_bar "$SERIAL" clear
+  # The banner's "now" and the status bar clock follow the system language, so
+  # each language is captured on a simulator rebooted into that locale. The
+  # simulator's own language is put back afterwards (active on its next boot).
+  prefs() { xcrun simctl spawn "$SERIAL" defaults "$1" "Apple Global Domain" "${@:2}"; }
+  OLD_LANGS=$(prefs read AppleLanguages 2>/dev/null | tr -d '()",' | xargs || true)
+  OLD_LOCALE=$(prefs read AppleLocale 2>/dev/null || true)
+  restore() {
+    xcrun simctl status_bar "$SERIAL" clear || true
+    if [ -n "$OLD_LANGS" ]; then prefs write AppleLanguages -array $OLD_LANGS; fi
+    if [ -n "$OLD_LOCALE" ]; then prefs write AppleLocale "$OLD_LOCALE"; fi
+  }
+  trap restore EXIT
+  for lang in en-US tr-TR; do
+    prefs write AppleLanguages -array "$lang"
+    prefs write AppleLocale "${lang/-/_}"
+    # shutdown can return early or fail while the device is still busy.
+    until xcrun simctl list devices | grep "$SERIAL" | grep -q Shutdown; do
+      xcrun simctl shutdown "$SERIAL" 2>/dev/null || sleep 1
+    done
+    xcrun simctl boot "$SERIAL"
+    xcrun simctl bootstatus "$SERIAL" >/dev/null
+    # Apple's marketing status bar: 9:41, full signal and battery (no bolt).
+    xcrun simctl status_bar "$SERIAL" override --time 9:41 --dataNetwork wifi \
+      --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 \
+      --batteryState discharging --batteryLevel 100
+    # Without --keep-app-running flutter drive uninstalls the app, wiping the
+    # events of an installed copy.
+    SHOT_LANGS=$lang flutter drive -d "$SERIAL" -t $TARGET \
+      --driver=test_driver/screenshots_test.dart --keep-app-running
+  done
   exit
 fi
 

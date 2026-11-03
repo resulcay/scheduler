@@ -1,19 +1,21 @@
 // Host side of the screenshot run: drives test_driver/screenshots.dart and
 // grabs full-screen shots with adb / simctl into showcase/raw/.
 // Env (set by scripts/capture_screenshots.sh): SHOT_PLATFORM, SHOT_DEVICE,
-// SHOT_SERIAL.
+// SHOT_SERIAL, and optionally SHOT_LANGS (space separated; iOS captures one
+// language per simulator boot).
 import 'dart:io';
 
 import 'package:flutter_driver/flutter_driver.dart';
 
 const scenes = ['home', 'notify', 'create', 'detail', 'dark', 'drawer'];
-const languages = ['en-US', 'tr-TR'];
+const allLanguages = ['en-US', 'tr-TR'];
 
 Future<void> main() async {
   final env = Platform.environment;
   final platform = env['SHOT_PLATFORM']!;
   final device = env['SHOT_DEVICE']!;
   final serial = env['SHOT_SERIAL']!;
+  final languages = env['SHOT_LANGS']?.split(' ') ?? allLanguages;
   final driver = await FlutterDriver.connect();
 
   Future<void> capture(String path) async {

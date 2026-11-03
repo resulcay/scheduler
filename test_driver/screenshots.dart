@@ -1,6 +1,7 @@
 // The real app, remote-controlled by test_driver/screenshots_test.dart to
 // take store screenshots. Run through scripts/capture_screenshots.sh.
 import 'dart:async';
+import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -191,6 +192,10 @@ Future<String> _handle(String command) async {
       return 'ok';
     case 'create':
       await _plugin.cancelAll();
+      // iOS keeps the banner up ~8 s even after the notification is removed.
+      if (Platform.isIOS) {
+        await Future<void>.delayed(const Duration(seconds: 10));
+      }
       _show(
         CreateEventScreen(
           initialDate: first.eventDate,
